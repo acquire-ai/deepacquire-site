@@ -1,5 +1,8 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import extIcon from '~/assets/images/acquire/icon-128.png';
+import heroImage from '~/assets/images/acquire/hero.png';
+import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
 
 import Hero from '~/components/widgets/Hero.astro';
 import Note from '~/components/widgets/Note.astro';
@@ -25,13 +28,12 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: 'Get the Extension',
+        text: `<img src="${extIcon.src}" alt="Acquire Language icon" class="w-5 h-5 inline-block mr-2 rounded" width="20" height="20" />Get the Extension`,
         href: '#install',
-        icon: 'tabler:download',
       },
       { text: 'Learn more', href: '#features' },
     ]}
-    image={{ src: '~/assets/images/acquire/hero.png', alt: 'Acquire Language Hero Image' }}
+    image={`<img src="${heroImage.src}" alt="Acquire Language Hero Image" class="mx-auto rounded-md w-full" width="1280" height="800" loading="eager" />`}
   >
     <Fragment slot="title">
       Learn languages by watching <span class="hidden xl:inline">YouTube with</span>
@@ -226,7 +228,7 @@ const metadata = {
           'Open the extension settings → AI Service to set your own provider and key. You only pay your provider directly—no markup.',
       },
     ]}
-    image={{ src: '~/assets/images/acquire/screenshot-en.png', alt: 'Install Acquire Language' }}
+    image={`<img src="${screenshotEn.src}" alt="Install Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
     callToAction={{
       text: 'Open GitHub',
       href: 'https://github.com/leixin/acquire-language',
