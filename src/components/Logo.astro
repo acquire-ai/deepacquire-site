@@ -1,9 +1,13 @@
 ---
 import { SITE } from 'astrowind:config';
+import icon128 from '~/assets/images/acquire/icon-128.png';
 ---
 
-<span
-  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white"
->
-  🚀 {SITE?.name}
+<span class="flex items-center">
+  <img src={icon128.src} alt="{SITE?.name} icon" class="h-6 w-6 mr-2 rounded" width={24} height={24} />
+  <span
+    class="self-center ml-1 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white"
+  >
+    {SITE?.name}
+  </span>
 </span>
