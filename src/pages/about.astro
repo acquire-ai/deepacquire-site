@@ -1,13 +1,18 @@
 ---
 import Content from '~/components/widgets/Content.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import aboutImg from '~/assets/images/acquire/about-us.jpg';
 const metadata = {
   title: 'About us',
 };
 ---
 
 <Layout metadata={metadata}>
-  <Content title="DeepAcquire" subtitle="Supercharge your mind with AI power—fast!">
+  <Content
+    title="DeepAcquire"
+    subtitle="Supercharge your mind with AI power—fast!"
+    image={`<img src="${aboutImg.src}" alt="About us" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" loading="lazy" />`}
+  >
     <Fragment slot="content">
       <p>We were founded in 2025.</p>
       <p>
