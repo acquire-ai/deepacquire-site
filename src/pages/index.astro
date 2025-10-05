@@ -95,24 +95,24 @@ const metadata = {
     subtitle="Now available on the Chrome Web Store. Click 'Add to Chrome' below to install. Microsoft Edge, Safari, and Firefox versions are coming soon."
     items={[
       {
-        title: 'AI 根据上下文讲解 -- 更容易理解',
+        title: 'Context-Aware AI Explanations — Easier to Understand',
         description:
-          '哪个字幕中的单词不认识， 鼠标放上去点击一下，立马弹出 AI 根据上下文所做的讲解，讲解方式还考虑到你目前的语言水平，以你最容易理解的方式讲述。',
+          'Do not know a word in the captions? Hover and click to get an instant, context-aware AI explanation tailored to your current level in the clearest way for you.',
       },
       {
-        title: '有疑问？追着 AI 问！',
+        title: 'Got Questions? Keep Asking AI',
         description:
-          '对不理解的内容，或者和另外你记得一个单词有混淆？它们有什么不同？没关系，你可以在上下文的基础上，接着问 AI。',
+          'Confused by a phrase or mixing up similar words? Ask follow-up questions in the same context and get the differences explained clearly.',
       },
       {
-        title: 'AI 深度思考翻译的字幕 -- 双字幕播放',
+        title: 'AI-Translated Subtitles — Dual Captions',
         description:
-          '有些时候，你只想放松下，愉快、流畅地看完一场电影，演讲？不想让语言阻碍你？Acquire Language 帮你把字幕翻译成你最熟悉的语言，双字幕播放， 你只管享受。',
+          'Sometimes you just want to relax and enjoy a movie or talk without language getting in the way. Acquire Language translates captions into your preferred language and shows dual subtitles so you can simply enjoy.',
       },
       {
-        title: '笔记同步，随时复习巩固 -- 强化记忆',
+        title: 'Synced Notebook — Review Anytime',
         description:
-          '不想看了就忘？没关系，Acquire Language 帮你把单词（包含上下文）、片段、甚至对应音频都记下来，可以同步到你喜欢的笔记软件，随时复习巩固。',
+          'Never lose what you have learned. Save words (with context), clips, and even audio. Sync to your favorite notes app and review anytime to reinforce memory.',
       },
     ]}
     image={`<img src="${screenshotEn.src}" alt="Install Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
@@ -128,25 +128,28 @@ const metadata = {
   <!-- Steps Widget ****************** -->
 
   <Steps
-    title="Get your dream website up and running in no time with AstroWind."
+    title="Set up Acquire Language"
     items={[
       {
-        title: 'Step 1: <span class="font-medium">Download</span>',
+        title: 'Step 1: <span class="font-medium">Choose language & level</span>',
         description:
-          "Kickstart with GitHub! Either fork the AstroWind template or simply click 'Use this template'. Your canvas awaits, ready for your digital masterpiece. In just a few clicks, you've already set the foundation.",
-        icon: 'tabler:package',
+          'Set the language you want to learn and your current proficiency level to better match your learning needs',
+        icon: 'tabler:language',
       },
       {
-        title: 'Step 2: <span class="font-medium">Add content</span>',
-        description:
-          "Pour your vision into it. Add images, text, and all that jazz to breathe life into your digital space. Remember, it's the content that tells your story, so make it captivating.",
-        icon: 'tabler:letter-case',
+        title: 'Step 2: <span class="font-medium">Configure AI service</span>',
+        description: 'Open Settings -> AI Service to configure your own AI service',
+        icon: 'tabler:settings',
       },
       {
-        title: 'Step 3: <span class="font-medium">Customize styles</span>',
-        description:
-          'Give it your personal touch. Tailor colors, fonts, and layouts until it feels just right. Your unique flair, amplified by AstroWind! Precision in design ensures a seamless user experience.',
-        icon: 'tabler:paint',
+        title: 'Step 3: <span class="font-medium">Set up WordNote sync</span>',
+        description: 'Integrations to configure your own Eudic token to sync your vocabulary notebook to Eudic',
+        icon: 'tabler:arrows-right-left',
+      },
+      {
+        title: 'Step 4: <span class="font-medium">Enable subtitles</span>',
+        description: 'Open any YouTube video and enable subtitles',
+        icon: 'tabler:video',
       },
       {
         title: 'Ready!',
