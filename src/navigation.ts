@@ -43,8 +43,8 @@ export const footerData = {
     {
       title: 'Support',
       links: [
-        { text: 'Docs', href: 'https://github.com/leixin/acquire-language#readme' },
-        { text: 'Issues', href: 'https://github.com/leixin/acquire-language/issues' },
+        { text: 'Docs', href: 'https://github.com/acquire-ai/AcquireLanguage' },
+        { text: 'Issues', href: 'https://github.com/acquire-ai/AcquireLanguage/issues' },
       ],
     },
     {
