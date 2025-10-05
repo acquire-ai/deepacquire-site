@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink } from './utils/permalinks';
 
 export const headerData = {
   links: [
@@ -7,7 +7,7 @@ export const headerData = {
       links: [
         { text: 'Features', href: getPermalink('/#features') },
         { text: 'Install', href: getPermalink('/#install') },
-        { text: 'Pricing', href: getPermalink('/pricing') },
+        // { text: 'Pricing', href: getPermalink('/pricing') },
       ],
     },
     {
@@ -16,7 +16,7 @@ export const headerData = {
         { text: 'About', href: getPermalink('/about') },
         { text: 'Contact', href: getPermalink('/contact') },
         { text: 'Terms', href: getPermalink('/terms') },
-        { text: 'Privacy', href: getPermalink('/privacy') },
+        // { text: 'Privacy', href: getPermalink('/privacy') },
       ],
     },
     {
@@ -37,7 +37,7 @@ export const footerData = {
       links: [
         { text: 'Features', href: getPermalink('/#features') },
         { text: 'Install', href: getPermalink('/#install') },
-        { text: 'Pricing', href: getPermalink('/pricing') },
+        // { text: 'Pricing', href: getPermalink('/pricing') },
       ],
     },
     {
