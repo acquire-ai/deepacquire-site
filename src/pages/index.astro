@@ -7,13 +7,8 @@ import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
 import Hero from '~/components/widgets/Hero.astro';
 import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
   title: 'Acquire Language — Learn languages by watching videos you love with AI',
@@ -97,13 +92,8 @@ const metadata = {
   <Content
     id="install"
     title="Install Acquire Language"
-    subtitle="Choose the easiest way to get started. Chrome Web Store listing is coming soon; for now you can install from source."
+    subtitle="Now available on the Chrome Web Store. Click 'Add to Chrome' below to install. Microsoft Edge, Safari, and Firefox versions are coming soon."
     items={[
-      {
-        title: 'From source (Developer mode)',
-        description:
-          '1) Go to chrome://extensions → enable Developer mode → Load unpacked → select the dist/chrome dir after building. 2) To build: clone the repo, run npm install && npm run build.',
-      },
       {
         title: 'Configure AI provider (optional)',
         description:
@@ -112,10 +102,10 @@ const metadata = {
     ]}
     image={`<img src="${screenshotEn.src}" alt="Install Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
     callToAction={{
-      text: 'Open GitHub',
-      href: 'https://github.com/leixin/acquire-language',
+      text: 'Add to Chrome',
+      href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
       target: '_blank',
-      icon: 'tabler:brand-github',
+      icon: 'tabler:brand-chrome',
     }}
   />
 
@@ -152,5 +142,4 @@ const metadata = {
       alt: 'Steps image',
     }}
   />
-
 </Layout>
