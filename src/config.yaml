@@ -4,14 +4,14 @@ site:
   base: '/'
   trailingSlash: false
 
-  googleSiteVerificationId: "false"
+  googleSiteVerificationId: 'false'
 
 # Default SEO metadata
 metadata:
   title:
     default: Acquire Language
     template: '%s — Acquire Language'
-  description: "AI-powered subtitles and vocabulary to learn languages on YouTube. Hover for definitions, save words with context, translate with your own AI provider."
+  description: 'AI-powered subtitles and vocabulary to learn languages on YouTube. Hover for definitions, save words with context, translate with your own AI provider.'
   robots:
     index: true
     follow: true
