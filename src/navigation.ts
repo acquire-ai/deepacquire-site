@@ -22,8 +22,8 @@ export const headerData = {
     {
       text: 'Docs',
       links: [
-        { text: 'GitHub', href: 'https://github.com/leixin/acquire-language' },
-        { text: 'User Guide', href: 'https://github.com/leixin/acquire-language#readme' },
+        { text: 'GitHub', href: 'https://github.com/acquire-ai/AcquireLanguage' },
+        { text: 'User Guide', href: 'https://github.com/acquire-ai/AcquireLanguage#readme' },
       ],
     },
   ],
@@ -60,7 +60,7 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/leixin/acquire-language' },
+    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/acquire-ai/AcquireLanguage' },
   ],
   footNote: `
     © ${new Date().getFullYear()} Acquire Language. All rights reserved.
