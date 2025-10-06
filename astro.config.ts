@@ -80,6 +80,16 @@ export default defineConfig({
     rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
   },
 
+  // Enable Astro built-in i18n
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh-CN', 'zh-TW'],
+    routing: {
+      // Do not prefix default locale (en) with /en
+      prefixDefaultLocale: false,
+    },
+  },
+
   vite: {
     resolve: {
       alias: {

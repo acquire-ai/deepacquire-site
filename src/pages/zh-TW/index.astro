@@ -1,0 +1,123 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import extIcon from '~/assets/images/acquire/icon-128.png';
+import heroImage from '~/assets/images/acquire/hero.png';
+import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
+import setupReady from '~/assets/images/acquire/setup-ready.jpg';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+
+const metadata = {
+  title: 'Acquire Language — 用你喜歡的影片學語言',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: `<img src="${extIcon.src}" alt="Acquire Language 圖示" class="w-5 h-5 inline-block mr-2 rounded" width="20" height="20" />安裝擴充功能`,
+        href: '#install',
+      },
+      { text: '了解更多', href: '#features' },
+    ]}
+    image={`<img src="${heroImage.src}" alt="Acquire Language 首圖" class="mx-auto rounded-md w-full" width="1280" height="800" loading="eager" />`}
+  >
+    <Fragment slot="title">
+      透過觀看 <span class="hidden xl:inline">YouTube</span>
+      <span class="text-accent dark:text-white">Acquire Language</span> 學語言
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="hidden sm:inline"
+        >AI 加持字幕、滑過即顯示釋義、與單字本。可使用你自己的 AI 服務供應商，無額外加價。</span
+      >
+      <span class="block mb-1 sm:hidden font-bold text-blue-600">Acquire Language：邊看邊學。</span>
+      強化 YouTube 字幕、保存語境中的單字、並可追問。
+    </Fragment>
+  </Hero>
+
+  <Features
+    id="features"
+    tagline="功能"
+    title="Acquire Language 為你帶來什麼"
+    subtitle="以增強字幕、即時釋義、與個人化單字本，自然習得語言。"
+    items={[
+      {
+        title: '增強 AI 字幕',
+        description: '改良 YouTube 字幕排版，使用你選擇的 AI 服務取得精準翻譯。',
+        icon: 'tabler:message-language',
+      },
+      { title: '滑過釋義', description: '取得即時釋義。點擊即可將單字、例句與筆記存到單字本。', icon: 'tabler:book-2' },
+      { title: '單字本', description: '在觀看影片時累積單字，同步保存語境。', icon: 'tabler:notebook' },
+      {
+        title: '彈性的 AI 供應商',
+        description: '自帶你的 AI。可連接多個供應商，無加價無綁定。',
+        icon: 'tabler:arrows-right-left',
+      },
+      { title: '開放共創', description: '歡迎新想法與貢獻，共同打造出色體驗。', icon: 'tabler:bulb' },
+    ]}
+  />
+
+  <Content
+    id="install"
+    title="安裝 Acquire Language"
+    subtitle="現已上架 Chrome 線上應用程式商店。點擊下方「加入至 Chrome」即可安裝。即將支援 Microsoft Edge、Safari、Firefox。"
+    items={[
+      {
+        title: '語境感知解釋——更容易理解',
+        description: '不認識字幕中的單字？滑過並點擊，即可取得結合當前語境、符合你程度的 AI 解釋。',
+      },
+      { title: '有問題？繼續追問', description: '搞不清相似的單字？在相同語境中繼續追問，獲得清楚解釋。' },
+      {
+        title: 'AI 翻譯字幕——雙語字幕',
+        description: '想輕鬆看影片？Acquire Language 將字幕翻譯為你偏好的語言並雙語顯示。',
+      },
+      {
+        title: '同步單字本——隨時複習',
+        description: '保存單字（含語境）、片段，甚至音訊。同步到你常用的筆記應用，隨時複習加深記憶。',
+      },
+    ]}
+    image={`<img src="${screenshotEn.src}" alt="安裝 Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
+    callToAction={{
+      variant: 'primary',
+      text: '加入至 Chrome',
+      href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+      target: '_blank',
+      icon: 'tabler:brand-chrome',
+    }}
+  />
+
+  <Steps
+    title="設定 Acquire Language"
+    items={[
+      {
+        title: '步驟 1：<span class="font-medium">選擇語言與程度</span>',
+        description: '設定你想學的語言與目前程度，以更符合你的需求',
+        icon: 'tabler:language',
+      },
+      {
+        title: '步驟 2：<span class="font-medium">設定 AI 服務</span>',
+        description: '開啟 設定 -> AI 服務 以設定你自己的 AI 服務',
+        icon: 'tabler:settings',
+      },
+      {
+        title: '步驟 3：<span class="font-medium">設定單字本同步</span>',
+        description: '設定整合與歐路詞典等服務，把單字同步到你的單字本',
+        icon: 'tabler:arrows-right-left',
+      },
+      {
+        title: '步驟 4：<span class="font-medium">啟用字幕</span>',
+        description: '開啟任一 YouTube 影片並啟用字幕',
+        icon: 'tabler:video',
+      },
+      { title: '準備完成！', icon: 'tabler:check' },
+    ]}
+    image={`<img src="${setupReady.src}" alt="設定完成" class="mx-auto w-full rounded-lg shadow-lg" loading="lazy" />`}
+  />
+</Layout>

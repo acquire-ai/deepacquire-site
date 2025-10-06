@@ -1,0 +1,129 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import extIcon from '~/assets/images/acquire/icon-128.png';
+import heroImage from '~/assets/images/acquire/hero.png';
+import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
+import setupReady from '~/assets/images/acquire/setup-ready.jpg';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+
+const metadata = {
+  title: 'Acquire Language — 用你喜爱的视频学习语言',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: `<img src="${extIcon.src}" alt="Acquire Language 图标" class="w-5 h-5 inline-block mr-2 rounded" width="20" height="20" />安装扩展`,
+        href: '#install',
+      },
+      { text: '了解更多', href: '#features' },
+    ]}
+    image={`<img src="${heroImage.src}" alt="Acquire Language 头图" class="mx-auto rounded-md w-full" width="1280" height="800" loading="eager" />`}
+  >
+    <Fragment slot="title">
+      通过观看 <span class="hidden xl:inline">YouTube</span>
+      <span class="text-accent dark:text-white">Acquire Language</span> 学习语言
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="hidden sm:inline">AI 加持的字幕、悬停释义与生词本。使用你自己的 AI 服务商进行翻译，无额外加价。</span
+      >
+      <span class="block mb-1 sm:hidden font-bold text-blue-600">Acquire Language：边看边学。</span>
+      增强 YouTube 字幕，保存语境中的词汇，提出追问。
+    </Fragment>
+  </Hero>
+
+  <Features
+    id="features"
+    tagline="功能"
+    title="Acquire Language 能为你带来什么"
+    subtitle="通过增强字幕、即时释义与个性化生词本，自然习得语言。"
+    items={[
+      {
+        title: '增强 AI 字幕',
+        description: '改进 YouTube 字幕排版，使用你选择的 AI 服务获得准确翻译。',
+        icon: 'tabler:message-language',
+      },
+      {
+        title: '悬停释义',
+        description: '获取即时释义。点击即可将单词、例句与笔记保存到生词本。',
+        icon: 'tabler:book-2',
+      },
+      { title: '生词本', description: '在观看视频的过程中积累词汇，连同语境一并保存。', icon: 'tabler:notebook' },
+      {
+        title: '灵活的 AI 服务商',
+        description: '自带你的 AI。连接多个服务商，无加价、无锁定。',
+        icon: 'tabler:arrows-right-left',
+      },
+      { title: '开放共建', description: '欢迎新想法与贡献，共同打造出色体验。', icon: 'tabler:bulb' },
+    ]}
+  />
+
+  <Content
+    id="install"
+    title="安装 Acquire Language"
+    subtitle="现已上架 Chrome 网上应用店。点击下方“添加至 Chrome”进行安装。即将支持 Microsoft Edge、Safari、Firefox。"
+    items={[
+      {
+        title: '语境感知解释——更易理解',
+        description: '不认识字幕里的词？悬停点击即可获得结合当前语境、贴合水平的 AI 解释。',
+      },
+      {
+        title: '有问题？继续追问',
+        description: '分不清相似词？继续在相同语境下追问，得到清晰解释。',
+      },
+      {
+        title: 'AI 翻译字幕——双语显示',
+        description: '想轻松看视频？Acquire Language 将字幕翻译为你的母语并双语显示。',
+      },
+      {
+        title: '同步生词本——随时复习',
+        description: '保存单词（含语境）、片段，甚至音频。同步到你常用的笔记应用，随时复习巩固。',
+      },
+    ]}
+    image={`<img src="${screenshotEn.src}" alt="安装 Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
+    callToAction={{
+      variant: 'primary',
+      text: '添加至 Chrome',
+      href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+      target: '_blank',
+      icon: 'tabler:brand-chrome',
+    }}
+  />
+
+  <Steps
+    title="设置 Acquire Language"
+    items={[
+      {
+        title: '步骤 1：<span class="font-medium">选择语言与水平</span>',
+        description: '设置你想学习的语言与当前水平，以更好地匹配学习需求',
+        icon: 'tabler:language',
+      },
+      {
+        title: '步骤 2：<span class="font-medium">配置 AI 服务</span>',
+        description: '打开 设置 -> AI 服务 配置你的 AI 服务',
+        icon: 'tabler:settings',
+      },
+      {
+        title: '步骤 3：<span class="font-medium">设置生词本同步</span>',
+        description: '配置欧路词典等集成，将生词同步到你的词汇本',
+        icon: 'tabler:arrows-right-left',
+      },
+      {
+        title: '步骤 4：<span class="font-medium">启用字幕</span>',
+        description: '打开任意 YouTube 视频并启用字幕',
+        icon: 'tabler:video',
+      },
+      { title: '准备就绪！', icon: 'tabler:check' },
+    ]}
+    image={`<img src="${setupReady.src}" alt="设置完成" class="mx-auto w-full rounded-lg shadow-lg" loading="lazy" />`}
+  />
+</Layout>
