@@ -1,5 +1,36 @@
 import { getPermalink } from './utils/permalinks';
 
+export const getHeaderData = (t: (key: string) => string) => ({
+  links: [
+    {
+      text: t('nav.product'),
+      links: [
+        { text: t('nav.features'), href: getPermalink('/#features') },
+        { text: t('nav.install'), href: getPermalink('/#install') },
+        // { text: t('nav.pricing'), href: getPermalink('/pricing') },
+      ],
+    },
+    {
+      text: t('nav.pages'),
+      links: [
+        { text: t('nav.about'), href: getPermalink('/about') },
+        { text: t('nav.contact'), href: getPermalink('/contact') },
+        { text: t('nav.terms'), href: getPermalink('/terms') },
+        // { text: t('nav.privacy'), href: getPermalink('/privacy') },
+      ],
+    },
+    {
+      text: t('nav.docs'),
+      links: [
+        { text: t('nav.github'), href: 'https://github.com/acquire-ai/AcquireLanguage' },
+        { text: t('nav.userGuide'), href: 'https://github.com/acquire-ai/AcquireLanguage#readme' },
+      ],
+    },
+  ],
+  actions: [{ text: t('nav.getExtension'), href: '#install' }],
+});
+
+// Keep legacy export for backward compatibility
 export const headerData = {
   links: [
     {
@@ -30,6 +61,44 @@ export const headerData = {
   actions: [{ text: 'Get the Extension', href: '#install' }],
 };
 
+export const getFooterData = (t: (key: string) => string) => ({
+  links: [
+    {
+      title: t('footer.product'),
+      links: [
+        { text: t('nav.features'), href: getPermalink('/#features') },
+        { text: t('nav.install'), href: getPermalink('/#install') },
+        // { text: t('nav.pricing'), href: getPermalink('/pricing') },
+      ],
+    },
+    {
+      title: t('footer.support'),
+      links: [
+        { text: t('nav.docs'), href: 'https://github.com/acquire-ai/AcquireLanguage' },
+        { text: 'Issues', href: 'https://github.com/acquire-ai/AcquireLanguage/issues' },
+      ],
+    },
+    {
+      title: t('footer.company'),
+      links: [
+        { text: t('nav.about'), href: getPermalink('/about') },
+        { text: t('nav.contact'), href: getPermalink('/contact') },
+      ],
+    },
+  ],
+  secondaryLinks: [
+    { text: t('nav.terms'), href: getPermalink('/terms') },
+    { text: t('nav.privacy'), href: getPermalink('/privacy') },
+  ],
+  socialLinks: [
+    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/acquire-ai/AcquireLanguage' },
+  ],
+  footNote: `
+    © ${new Date().getFullYear()} Acquire Language. ${t('footer.allRightsReserved')}
+  `,
+});
+
+// Keep legacy export for backward compatibility
 export const footerData = {
   links: [
     {

@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "product": "Product",
+    "features": "Features",
+    "install": "Install",
+    "pricing": "Pricing",
+    "pages": "Pages",
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "docs": "Docs",
+    "github": "GitHub",
+    "userGuide": "User Guide",
+    "getExtension": "Get the Extension"
+  },
+  "hero": {
+    "title": "Learn languages by watching <span class=\"hidden xl:inline\">YouTube with</span> <span class=\"text-accent dark:text-white\">Acquire Language</span>",
+    "subtitle": "AI-powered subtitles, word definitions on hover, and a vocabulary notebook. Use your own AI provider for translations with zero markup.",
+    "subtitleShort": "Acquire Language: Learn while you watch.",
+    "getExtension": "Get the Extension",
+    "learnMore": "Learn more"
+  },
+  "features": {
+    "tagline": "Features",
+    "title": "What you get with Acquire Language",
+    "subtitle": "Learn naturally with enhanced subtitles, instant definitions, and personalized vocabulary tracking.",
+    "enhancedSubtitles": "Enhanced AI Subtitles",
+    "enhancedSubtitlesDesc": "Improved layout for YouTube captions with accurate translations powered by your chosen AI provider.",
+    "hoverDefinitions": "Hover Definitions",
+    "hoverDefinitionsDesc": "Instant word meanings in context. Click to save words, examples, and notes to your notebook.",
+    "vocabularyNotebook": "Vocabulary Notebook",
+    "vocabularyNotebookDesc": "Build your vocabulary over time with saved words and context from videos you watch.",
+    "flexibleAI": "Flexible AI Providers",
+    "flexibleAIDesc": "Bring your own AI. Connect to multiple providers with zero markup or vendor lock-in.",
+    "openContributions": "Open to new ideas and contributions",
+    "openContributionsDesc": "Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience."
+  },
+  "install": {
+    "title": "Install Acquire Language",
+    "subtitle": "Now available on the Chrome Web Store. Click 'Add to Chrome' below to install. Microsoft Edge, Safari, and Firefox versions are coming soon.",
+    "addToChrome": "Add to Chrome",
+    "contextAware": "Context-Aware AI Explanations — Easier to Understand",
+    "contextAwareDesc": "Do not know a word in the captions? Hover and click to get an instant, context-aware AI explanation tailored to your current level in the clearest way for you.",
+    "keepAsking": "Got Questions? Keep Asking AI",
+    "keepAskingDesc": "Confused by a phrase or mixing up similar words? Ask follow-up questions in the same context and get the differences explained clearly.",
+    "dualCaptions": "AI-Translated Subtitles — Dual Captions",
+    "dualCaptionsDesc": "Sometimes you just want to relax and enjoy a movie or talk without language getting in the way. Acquire Language translates captions into your preferred language and shows dual subtitles so you can simply enjoy.",
+    "syncedNotebook": "Synced Notebook — Review Anytime",
+    "syncedNotebookDesc": "Never lose what you have learned. Save words (with context), clips, and even audio. Sync to your favorite notes app and review anytime to reinforce memory."
+  },
+  "setup": {
+    "title": "Set up Acquire Language",
+    "step1": "Step 1: <span class=\"font-medium\">Choose language & level</span>",
+    "step1Desc": "Set the language you want to learn and your current proficiency level to better match your learning needs",
+    "step2": "Step 2: <span class=\"font-medium\">Configure AI service</span>",
+    "step2Desc": "Open Settings -> AI Service to configure your own AI service",
+    "step3": "Step 3: <span class=\"font-medium\">Set up notebook sync</span>",
+    "step3Desc": "Integrations to configure your own Eudic token to sync your vocabulary notebook to Eudic",
+    "step4": "Step 4: <span class=\"font-medium\">Enable subtitles</span>",
+    "step4Desc": "Open any YouTube video and enable subtitles",
+    "ready": "Ready!"
+  },
+  "footer": {
+    "product": "Product",
+    "support": "Support",
+    "company": "Company",
+    "allRightsReserved": "All rights reserved."
+  }
+}

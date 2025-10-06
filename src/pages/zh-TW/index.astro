@@ -1,0 +1,161 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import extIcon from '~/assets/images/acquire/icon-128.png';
+import heroImage from '~/assets/images/acquire/hero.png';
+import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
+import setupReady from '~/assets/images/acquire/setup-ready.jpg';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+
+import { useTranslations } from '~/i18n/utils';
+
+const t = useTranslations('zh-TW');
+
+const metadata = {
+  title: 'Acquire Language — 透過觀看您喜歡的影片學習語言，使用 AI',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: `<img src="${extIcon.src}" alt="Acquire Language 圖示" class="w-5 h-5 inline-block mr-2 rounded" width="20" height="20" />獲取擴充功能`,
+        href: '#install',
+      },
+      { text: '瞭解更多', href: '#features' },
+    ]}
+    image={`<img src="${heroImage.src}" alt="Acquire Language 主圖" class="mx-auto rounded-md w-full" width="1280" height="800" loading="eager" />`}
+  >
+    <Fragment slot="title">
+      透過觀看 <span class="hidden xl:inline">YouTube 影片學習語言，使用</span>
+      <span class="text-accent dark:text-white"> Acquire Language</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="hidden sm:inline">
+        AI 驅動的字幕、滑鼠懸停查詞和詞彙筆記本。使用您自己的 AI 提供商進行翻譯，零加價。</span
+      >
+      <span class="block mb-1 sm:hidden font-bold text-blue-600">Acquire Language：邊看邊學。</span>
+      增強 YouTube 字幕，儲存帶上下文的單詞，並提出後續問題。
+    </Fragment>
+  </Hero>
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    tagline="功能特性"
+    title="Acquire Language 為您提供"
+    subtitle="透過增強字幕、即時釋義和個人化詞彙追蹤，自然學習語言。"
+    items={[
+      {
+        title: '增強 AI 字幕',
+        description:
+          '改進的 YouTube 字幕佈局，由您選擇的 AI 提供商提供準確翻譯。',
+        icon: 'tabler:message-language',
+      },
+      {
+        title: '懸停釋義',
+        description: '在上下文中即時獲取單詞含義。點擊儲存單詞、例句和筆記到您的筆記本。',
+        icon: 'tabler:book-2',
+      },
+      {
+        title: '詞彙筆記本',
+        description: '隨著時間的推移，透過儲存您觀看的影片中的單詞和上下文來累積詞彙。',
+        icon: 'tabler:notebook',
+      },
+      {
+        title: '靈活的 AI 提供商',
+        description: '使用您自己的 AI。連接到多個提供商，零加價，無供應商鎖定。',
+        icon: 'tabler:arrows-right-left',
+      },
+      {
+        title: '開放新想法和貢獻',
+        description:
+          '擁抱一種對新想法和貢獻開放的文化，這對於促進創新、協作和動態使用者體驗至關重要。',
+        icon: 'tabler:bulb',
+      },
+    ]}
+  />
+
+  <!-- Install Widget **************** -->
+
+  <Content
+    id="install"
+    title="安裝 Acquire Language"
+    subtitle="現已在 Chrome 線上應用程式商店上架。點擊下方「新增至 Chrome」進行安裝。Microsoft Edge、Safari 和 Firefox 版本即將推出。"
+    items={[
+      {
+        title: '情境感知 AI 解釋 — 更易理解',
+        description:
+          '不認識字幕中的單詞？懸停並點擊即可獲得即時的、根據您當前水平定製的情境感知 AI 解釋，以最清晰的方式為您呈現。',
+      },
+      {
+        title: '有疑問？繼續向 AI 提問',
+        description:
+          '對某個短語感到困惑或混淆了相似的單詞？在相同的上下文中提出後續問題，清楚地解釋差異。',
+      },
+      {
+        title: 'AI 翻譯字幕 — 雙語字幕',
+        description:
+          '有時您只想放鬆並享受電影或談話，而不想讓語言成為障礙。Acquire Language 將字幕翻譯成您的首選語言，並顯示雙語字幕，讓您輕鬆享受。',
+      },
+      {
+        title: '同步筆記本 — 隨時複習',
+        description:
+          '永不遺失您學過的內容。儲存單詞（帶上下文）、片段甚至音訊。同步到您最喜歡的筆記應用並隨時複習以加強記憶。',
+      },
+    ]}
+    image={`<img src="${screenshotEn.src}" alt="安裝 Acquire Language" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
+    callToAction={{
+      variant: 'primary',
+      text: '新增至 Chrome',
+      href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+      target: '_blank',
+      icon: 'tabler:brand-chrome',
+    }}
+  />
+
+  <!-- Steps Widget ****************** -->
+
+  <Steps
+    title="設定 Acquire Language"
+    items={[
+      {
+        title: '步驟 1：<span class="font-medium">選擇語言和水平</span>',
+        description:
+          '設定您想學習的語言和目前的熟練程度，以更好地滿足您的學習需求',
+        icon: 'tabler:language',
+      },
+      {
+        title: '步驟 2：<span class="font-medium">設定 AI 服務</span>',
+        description: '開啟設定 -> AI 服務來設定您自己的 AI 服務',
+        icon: 'tabler:settings',
+      },
+      {
+        title: '步驟 3：<span class="font-medium">設定筆記本同步</span>',
+        description: '整合設定您自己的 Eudic 權杖，將詞彙筆記本同步到 Eudic',
+        icon: 'tabler:arrows-right-left',
+      },
+      {
+        title: '步驟 4：<span class="font-medium">啟用字幕</span>',
+        description: '開啟任何 YouTube 影片並啟用字幕',
+        icon: 'tabler:video',
+      },
+      {
+        title: '準備就緒！',
+        icon: 'tabler:check',
+      },
+    ]}
+    image={`<img src="${setupReady.src}" alt="設定完成" class="mx-auto w-full rounded-lg shadow-lg" loading="lazy" />`}
+  />
+</Layout>

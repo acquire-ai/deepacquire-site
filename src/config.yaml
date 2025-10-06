@@ -30,6 +30,16 @@ metadata:
 i18n:
   language: en
   textDirection: ltr
+  languages:
+    en:
+      name: English
+      code: en
+    zh-CN:
+      name: 简体中文
+      code: zh-CN
+    zh-TW:
+      name: 繁體中文
+      code: zh-TW
 
 apps:
   blog:

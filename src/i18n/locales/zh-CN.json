@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "product": "产品",
+    "features": "功能特性",
+    "install": "安装",
+    "pricing": "定价",
+    "pages": "页面",
+    "about": "关于",
+    "contact": "联系我们",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "docs": "文档",
+    "github": "GitHub",
+    "userGuide": "用户指南",
+    "getExtension": "获取扩展"
+  },
+  "hero": {
+    "title": "通过观看 <span class=\"hidden xl:inline\">YouTube 视频学习语言，使用</span> <span class=\"text-accent dark:text-white\">Acquire Language</span>",
+    "subtitle": "AI 驱动的字幕、鼠标悬停查词和词汇笔记本。使用您自己的 AI 提供商进行翻译，零加价。",
+    "subtitleShort": "Acquire Language：边看边学。",
+    "getExtension": "获取扩展",
+    "learnMore": "了解更多"
+  },
+  "features": {
+    "tagline": "功能特性",
+    "title": "Acquire Language 为您提供",
+    "subtitle": "通过增强字幕、即时释义和个性化词汇跟踪，自然学习语言。",
+    "enhancedSubtitles": "增强 AI 字幕",
+    "enhancedSubtitlesDesc": "改进的 YouTube 字幕布局，由您选择的 AI 提供商提供准确翻译。",
+    "hoverDefinitions": "悬停释义",
+    "hoverDefinitionsDesc": "在上下文中即时获取单词含义。点击保存单词、例句和笔记到您的笔记本。",
+    "vocabularyNotebook": "词汇笔记本",
+    "vocabularyNotebookDesc": "随着时间的推移，通过保存您观看的视频中的单词和上下文来积累词汇。",
+    "flexibleAI": "灵活的 AI 提供商",
+    "flexibleAIDesc": "使用您自己的 AI。连接到多个提供商，零加价，无供应商锁定。",
+    "openContributions": "开放新想法和贡献",
+    "openContributionsDesc": "拥抱一种对新想法和贡献开放的文化，这对于促进创新、协作和动态用户体验至关重要。"
+  },
+  "install": {
+    "title": "安装 Acquire Language",
+    "subtitle": "现已在 Chrome 网上应用店上架。点击下方"添加到 Chrome"进行安装。Microsoft Edge、Safari 和 Firefox 版本即将推出。",
+    "addToChrome": "添加到 Chrome",
+    "contextAware": "情境感知 AI 解释 — 更易理解",
+    "contextAwareDesc": "不认识字幕中的单词？悬停并点击即可获得即时的、根据您当前水平定制的情境感知 AI 解释，以最清晰的方式为您呈现。",
+    "keepAsking": "有疑问？继续向 AI 提问",
+    "keepAskingDesc": "对某个短语感到困惑或混淆了相似的单词？在相同的上下文中提出后续问题，清楚地解释差异。",
+    "dualCaptions": "AI 翻译字幕 — 双语字幕",
+    "dualCaptionsDesc": "有时您只想放松并享受电影或谈话，而不想让语言成为障碍。Acquire Language 将字幕翻译成您的首选语言，并显示双语字幕，让您轻松享受。",
+    "syncedNotebook": "同步笔记本 — 随时复习",
+    "syncedNotebookDesc": "永不丢失您学过的内容。保存单词（带上下文）、片段甚至音频。同步到您最喜欢的笔记应用并随时复习以加强记忆。"
+  },
+  "setup": {
+    "title": "设置 Acquire Language",
+    "step1": "步骤 1：<span class=\"font-medium\">选择语言和水平</span>",
+    "step1Desc": "设置您想学习的语言和当前的熟练程度，以更好地满足您的学习需求",
+    "step2": "步骤 2：<span class=\"font-medium\">配置 AI 服务</span>",
+    "step2Desc": "打开设置 -> AI 服务来配置您自己的 AI 服务",
+    "step3": "步骤 3：<span class=\"font-medium\">设置笔记本同步</span>",
+    "step3Desc": "集成配置您自己的 Eudic 令牌，将词汇笔记本同步到 Eudic",
+    "step4": "步骤 4：<span class=\"font-medium\">启用字幕</span>",
+    "step4Desc": "打开任何 YouTube 视频并启用字幕",
+    "ready": "准备就绪！"
+  },
+  "footer": {
+    "product": "产品",
+    "support": "支持",
+    "company": "公司",
+    "allRightsReserved": "版权所有。"
+  }
+}
