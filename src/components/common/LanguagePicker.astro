@@ -1,0 +1,96 @@
+---
+import { languages, stripLocaleFromPath } from '~/i18n/utils';
+
+const currentPath = Astro.url.pathname;
+const currentLang = (Astro.currentLocale as keyof typeof languages) || 'en';
+
+const pathWithoutLang = stripLocaleFromPath(currentPath);
+
+const langUrls = (Object.entries(languages) as Array<[keyof typeof languages, string]>).map(([code, name]) => ({
+  code,
+  name,
+  url: code === 'en' ? pathWithoutLang : `/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`,
+  active: currentLang === code,
+}));
+---
+
+<div class="relative inline-block text-left" id="language-picker">
+  <button
+    type="button"
+    class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
+    aria-expanded="false"
+    id="language-picker-button"
+  >
+    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+      ></path>
+    </svg>
+    <span>{languages[currentLang]}</span>
+    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path
+        fill-rule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+        clip-rule="evenodd"></path>
+    </svg>
+  </button>
+
+  <div
+    class="hidden absolute right-0 z-10 w-40 origin-bottom-right md:origin-top-right bottom-full mb-2 md:bottom-auto md:top-full md:mt-2 md:mb-0 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="language-picker-button"
+    tabindex="-1"
+    id="language-picker-menu"
+  >
+    <div class="py-1" role="none">
+      {
+        langUrls.map(({ name, url, active }) => (
+          <a
+            href={url}
+            class:list={[
+              'block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700',
+              {
+                'text-gray-900 dark:text-gray-200': !active,
+                'text-primary-600 dark:text-primary-400 font-semibold': active,
+              },
+            ]}
+            role="menuitem"
+            tabindex="-1"
+          >
+            {name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupLanguagePicker() {
+    const button = document.getElementById('language-picker-button');
+    const menu = document.getElementById('language-picker-menu');
+
+    if (!button || !menu) return;
+
+    button.addEventListener('click', () => {
+      const isHidden = menu.classList.contains('hidden');
+      menu.classList.toggle('hidden', !isHidden);
+      button.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (event) => {
+      const picker = document.getElementById('language-picker');
+      if (picker && !picker.contains(event.target as Node)) {
+        menu.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  setupLanguagePicker();
+  document.addEventListener('astro:after-swap', setupLanguagePicker);
+</script>

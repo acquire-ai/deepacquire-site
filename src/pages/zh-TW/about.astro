@@ -1,0 +1,27 @@
+---
+import Content from '~/components/widgets/Content.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import aboutImg from '~/assets/images/acquire/about-us.jpg';
+const metadata = {
+  title: '關於我們',
+};
+---
+
+<Layout metadata={metadata}>
+  <Content
+    title="DeepAcquire"
+    subtitle="用 AI 釋放你的心智——更快！"
+    image={`<img src="${aboutImg.src}" alt="關於我們" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" loading="lazy" />`}
+  >
+    <Fragment slot="content">
+      <p>我們成立於 2025 年。</p>
+      <p>我們最初的願景是：既然已經擁有超級智慧的 AI，人類如何能快速獲得並融合 AI 的智慧？</p>
+      <p>像運用自己的心智一樣自然地調用 AI 的智慧——或讓我們的心智快速獲得類 AI 能力。</p>
+      <p>
+        在這個願景的引導下，我們打造了第一款產品，<span class="font-semibold text-accent">Acquire Language</span>。它以
+        AI 加速多語言學習。
+      </p>
+      <p>這只是一個開始……</p>
+    </Fragment>
+  </Content>
+</Layout>
