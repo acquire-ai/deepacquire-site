@@ -4,6 +4,8 @@ import extIcon from '~/assets/images/acquire/icon-128.png';
 import heroImage from '~/assets/images/acquire/hero.png';
 import screenshotEn from '~/assets/images/acquire/screenshot-en.png';
 import setupReady from '~/assets/images/acquire/setup-ready.jpg';
+import chromeLogo from '~/assets/images/Chrome_logo_48.svg';
+import edgeLogo from '~/assets/images/Edge_logo_512.svg';
 
 import Hero from '~/components/widgets/Hero.astro';
 import Features from '~/components/widgets/Features.astro';
@@ -92,18 +94,16 @@ const metadata = {
     image={`<img src="${screenshotEn.src}" alt="安装 DeepAcquire" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" width="440" height="280" loading="lazy" />`}
     callToAction={{
       variant: 'primary',
-      text: '添加至 Chrome',
+      text: `<img src="${chromeLogo}" alt="Chrome 标志" class="w-5 h-5 inline-block mr-2 align-middle" width="20" height="20" />添加至 Chrome`,
       href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
       target: '_blank',
-      icon: 'tabler:brand-chrome',
       class: 'mr-4',
     }}
     callToAction2={{
       variant: 'primary',
-      text: '添加至 Edge',
+      text: `<img src="${edgeLogo}" alt="Microsoft Edge 标志" class="w-5 h-5 inline-block mr-2 align-middle" width="20" height="20" />添加至 Edge`,
       href: 'https://microsoftedge.microsoft.com/addons/detail/acquire-language-youtub/bgkponclmdaicbfcjdglhcklcggkdide',
       target: '_blank',
-      icon: 'tabler:brand-edge',
     }}
   />
 
