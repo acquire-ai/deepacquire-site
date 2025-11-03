@@ -63,6 +63,6 @@ export const footerData = {
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/acquire-ai/AcquireLanguage' },
   ],
   footNote: `
-    © ${new Date().getFullYear()} Acquire Language. All rights reserved.
+    © ${new Date().getFullYear()} DeepAcquire. All rights reserved.
   `,
 };
