@@ -276,6 +276,7 @@ export interface Content extends Omit<Headline, 'classes'>, Widget {
   isReversed?: boolean;
   isAfterContent?: boolean;
   callToAction?: CallToAction;
+  callToAction2?: CallToAction;
 }
 
 export interface Contact extends Omit<Headline, 'classes'>, Form, Widget {}
