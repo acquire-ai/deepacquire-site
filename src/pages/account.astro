@@ -1,0 +1,98 @@
+---
+export const prerender = false;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { parseCookies } from '~/utils/auth/cookies';
+import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
+
+const metadata = {
+  title: 'Account',
+};
+
+const cookies = parseCookies(Astro.request.headers.get('cookie'));
+const idToken = cookies[LOGTO_COOKIES.idToken];
+
+if (!idToken) {
+  return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
+}
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+
+const config = getLogtoConfig(Astro.locals);
+
+let claims: Awaited<ReturnType<typeof verifyIdToken>>;
+try {
+  claims = await verifyIdToken({
+    idToken,
+    issuer: config.issuer,
+    audience: config.clientId,
+    jwksUri: config.jwksUri,
+  });
+} catch {
+  return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
+}
+
+const email = (claims.email as string | undefined) ?? undefined;
+const name =
+  (claims.name as string | undefined) ??
+  (claims.preferred_username as string | undefined) ??
+  (claims.nickname as string | undefined) ??
+  undefined;
+const displayName = name ?? email ?? (claims.sub as string);
+const avatarUrl = (claims.picture as string | undefined) ?? undefined;
+
+const avatarInitial = displayName?.trim()?.[0]?.toUpperCase() ?? '?';
+---
+
+<Layout metadata={metadata}>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold tracking-tight text-default">Account</h1>
+
+    <div class="mt-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+      <div class="flex items-center gap-4">
+        {
+          avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              class="h-12 w-12 rounded-full border border-gray-200 dark:border-gray-700 object-cover"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          ) : (
+            <div class="h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center font-semibold text-default">
+              {avatarInitial}
+            </div>
+          )
+        }
+        <div>
+          <div class="text-sm text-muted">Signed in as</div>
+          <div class="mt-0.5 text-lg font-semibold text-default">{displayName}</div>
+          {email && <div class="text-sm text-muted">{email}</div>}
+        </div>
+      </div>
+
+      <details class="mt-6">
+        <summary class="cursor-pointer select-none text-sm text-muted hover:text-default">Advanced</summary>
+        <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-muted">User ID (sub)</dt>
+            <dd class="mt-1 break-all text-sm text-default">{claims.sub as string}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-muted">Name</dt>
+            <dd class="mt-1 break-all text-sm text-default">{name ?? '-'}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-muted">Email</dt>
+            <dd class="mt-1 break-all text-sm text-default">{email ?? '-'}</dd>
+          </div>
+        </dl>
+      </details>
+
+      <div class="mt-8 flex gap-3">
+        <a class="btn-secondary" href="/auth/sign-out">Sign out</a>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -27,7 +27,7 @@ export const headerData = {
       ],
     },
   ],
-  actions: [{ text: 'Get the Extension', href: '#install' }],
+  actions: [],
 };
 
 export const footerData = {

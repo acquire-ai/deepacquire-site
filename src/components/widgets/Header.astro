@@ -5,6 +5,7 @@ import ToggleTheme from '~/components/common/ToggleTheme.astro';
 import LanguagePicker from '~/components/common/LanguagePicker.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Button from '~/components/ui/Button.astro';
+import HeaderAccountButton from '~/components/auth/HeaderAccountButton.astro';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
@@ -49,6 +50,8 @@ const {
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 const currentLocale = Astro.currentLocale || defaultLocale;
 const homeHref = localizePath(getHomePermalink(), currentLocale);
+
+const accountFallbackLabel = currentLocale === 'zh-CN' ? '登录' : currentLocale === 'zh-TW' ? '登入' : 'Sign in';
 ---
 
 <header
@@ -155,6 +158,17 @@ const homeHref = localizePath(getHomePermalink(), currentLocale);
             )
           }
         </div>
+        <span class="ml-4 rtl:ml-0 rtl:mr-4">
+          <HeaderAccountButton server:defer locale={currentLocale}>
+            <a
+              slot="fallback"
+              class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
+              href="/account"
+            >
+              {accountFallbackLabel}
+            </a>
+          </HeaderAccountButton>
+        </span>
         {
           actions?.length ? (
             <span class="ml-4 rtl:ml-0 rtl:mr-4">
