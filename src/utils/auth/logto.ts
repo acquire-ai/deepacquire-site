@@ -53,18 +53,29 @@ const getEnvValue = (key: string, locals?: App.Locals): string | undefined => {
 };
 
 export const getLogtoConfig = (locals?: App.Locals): LogtoConfig => {
-  const issuer = getEnvValue('LOGTO_ISSUER', locals) ?? 'https://auth.deepacquire.com/oidc';
-  const jwksUri = getEnvValue('LOGTO_JWKS_URI', locals) ?? 'https://auth.deepacquire.com/oidc/jwks';
-  const clientId = getEnvValue('LOGTO_APP_ID', locals) ?? '6p53kcej5oe9skvwfh6yp';
-  const clientSecret = getEnvValue('LOGTO_APP_SECRET', locals) ?? '';
-  const scopes = getEnvValue('LOGTO_SCOPES', locals) ?? 'openid profile email offline_access';
+  const issuer = getEnvValue('LOGTO_ISSUER', locals);
+  const jwksUri = getEnvValue('LOGTO_JWKS_URI', locals);
+  const clientId = getEnvValue('LOGTO_APP_ID', locals);
+  const clientSecret = getEnvValue('LOGTO_APP_SECRET', locals);
+  const scopes = getEnvValue('LOGTO_SCOPES', locals);
+
+  const missing: string[] = [];
+  if (!issuer) missing.push('LOGTO_ISSUER');
+  if (!jwksUri) missing.push('LOGTO_JWKS_URI');
+  if (!clientId) missing.push('LOGTO_APP_ID');
+  if (!clientSecret) missing.push('LOGTO_APP_SECRET');
+  if (!scopes) missing.push('LOGTO_SCOPES');
+
+  if (missing.length) {
+    throw new Error(`Missing Logto environment variables: ${missing.join(', ')}`);
+  }
 
   return {
-    issuer: normalizeUrl(issuer),
-    jwksUri: normalizeUrl(jwksUri),
-    clientId,
-    clientSecret,
-    scopes,
+    issuer: normalizeUrl(issuer!),
+    jwksUri: normalizeUrl(jwksUri!),
+    clientId: clientId!,
+    clientSecret: clientSecret!,
+    scopes: scopes!,
   };
 };
 
