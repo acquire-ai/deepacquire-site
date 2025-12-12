@@ -29,6 +29,17 @@ try {
 } catch {
   return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
 }
+
+const email = (claims.email as string | undefined) ?? undefined;
+const name =
+  (claims.name as string | undefined) ??
+  (claims.preferred_username as string | undefined) ??
+  (claims.nickname as string | undefined) ??
+  undefined;
+const displayName = name ?? email ?? (claims.sub as string);
+const avatarUrl = (claims.picture as string | undefined) ?? undefined;
+
+const avatarInitial = displayName?.trim()?.[0]?.toUpperCase() ?? '?';
 ---
 
 <Layout metadata={metadata}>
@@ -36,9 +47,27 @@ try {
     <h1 class="text-3xl font-bold tracking-tight text-default">Account</h1>
 
     <div class="mt-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
-      <div class="text-sm text-muted">Signed in as</div>
-      <div class="mt-1 text-lg font-semibold text-default">
-        {(claims.email as string | undefined) ?? (claims.name as string | undefined) ?? (claims.sub as string)}
+      <div class="flex items-center gap-4">
+        {
+          avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              class="h-12 w-12 rounded-full border border-gray-200 dark:border-gray-700 object-cover"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          ) : (
+            <div class="h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center font-semibold text-default">
+              {avatarInitial}
+            </div>
+          )
+        }
+        <div>
+          <div class="text-sm text-muted">Signed in as</div>
+          <div class="mt-0.5 text-lg font-semibold text-default">{displayName}</div>
+          {email && <div class="text-sm text-muted">{email}</div>}
+        </div>
       </div>
 
       <dl class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -47,16 +76,22 @@ try {
           <dd class="mt-1 break-all text-sm text-default">{claims.sub as string}</dd>
         </div>
         <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Name</dt>
+          <dd class="mt-1 break-all text-sm text-default">{name ?? '-'}</dd>
+        </div>
+        <div>
           <dt class="text-xs uppercase tracking-wide text-muted">Issuer</dt>
           <dd class="mt-1 break-all text-sm text-default">{config.issuer}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Email</dt>
+          <dd class="mt-1 break-all text-sm text-default">{email ?? '-'}</dd>
         </div>
       </dl>
 
       <div class="mt-8 flex gap-3">
-        <a class="btn btn-secondary" href="/auth/sign-out">Sign out</a>
+        <a class="btn-secondary" href="/auth/sign-out">Sign out</a>
       </div>
     </div>
   </div>
 </Layout>
-
-
