@@ -52,6 +52,7 @@ const currentLocale = Astro.currentLocale || defaultLocale;
 const homeHref = localizePath(getHomePermalink(), currentLocale);
 
 const accountFallbackLabel = currentLocale === 'zh-CN' ? '登录' : currentLocale === 'zh-TW' ? '登入' : 'Sign in';
+const accountFallbackHref = `/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname + Astro.url.search)}`;
 ---
 
 <header
@@ -163,7 +164,9 @@ const accountFallbackLabel = currentLocale === 'zh-CN' ? '登录' : currentLocal
             <a
               slot="fallback"
               class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
-              href="/account"
+              href={accountFallbackHref}
+              data-astro-reload
+              data-astro-prefetch="false"
             >
               {accountFallbackLabel}
             </a>

@@ -85,12 +85,22 @@ try {
         </li>
         <li class="border-t border-gray-200 dark:border-gray-700 my-1" />
         <li>
-          <a class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" href="/account">
+          <a
+            class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+            href="/account"
+            data-astro-reload
+            data-astro-prefetch="false"
+          >
             {t('accountCenter')}
           </a>
         </li>
         <li>
-          <a class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" href="/auth/sign-out">
+          <a
+            class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+            href="/auth/sign-out"
+            data-astro-reload
+            data-astro-prefetch="false"
+          >
             {t('signOut')}
           </a>
         </li>
@@ -100,6 +110,8 @@ try {
     <a
       class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
       href={`/auth/sign-in?returnTo=${encodeURIComponent(returnTo)}`}
+      data-astro-reload
+      data-astro-prefetch="false"
       title={t('signIn')}
     >
       {t('signIn')}
