@@ -210,5 +210,3 @@ export const verifyIdToken = async (params: {
 
   return payload;
 };
-
-

@@ -49,14 +49,9 @@ export const serializeCookie = (name: string, value: string, options: CookieOpti
   return parts.join('; ');
 };
 
-export const deleteCookie = (
-  name: string,
-  options: Pick<CookieOptions, 'path' | 'secure' | 'sameSite'> = {}
-): string =>
+export const deleteCookie = (name: string, options: Pick<CookieOptions, 'path' | 'secure' | 'sameSite'> = {}): string =>
   serializeCookie(name, '', {
     ...options,
     path: options.path ?? '/',
     maxAge: 0,
   });
-
-

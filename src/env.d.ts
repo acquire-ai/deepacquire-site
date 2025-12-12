@@ -15,5 +15,6 @@ type Env = {
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
 
 declare namespace App {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Astro expects `App.Locals` to be an interface for declaration merging.
   interface Locals extends Runtime {}
 }

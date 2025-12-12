@@ -51,8 +51,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 const currentLocale = Astro.currentLocale || defaultLocale;
 const homeHref = localizePath(getHomePermalink(), currentLocale);
 
-const accountFallbackLabel =
-  currentLocale === 'zh-CN' ? '登录' : currentLocale === 'zh-TW' ? '登入' : 'Sign in';
+const accountFallbackLabel = currentLocale === 'zh-CN' ? '登录' : currentLocale === 'zh-TW' ? '登入' : 'Sign in';
 ---
 
 <header

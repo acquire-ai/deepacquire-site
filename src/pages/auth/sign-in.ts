@@ -74,5 +74,3 @@ export const GET: APIRoute = async (context) => {
 
   return new Response(null, { status: 302, headers });
 };
-
-

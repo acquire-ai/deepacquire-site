@@ -20,7 +20,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 
 const config = getLogtoConfig(Astro.locals);
 
-let claims;
+let claims: Awaited<ReturnType<typeof verifyIdToken>>;
 try {
   claims = await verifyIdToken({
     idToken,

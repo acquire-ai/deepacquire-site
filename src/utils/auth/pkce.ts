@@ -15,5 +15,3 @@ export const generateCodeChallenge = async (codeVerifier: string): Promise<strin
   const digest = await crypto.subtle.digest('SHA-256', data);
   return base64UrlEncode(new Uint8Array(digest));
 };
-
-
