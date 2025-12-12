@@ -5,6 +5,7 @@ import ToggleTheme from '~/components/common/ToggleTheme.astro';
 import LanguagePicker from '~/components/common/LanguagePicker.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Button from '~/components/ui/Button.astro';
+import HeaderAccountButton from '~/components/auth/HeaderAccountButton.astro';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
@@ -155,6 +156,17 @@ const homeHref = localizePath(getHomePermalink(), currentLocale);
             )
           }
         </div>
+        <span class="ml-4 rtl:ml-0 rtl:mr-4">
+          <HeaderAccountButton server:defer>
+            <a
+              slot="fallback"
+              class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
+              href="/account"
+            >
+              Account
+            </a>
+          </HeaderAccountButton>
+        </span>
         {
           actions?.length ? (
             <span class="ml-4 rtl:ml-0 rtl:mr-4">

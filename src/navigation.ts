@@ -27,7 +27,7 @@ export const headerData = {
       ],
     },
   ],
-  actions: [{ text: 'Account', href: getPermalink('/account') }],
+  actions: [],
 };
 
 export const footerData = {

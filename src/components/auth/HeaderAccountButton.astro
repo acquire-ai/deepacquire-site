@@ -1,0 +1,44 @@
+---
+import { parseCookies } from '~/utils/auth/cookies';
+import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
+
+const cookies = parseCookies(Astro.request.headers.get('cookie'));
+const idToken = cookies[LOGTO_COOKIES.idToken];
+
+let displayName: string | undefined;
+
+if (idToken) {
+  try {
+    const config = getLogtoConfig(Astro.locals);
+    const claims = await verifyIdToken({
+      idToken,
+      issuer: config.issuer,
+      audience: config.clientId,
+      jwksUri: config.jwksUri,
+    });
+
+    const email = (claims.email as string | undefined) ?? undefined;
+    const name =
+      (claims.name as string | undefined) ??
+      (claims.preferred_username as string | undefined) ??
+      (claims.nickname as string | undefined) ??
+      undefined;
+
+    displayName = name ?? email ?? (claims.sub as string | undefined) ?? undefined;
+  } catch {
+    // ignore - show fallback label
+  }
+}
+
+const label = displayName ?? 'Account';
+---
+
+<a
+  class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
+  href="/account"
+  title={label}
+>
+  {label}
+</a>
+
+
