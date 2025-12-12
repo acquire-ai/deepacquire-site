@@ -2,10 +2,17 @@
 import { parseCookies } from '~/utils/auth/cookies';
 import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
 
+export interface Props {
+  locale?: string;
+}
+
+const { locale } = Astro.props;
+
 const cookies = parseCookies(Astro.request.headers.get('cookie'));
 const idToken = cookies[LOGTO_COOKIES.idToken];
 
 let displayName: string | undefined;
+let email: string | undefined;
 
 if (idToken) {
   try {
@@ -17,7 +24,7 @@ if (idToken) {
       jwksUri: config.jwksUri,
     });
 
-    const email = (claims.email as string | undefined) ?? undefined;
+    email = (claims.email as string | undefined) ?? undefined;
     const name =
       (claims.name as string | undefined) ??
       (claims.preferred_username as string | undefined) ??
@@ -30,15 +37,74 @@ if (idToken) {
   }
 }
 
-const label = displayName ?? 'Account';
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+
+const t = (key: 'signIn' | 'accountCenter' | 'signOut' | 'fallbackAccount'): string => {
+  const isZhCN = locale === 'zh-CN';
+  const isZhTW = locale === 'zh-TW';
+
+  if (key === 'signIn') return isZhCN ? '登录' : isZhTW ? '登入' : 'Sign in';
+  if (key === 'accountCenter') return isZhCN ? '个人中心' : isZhTW ? '個人中心' : 'Account';
+  if (key === 'signOut') return isZhCN ? '退出' : isZhTW ? '登出' : 'Sign out';
+  return isZhCN ? '账户' : isZhTW ? '帳戶' : 'Account';
+};
+
+const referer = Astro.request.headers.get('Referer');
+let returnTo = '/account';
+try {
+  if (referer) {
+    const url = new URL(referer);
+    const candidate = `${url.pathname}${url.search}`;
+    if (candidate.startsWith('/') && !candidate.startsWith('//') && !candidate.includes('://')) {
+      returnTo = candidate;
+    }
+  }
+} catch {
+  // ignore
+}
 ---
 
-<a
-  class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
-  href="/account"
-  title={label}
->
-  {label}
-</a>
+{
+  displayName ? (
+    <div class="dropdown relative">
+      <button
+        type="button"
+        class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate flex items-center gap-2"
+        aria-haspopup="menu"
+        aria-label={displayName}
+        title={displayName}
+      >
+        <span class="truncate">{displayName}</span>
+        <span class="text-muted text-xs">▾</span>
+      </button>
+
+      <ul class="dropdown-menu hidden md:absolute right-0 mt-2 min-w-[14rem] rounded-xl border border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-dark backdrop-blur-md drop-shadow-xl py-2">
+        <li class="px-4 py-2">
+          <div class="text-xs uppercase tracking-wide text-muted">{t('accountCenter')}</div>
+          {email && <div class="mt-1 text-sm text-default truncate">{email}</div>}
+        </li>
+        <li class="border-t border-gray-200 dark:border-gray-700 my-1"></li>
+        <li>
+          <a class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" href="/account">
+            {t('accountCenter')}
+          </a>
+        </li>
+        <li>
+          <a class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" href="/auth/sign-out">
+            {t('signOut')}
+          </a>
+        </li>
+      </ul>
+    </div>
+  ) : (
+    <a
+      class="btn-secondary py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto max-w-[12rem] truncate"
+      href={`/auth/sign-in?returnTo=${encodeURIComponent(returnTo)}`}
+      title={t('signIn')}
+    >
+      {t('signIn')}
+    </a>
+  )
+}
 
 
