@@ -1,0 +1,62 @@
+---
+export const prerender = false;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { parseCookies } from '~/utils/auth/cookies';
+import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
+
+const metadata = {
+  title: 'Account',
+};
+
+const cookies = parseCookies(Astro.request.headers.get('cookie'));
+const idToken = cookies[LOGTO_COOKIES.idToken];
+
+if (!idToken) {
+  return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
+}
+
+const config = getLogtoConfig(Astro.locals);
+
+let claims;
+try {
+  claims = await verifyIdToken({
+    idToken,
+    issuer: config.issuer,
+    audience: config.clientId,
+    jwksUri: config.jwksUri,
+  });
+} catch {
+  return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
+}
+---
+
+<Layout metadata={metadata}>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold tracking-tight text-default">Account</h1>
+
+    <div class="mt-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+      <div class="text-sm text-muted">Signed in as</div>
+      <div class="mt-1 text-lg font-semibold text-default">
+        {(claims.email as string | undefined) ?? (claims.name as string | undefined) ?? (claims.sub as string)}
+      </div>
+
+      <dl class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">User ID (sub)</dt>
+          <dd class="mt-1 break-all text-sm text-default">{claims.sub as string}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Issuer</dt>
+          <dd class="mt-1 break-all text-sm text-default">{config.issuer}</dd>
+        </div>
+      </dl>
+
+      <div class="mt-8 flex gap-3">
+        <a class="btn btn-secondary" href="/auth/sign-out">Sign out</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+

@@ -27,7 +27,7 @@ export const headerData = {
       ],
     },
   ],
-  actions: [{ text: 'Get the Extension', href: '#install' }],
+  actions: [{ text: 'Account', href: getPermalink('/account') }, { text: 'Get the Extension', href: '#install' }],
 };
 
 export const footerData = {
