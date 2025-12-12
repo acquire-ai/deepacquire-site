@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 
 import { deleteCookie, parseCookies, serializeCookie } from '~/utils/auth/cookies';
 import { exchangeCodeForTokens, getLogtoConfig, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { base64UrlDecodeToString } from '~/utils/auth/encoding';
 
 export const prerender = false;
 
@@ -25,10 +26,26 @@ export const GET: APIRoute = async (context) => {
   }
 
   const cookies = parseCookies(context.request.headers.get('cookie'));
-  const expectedState = cookies[LOGTO_COOKIES.oauthState];
-  const codeVerifier = cookies[LOGTO_COOKIES.pkceVerifier];
-  const returnToRaw = cookies[LOGTO_COOKIES.returnTo] ?? '/account';
-  const returnTo = isSafeReturnToPath(returnToRaw) ? returnToRaw : '/account';
+
+  // Preferred: single transaction cookie
+  let expectedState: string | undefined;
+  let codeVerifier: string | undefined;
+  let returnTo: string = '/account';
+
+  const txCookie = cookies[LOGTO_COOKIES.tx];
+  if (txCookie) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tx = JSON.parse(base64UrlDecodeToString(txCookie)) as any;
+      if (tx && typeof tx === 'object') {
+        if (typeof tx.state === 'string') expectedState = tx.state;
+        if (typeof tx.codeVerifier === 'string') codeVerifier = tx.codeVerifier;
+        if (typeof tx.returnTo === 'string' && isSafeReturnToPath(tx.returnTo)) returnTo = tx.returnTo;
+      }
+    } catch {
+      // ignore - will be treated as missing session
+    }
+  }
 
   if (!expectedState || !codeVerifier) {
     return new Response('Missing sign-in session. Please try signing in again.', { status: 400 });
@@ -66,10 +83,8 @@ export const GET: APIRoute = async (context) => {
     })
   );
 
-  // Cleanup temporary cookies.
-  for (const name of [LOGTO_COOKIES.pkceVerifier, LOGTO_COOKIES.oauthState, LOGTO_COOKIES.returnTo]) {
-    headers.append('Set-Cookie', deleteCookie(name, { path: '/', secure, sameSite: 'Lax' }));
-  }
+  // Cleanup temporary cookie (best-effort; ok if only the first Set-Cookie is honored)
+  headers.append('Set-Cookie', deleteCookie(LOGTO_COOKIES.tx, { path: '/', secure, sameSite: 'Lax' }));
 
   return new Response(null, { status: 302, headers });
 };

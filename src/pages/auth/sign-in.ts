@@ -3,6 +3,7 @@ import type { APIRoute } from 'astro';
 import { serializeCookie } from '~/utils/auth/cookies';
 import { generateCodeChallenge, generateCodeVerifier, generateState } from '~/utils/auth/pkce';
 import { buildSignInUrl, getLogtoConfig, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { base64UrlEncodeString } from '~/utils/auth/encoding';
 
 export const prerender = false;
 
@@ -41,29 +42,12 @@ export const GET: APIRoute = async (context) => {
   const headers = new Headers();
   headers.set('Location', signInUrl);
   headers.set('Cache-Control', 'no-store');
+
+  // Store the PKCE+state+returnTo in ONE cookie to avoid multi `Set-Cookie` edge/runtime quirks.
+  const tx = base64UrlEncodeString(JSON.stringify({ v: 1, state, codeVerifier, returnTo }));
   headers.append(
     'Set-Cookie',
-    serializeCookie(LOGTO_COOKIES.pkceVerifier, codeVerifier, {
-      path: '/',
-      httpOnly: true,
-      secure,
-      sameSite: 'Lax',
-      maxAge: 60 * 10,
-    })
-  );
-  headers.append(
-    'Set-Cookie',
-    serializeCookie(LOGTO_COOKIES.oauthState, state, {
-      path: '/',
-      httpOnly: true,
-      secure,
-      sameSite: 'Lax',
-      maxAge: 60 * 10,
-    })
-  );
-  headers.append(
-    'Set-Cookie',
-    serializeCookie(LOGTO_COOKIES.returnTo, returnTo, {
+    serializeCookie(LOGTO_COOKIES.tx, tx, {
       path: '/',
       httpOnly: true,
       secure,

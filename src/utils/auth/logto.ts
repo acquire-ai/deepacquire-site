@@ -3,9 +3,8 @@ import { createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose';
 import { base64EncodeString } from './encoding';
 
 export const LOGTO_COOKIES = {
-  pkceVerifier: 'da_pkce_verifier',
-  oauthState: 'da_oauth_state',
-  returnTo: 'da_return_to',
+  // A single transaction cookie (preferred on edge runtimes to avoid multi Set-Cookie issues)
+  tx: 'da_logto_tx',
   idToken: 'da_id_token',
 } as const;
 
