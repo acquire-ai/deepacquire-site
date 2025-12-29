@@ -13,8 +13,8 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  // Filter for zh-CN posts: ending with -zh
-  const posts = allPosts.filter(post => post.id.endsWith('-zh'));
+  // Filter for zh-CN posts: ending with -zh (case-insensitive)
+  const posts = allPosts.filter((post) => post.id.toLowerCase().endsWith('-zh'));
 
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
@@ -41,11 +41,8 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline subtitle="AI 时代如何更高效地学习语言：见解、更新与教程。">
-      DeepAcquire 博客
-    </Headline>
+    <Headline subtitle="AI 时代如何更高效地学习语言：见解、更新与教程。"> DeepAcquire 博客 </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
   </section>
 </Layout>
-

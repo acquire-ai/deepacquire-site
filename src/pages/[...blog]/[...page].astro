@@ -13,14 +13,14 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  
+
   // Debugging: Log all post IDs to see what they look like
   // console.log("DEBUG: All Post IDs:", allPosts.map(p => p.id));
 
   // Filter out posts ending with -zh, -zh-CN, -zh-TW for the default (English) list
   // Note: Astro content collection IDs typically do not include the extension.
-  const posts = allPosts.filter((post) => !post.id.match(/-zh(-CN|-TW)?$/i));
-  
+  const posts = allPosts.filter((post) => !post.id.match(/-zh(-cn|-tw)?$/i));
+
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
     pageSize: blogPostsPerPage,
