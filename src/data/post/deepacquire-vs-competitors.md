@@ -31,7 +31,7 @@ Most existing subtitle tools act as a layer on top of video players. They are ex
 * Saving words to a flashcard deck.
 
 However, they often lack **Context** and **Personalization**.
-In the age of AI, we should leverage its true strength. We can do more, like:
+In the age of AI, we should leverage its true strength, like:
 
 * With AI, we can provide explanations and teaching based on **your context** and **your personal situation**.
 * By focusing on context and your individual interests, helps you deep understand and recall.
