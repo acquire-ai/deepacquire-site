@@ -16,7 +16,7 @@ metadata:
 
 I’m a language learner and software engineer.
 
-Like many of you, I used to be a heavy user of ***Language Reactor*** and ***eJoy***. While they are great tools, I felt something was missing. They excel at giving you subtitles and machine translations, but in the age of AI, we can do so much more.
+Like many of you, I’ve been improving my foreign language skills by learning from YouTube, and I used to be a heavy user of **_Language Reactor_** and **_eJoy_**. While they are great tools, I felt something was missing. They’re great at showing bilingual subtitles and machine translations, but in the age of AI, we can do much more.
 
 I realized we should leverage AI's true strength: the ability to provide **explanations and teaching based on context and your personal situation**. True language acquisition happens when you understand the *nuance* and *context*, not just the dictionary definition.
 
@@ -24,17 +24,17 @@ So, I decided to build this tool from scratch with an **AI-First mindset**.
 
 ## The Problem with Traditional Tools
 
-Most existing subtitle tools act as a layer on top of video players. They are excellent at:
+Most subtitle tools simply translate subtitles and show them side-by-side. They are excellent at:
 
-* Displaying dual subtitles.
-* Providing instant dictionary lookups.
-* Saving words to a flashcard deck.
+- Displaying dual subtitles.
+- Providing instant dictionary lookups.
+- Saving words to a flashcard deck.
 
 However, they often lack **Context** and **Personalization**.
 In the age of AI, we should leverage its true strength, like:
 
-* With AI, we can provide explanations and teaching based on **your context** and **your personal situation**.
-* By focusing on context and your individual interests, helps you deep understand and recall.
+- With AI, we can provide explanations and teaching based on **your context** and **your personal situation**.
+- By focusing on context and your individual interests, you can understand and remember more deeply.
 
 ## What Makes DeepAcquire Different?
 
@@ -53,12 +53,16 @@ This is where the "AI-First" approach shines. The AI explains vocabulary based o
 
 ### 3. Deep Dives & Q&A
 
-You can literally chat with the video. Confused by two similar-looking words?
+This is the most important difference: you can chat with the video. For example:
 
-* *Ask the AI:* "Are these words etymologically related?"
-* *Ask the AI:* "How do I distinguish them in this context?"
+- Confused by two similar-looking words?
 
-You get precise, context-aware answers instantly, without leaving the immersion of the video.
+  > **Ask the AI:** "Are these words etymologically related?"
+
+- Or struggling to tell two near-synonyms apart?
+  > **Ask the AI:** "In this scene, why use A instead of B?"
+
+You don’t have to leave the immersion of the video. DeepAcquire understands the context of what you’re watching—one click gets you a precise, context-aware explanation and analysis, and you can sync it to your wordbook to review anytime.
 
 ### 4. Contextual Recall
 
@@ -73,10 +77,10 @@ DeepAcquire introduces a **Shadowing Mode** designed for focused reading and spe
 | Feature | DeepAcquire | Standard Subtitle Tools (Language Reactor, eJoy) |
 | :--- | :---: | :---: |
 | **Subtitle Quality** | ✅ **AI-Refined** (Corrects punctuation & breaks) | Raw YouTube Captions |
-| **Vocabulary Explanations** | ✅  | ✅  |
+| **Vocabulary Explanations** | ✅ **Adaptive** (Based on context & your level) | Static Dictionary Definitions |
 | **Interactive Q&A** | ✅ Chat with video & ask specific questions | ❌ You can't ask follow-up questions |
-| **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) |  Standard Flashcards |
-| **Shadowing Mode** | ✅ **Focused Reading**  | ❌ No shadowing focus mode |
+| **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) | Standard Flashcards |
+| **Shadowing Mode** | ✅ **Focused Reading** | ❌ No shadowing focus mode |
 
 ## The Vision: Beyond YouTube
 
