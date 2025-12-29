@@ -17,13 +17,12 @@ export const prerender = true;
 
 export const getStaticPaths = (async () => {
   const allPosts = await fetchPosts();
+  // Filter for zh-TW posts: ending with -zh-TW (case-insensitive)
+  const posts = allPosts.filter(post => post.id.toLowerCase().endsWith('-zh-tw'));
 
-  // Only generate English post pages here (avoid duplicating localized routes like /zh-CN/*, /zh-TW/*)
-  const posts = allPosts.filter((post) => !post.id.match(/-zh(-cn|-tw)?$/i));
-
-  return posts.map((post) => ({
+  return posts.flatMap((post) => ({
     params: {
-      blog: post.permalink,
+      blog: post.slug,
     },
     props: { post },
   }));
@@ -62,3 +61,4 @@ const metadata = merge(
   <ToBlogLink />
   <RelatedPosts post={post} />
 </Layout>
+

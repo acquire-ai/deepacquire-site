@@ -33,11 +33,19 @@ const generatePermalink = async ({
     .replace('%minute%', minute)
     .replace('%second%', second);
 
-  return permalink
+  const cleanPermalink = permalink
     .split('/')
     .map((el) => trimSlash(el))
     .filter((el) => !!el)
     .join('/');
+
+  if (id.toLowerCase().endsWith('-zh')) {
+    return `zh-CN/${cleanPermalink}`;
+  } else if (id.toLowerCase().endsWith('-zh-tw')) {
+    return `zh-TW/${cleanPermalink}`;
+  }
+
+  return cleanPermalink;
 };
 
 const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> => {

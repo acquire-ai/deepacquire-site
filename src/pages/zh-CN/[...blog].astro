@@ -17,13 +17,12 @@ export const prerender = true;
 
 export const getStaticPaths = (async () => {
   const allPosts = await fetchPosts();
+  // Filter for zh-CN posts: ending with -zh (case-insensitive)
+  const posts = allPosts.filter(post => post.id.toLowerCase().endsWith('-zh'));
 
-  // Only generate English post pages here (avoid duplicating localized routes like /zh-CN/*, /zh-TW/*)
-  const posts = allPosts.filter((post) => !post.id.match(/-zh(-cn|-tw)?$/i));
-
-  return posts.map((post) => ({
+  return posts.flatMap((post) => ({
     params: {
-      blog: post.permalink,
+      blog: post.slug, // Use slug as the parameter since permalink includes locale prefix now
     },
     props: { post },
   }));
@@ -62,3 +61,4 @@ const metadata = merge(
   <ToBlogLink />
   <RelatedPosts post={post} />
 </Layout>
+
