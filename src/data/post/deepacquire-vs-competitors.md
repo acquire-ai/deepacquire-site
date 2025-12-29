@@ -31,7 +31,10 @@ Most existing subtitle tools act as a layer on top of video players. They are ex
 * Saving words to a flashcard deck.
 
 However, they often lack **Context** and **Personalization**.
-In the age of AI, we need make some differences. We can do more.
+In the age of AI, we should leverage its true strength. We can do more, like:
+
+* With AI, we can provide explanations and teaching based on **your context** and **your personal situation**.
+* By focusing on context and your individual interests, helps you deep understand and recall.
 
 ## What Makes DeepAcquire Different?
 
@@ -61,13 +64,20 @@ You get precise, context-aware answers instantly, without leaving the immersion 
 
 When reviewing words, we don't just show "Word -> Native Language." We save the **exact scene and context** where you first encountered the word. This helps you recall the "moment," making the memory stickier than a mechanical definition.
 
+### 5. Shadowing Mode
+
+DeepAcquire introduces a **Shadowing Mode** designed for focused reading and speaking practice. It blurs out upcoming subtitles to keep you focused on the current sentence, mimicking the natural flow of speech. This helps improve your listening and pronunciation by preventing you from reading ahead.
+
+## Comparison Table
+
 | Feature | DeepAcquire | Standard Subtitle Tools (Language Reactor, eJoy) |
 | :--- | :---: | :---: |
-| **Subtitle Quality** | **AI-Refined** (Corrects punctuation & breaks) | Raw YouTube Captions |
-| **Vocabulary Explanations** | **Adaptive** (Based on context & your level) | Static Dictionary Definitions |
+| **Subtitle Quality** | ✅ **AI-Refined** (Corrects punctuation & breaks) | Raw YouTube Captions |
+| **Vocabulary Explanations** | ✅  | ✅  |
 | **Interactive Q&A** | ✅ Chat with video & ask specific questions | ❌ Mostly static interaction |
-| **Review Method** | **Contextual Recall** (Saves the exact scene) | Standard Flashcards |
-| **AI Personalization** | ✅ Learns from your history | ❌ Generic experience for all users |
+| **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) |  Standard Flashcards |
+| **Shadowing Mode** | ✅ **Focused Reading** (Blur distractions) | ❌ No shadowing focus mode |
+
 
 ## The Vision: Beyond YouTube
 
@@ -77,9 +87,7 @@ I am currently developing a **Mobile App** that expands this philosophy beyond j
 * **Smart Audio:** The AI will not only explain texts but also **read them aloud** to you in a natural voice.
 * **Long-term AI Memory:** The AI will get to know you better over time, personalizing every example based on your learning history.
 
-## I Need Your Help
-
-As a **solo developer**, I’m looking for motivation and honest feedback to keep developing. DeepAcquire is currently **100% free**.
+## Start for free
 
 I’d love for you to try it out and tell me: **What features do you want to see next?**
 
