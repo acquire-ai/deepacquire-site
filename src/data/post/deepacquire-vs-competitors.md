@@ -89,7 +89,7 @@ I am currently developing a **Mobile App** that expands this philosophy beyond j
 
 ## Start for free
 
-I’d love for you to try it out and tell me: **What features do you want to see next?**
+I’d love for you to try it out and give me your feedback, or tell me **what features you want to see next**.
 
 **Try it here:**
 
