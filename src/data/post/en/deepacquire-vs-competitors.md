@@ -18,7 +18,7 @@ I’m a language learner and software engineer.
 
 Like many of you, I’ve been improving my foreign language skills by learning from YouTube, and I used to be a heavy user of **_Language Reactor_** and **_eJoy_**. While they are great tools, I felt something was missing. They’re great at showing bilingual subtitles and machine translations, but in the age of AI, we can do much more.
 
-I realized we should leverage AI's true strength: the ability to provide **explanations and teaching based on context and your personal situation**. True language acquisition happens when you understand the *nuance* and *context*, not just the dictionary definition.
+I realized we should leverage AI's true strength: the ability to provide **explanations and teaching based on context and your personal situation**. True language acquisition happens when you understand the _nuance_ and _context_, not just the dictionary definition.
 
 So, I decided to build this tool from scratch with an **AI-First mindset**.
 
@@ -48,8 +48,8 @@ We don't just display what YouTube gives us. We use AI to improve raw auto-gener
 
 This is where the "AI-First" approach shines. The AI explains vocabulary based on the **specific video context** and **your current proficiency level**.
 
-* **For Beginners:** It uses simple words to explain concepts.
-* **For Advanced Learners:** It provides nuance and examples relevant to your daily life.
+- **For Beginners:** It uses simple words to explain concepts.
+- **For Advanced Learners:** It provides nuance and examples relevant to your daily life.
 
 ### 3. Deep Dives & Q&A
 
@@ -57,10 +57,10 @@ This is the most important difference: you can chat with the video. For example:
 
 - Confused by two similar-looking words?
 
-  > **Ask the AI:** "Are these words etymologically related?"
+  > **Ask the DeepAcquire:** "Are these words etymologically related?"
 
 - Or struggling to tell two near-synonyms apart?
-  > **Ask the AI:** "In this scene, why use A instead of B?"
+  > **Ask the DeepAcquire:** "In this scene, why use A instead of B?"
 
 You don’t have to leave the immersion of the video. DeepAcquire understands the context of what you’re watching—one click gets you a precise, context-aware explanation and analysis, and you can sync it to your wordbook to review anytime.
 
@@ -74,21 +74,21 @@ DeepAcquire introduces a **Shadowing Mode** designed for focused reading and spe
 
 ## Comparison Table
 
-| Feature | DeepAcquire | Standard Subtitle Tools (Language Reactor, eJoy) |
-| :--- | :---: | :---: |
-| **Subtitle Quality** | ✅ **AI-Refined** (Corrects punctuation & breaks) | Raw YouTube Captions |
-| **Vocabulary Explanations** | ✅ **Adaptive** (Based on context & your level) | Static Dictionary Definitions |
-| **Interactive Q&A** | ✅ Chat with video & ask specific questions | ❌ You can't ask follow-up questions |
-| **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) | Standard Flashcards |
-| **Shadowing Mode** | ✅ **Focused Reading** | ❌ No shadowing focus mode |
+| Feature                     |                    DeepAcquire                    | Standard Subtitle Tools (Language Reactor, eJoy) |
+| :-------------------------- | :-----------------------------------------------: | :----------------------------------------------: |
+| **Subtitle Quality**        | ✅ **AI-Refined** (Corrects punctuation & breaks) |               Raw YouTube Captions               |
+| **Vocabulary Explanations** |  ✅ **Adaptive** (Based on context & your level)  |          Static Dictionary Definitions           |
+| **Interactive Q&A**         |    ✅ Chat with video & ask specific questions    |       ❌ You can't ask follow-up questions       |
+| **Review Method**           | ✅ **Contextual Recall** (Saves the exact scene)  |               Standard Flashcards                |
+| **Shadowing Mode**          |              ✅ **Focused Reading**               |            ❌ No shadowing focus mode            |
 
 ## The Vision: Beyond YouTube
 
 I am currently developing a **Mobile App** that expands this philosophy beyond just video:
 
-* **Learn from Anything:** Import materials from your daily work and life (blogs, docs, articles).
-* **Smart Audio:** The AI will not only explain texts but also **read them aloud** to you in a natural voice.
-* **Long-term AI Memory:** The AI will get to know you better over time, personalizing every example based on your learning history.
+- **Learn from Anything:** Import materials from your daily work and life (blogs, docs, articles).
+- **Smart Audio:** The AI will not only explain texts but also **read them aloud** to you in a natural voice.
+- **Long-term AI Memory:** The AI will get to know you better over time, personalizing every example based on your learning history.
 
 ## Start for free
 
@@ -96,7 +96,7 @@ I’d love for you to try it out and give me your feedback, or tell me **what fe
 
 **Try it here:**
 
-* **Web:** [https://deepacquire.com/](https://deepacquire.com/)
-* **Chrome Extension:** [DeepAcquire on Chrome Web Store](https://chromewebstore.google.com/detail/deep-acquire-language-bil/pnobdlbfobamledoecdignpneeoohhio?authuser=1)
+- **Web:** [https://deepacquire.com/](https://deepacquire.com/)
+- **Chrome Extension:** [DeepAcquire on Chrome Web Store](https://chromewebstore.google.com/detail/deep-acquire-language-bil/pnobdlbfobamledoecdignpneeoohhio?authuser=1)
 
 Thanks for reading!
