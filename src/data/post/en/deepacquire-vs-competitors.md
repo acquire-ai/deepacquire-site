@@ -66,7 +66,7 @@ When reviewing words, we don't just show "Word -> Native Language." We save the 
 
 ### 5. Shadowing Mode
 
-DeepAcquire introduces a **Shadowing Mode** designed for focused reading and speaking practice. It blurs out upcoming subtitles to keep you focused on the current sentence, mimicking the natural flow of speech. This helps improve your listening and pronunciation by preventing you from reading ahead.
+DeepAcquire introduces a **Shadowing Mode** designed for focused reading and speaking practice. It highlights the word currently being spoken, helping you stay locked onto the current word and sentence and follow the natural flow of speech. This makes it easier to track pronunciation and improve both listening and speaking.
 
 ## Comparison Table
 
@@ -96,5 +96,3 @@ I’d love for you to try it out and give me your feedback, or tell me **what fe
 * **Chrome Extension:** [DeepAcquire on Chrome Web Store](https://chromewebstore.google.com/detail/deep-acquire-language-bil/pnobdlbfobamledoecdignpneeoohhio?authuser=1)
 
 Thanks for reading!
-
-
