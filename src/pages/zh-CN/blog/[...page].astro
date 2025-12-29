@@ -13,8 +13,8 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  // Filter for zh-CN posts: ending with -zh (case-insensitive)
-  const posts = allPosts.filter((post) => post.id.toLowerCase().endsWith('-zh'));
+  // Filter for zh-CN posts stored under `zh-CN/`
+  const posts = allPosts.filter((post) => post.id.toLowerCase().startsWith('zh-cn/'));
 
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },

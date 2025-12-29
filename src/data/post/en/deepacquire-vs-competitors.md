@@ -78,7 +78,6 @@ DeepAcquire introduces a **Shadowing Mode** designed for focused reading and spe
 | **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) |  Standard Flashcards |
 | **Shadowing Mode** | ✅ **Focused Reading**  | ❌ No shadowing focus mode |
 
-
 ## The Vision: Beyond YouTube
 
 I am currently developing a **Mobile App** that expands this philosophy beyond just video:
@@ -97,3 +96,5 @@ I’d love for you to try it out and give me your feedback, or tell me **what fe
 * **Chrome Extension:** [DeepAcquire on Chrome Web Store](https://chromewebstore.google.com/detail/deep-acquire-language-bil/pnobdlbfobamledoecdignpneeoohhio?authuser=1)
 
 Thanks for reading!
+
+

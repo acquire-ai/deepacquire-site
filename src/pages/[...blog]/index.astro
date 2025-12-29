@@ -19,7 +19,10 @@ export const getStaticPaths = (async () => {
   const allPosts = await fetchPosts();
 
   // Only generate English post pages here (avoid duplicating localized routes like /zh-CN/*, /zh-TW/*)
-  const posts = allPosts.filter((post) => !post.id.match(/-zh(-cn|-tw)?$/i));
+  const posts = allPosts.filter((post) => {
+    const id = post.id.toLowerCase();
+    return id.startsWith('en/') || !id.includes('/');
+  });
 
   return posts.map((post) => ({
     params: {

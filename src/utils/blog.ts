@@ -5,16 +5,42 @@ import type { Post } from '~/types';
 import { APP_BLOG } from 'astrowind:config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
 
+type PostLocale = 'en' | 'zh-CN' | 'zh-TW';
+
+const normalizeLocaleFromPathSegment = (segment: string | undefined): PostLocale | undefined => {
+  if (!segment) return undefined;
+  const s = segment.toLowerCase();
+  if (s === 'en') return 'en';
+  if (s === 'zh-cn') return 'zh-CN';
+  if (s === 'zh-tw') return 'zh-TW';
+  return undefined;
+};
+
+const getLocaleAndIdWithoutLocale = (id: string): { locale: PostLocale; idWithoutLocale: string } => {
+  const parts = id.split('/');
+  const maybeLocale = normalizeLocaleFromPathSegment(parts[0]);
+  if (maybeLocale) {
+    return {
+      locale: maybeLocale,
+      idWithoutLocale: parts.slice(1).join('/') || id,
+    };
+  }
+
+  return { locale: 'en', idWithoutLocale: id };
+};
+
 const generatePermalink = async ({
   id,
   slug,
   publishDate,
   category,
+  locale,
 }: {
   id: string;
   slug: string;
   publishDate: Date;
   category: string | undefined;
+  locale: PostLocale;
 }) => {
   const year = String(publishDate.getFullYear()).padStart(4, '0');
   const month = String(publishDate.getMonth() + 1).padStart(2, '0');
@@ -39,17 +65,12 @@ const generatePermalink = async ({
     .filter((el) => !!el)
     .join('/');
 
-  if (id.toLowerCase().endsWith('-zh')) {
-    return `zh-CN/${cleanPermalink}`;
-  } else if (id.toLowerCase().endsWith('-zh-tw')) {
-    return `zh-TW/${cleanPermalink}`;
-  }
-
-  return cleanPermalink;
+  return locale === 'en' ? cleanPermalink : `${locale}/${cleanPermalink}`;
 };
 
 const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> => {
   const { id, data } = post;
+  const { locale, idWithoutLocale } = getLocaleAndIdWithoutLocale(id);
   const { Content, remarkPluginFrontmatter } = await render(post);
 
   const {
@@ -65,7 +86,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     metadata = {},
   } = data;
 
-  const slug = cleanSlug(id); // cleanSlug(rawSlug.split('/').pop());
+  const slug = cleanSlug(idWithoutLocale);
   const publishDate = new Date(rawPublishDate);
   const updateDate = rawUpdateDate ? new Date(rawUpdateDate) : undefined;
 
@@ -84,7 +105,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
   return {
     id: id,
     slug: slug,
-    permalink: await generatePermalink({ id, slug, publishDate, category: category?.slug }),
+    permalink: await generatePermalink({ id: idWithoutLocale, slug, publishDate, category: category?.slug, locale }),
 
     publishDate: publishDate,
     updateDate: updateDate,
