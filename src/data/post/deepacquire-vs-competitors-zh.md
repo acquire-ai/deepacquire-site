@@ -1,7 +1,7 @@
 ---
 publishDate: 2023-12-29T00:00:00Z
 title: 'DeepAcquire vs 竞品：为什么我要做“语言学习界的 Cursor”'
-excerpt: AI 时代学习语言的正确姿势。DeepAcquire 与其他竞品的区别，以及为什么“语境”至关重要。
+excerpt: AI 时代学习语言的正确姿势。DeepAcquire 与其他竞品的区别，以及为什么“您个人的语境”至关重要。
 image: ~/assets/images/acquire/hero.png
 category: Product
 tags:

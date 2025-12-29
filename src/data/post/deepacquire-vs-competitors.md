@@ -1,7 +1,7 @@
 ---
 publishDate: 2023-12-29T00:00:00Z
 title: 'DeepAcquire vs Competitors: Why We Built the "Cursor for Language Learning"'
-excerpt: The right way to learn languages in the age of AI. What makes DeepAcquire different vs competitors.
+excerpt: The right way to learn languages in the age of AI. What makes DeepAcquire different vs competitors. "Your context" is the key.
 image: ~/assets/images/acquire/hero.png
 category: Product
 tags:
