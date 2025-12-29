@@ -5,7 +5,6 @@ import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
-// import PostTags from "~/components/blog/Tags.astro";
 
 import { blogListRobots, fetchPosts, blogPostsPerPage } from '~/utils/blog';
 import { BLOG_BASE } from '~/utils/permalinks';
@@ -14,8 +13,10 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  // Filter out posts ending with -zh.md, -zh-CN.md, -zh-TW.md for the default (English) list
-  const posts = allPosts.filter((post) => !post.id.match(/-zh(-CN|-TW)?\.md$/i));
+  // Filter for zh-CN posts: ending with -zh.md or containing chinese content if possible, 
+  // but assuming filename convention `*-zh.md` for now as seen in `deepacquire-vs-competitors-zh.md`
+  const posts = allPosts.filter(post => post.id.endsWith('-zh.md'));
+
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
     pageSize: blogPostsPerPage,
@@ -26,9 +27,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
-
-// const allCategories = await findCategories();
-// const allTags = await findTags();
 
 const metadata = {
   title: `Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
@@ -44,14 +42,11 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline subtitle="Insights, updates, and tutorials on how to learn languages effectively with AI.">
-      DeepAcquire Blog
+    <Headline subtitle="AI 时代如何更高效地学习语言：见解、更新与教程。">
+      DeepAcquire 博客
     </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
-    <!--
-      <PostTags tags={allCategories} class="mb-2" title="Search by Categories:" isCategory />
-      <PostTags tags={allTags}  title="Search by Tags:" />
-    -->
   </section>
 </Layout>
+
