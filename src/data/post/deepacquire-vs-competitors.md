@@ -74,9 +74,9 @@ DeepAcquire introduces a **Shadowing Mode** designed for focused reading and spe
 | :--- | :---: | :---: |
 | **Subtitle Quality** | ✅ **AI-Refined** (Corrects punctuation & breaks) | Raw YouTube Captions |
 | **Vocabulary Explanations** | ✅  | ✅  |
-| **Interactive Q&A** | ✅ Chat with video & ask specific questions | ❌ Mostly static interaction |
+| **Interactive Q&A** | ✅ Chat with video & ask specific questions | ❌ You can't ask follow-up questions |
 | **Review Method** | ✅ **Contextual Recall** (Saves the exact scene) |  Standard Flashcards |
-| **Shadowing Mode** | ✅ **Focused Reading** (Blur distractions) | ❌ No shadowing focus mode |
+| **Shadowing Mode** | ✅ **Focused Reading**  | ❌ No shadowing focus mode |
 
 
 ## The Vision: Beyond YouTube
