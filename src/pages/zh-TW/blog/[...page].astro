@@ -13,16 +13,8 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  // Filter for zh-TW posts: ending with -zh-TW.md or similar. 
-  // Assuming `-zh-TW.md` convention or potentially falling back to zh-CN if not available.
-  // For now, let's filter specifically for zh-TW if they exist, or maybe just exclude others.
-  // If no specific TW content exists, maybe we can show CN content or EN content? 
-  // But strictly filtering `*-zh-TW.md` is safer. 
-  // Wait, I haven't seen any zh-TW posts yet. 
-  // I will check if any zh-TW posts exist, if not, maybe I should create one or just use empty list.
-  // Actually, user only mentioned "中文" (Chinese), usually referring to Simplified Chinese (zh-CN) in this context.
-  // But let's support zh-TW structure too.
-  const posts = allPosts.filter(post => post.id.endsWith('-zh-tw.md') || post.id.endsWith('-zh-TW.md'));
+  // Filter for zh-TW posts: ending with -zh-TW or similar.
+  const posts = allPosts.filter((post) => post.id.endsWith('-zh-tw') || post.id.endsWith('-zh-TW'));
 
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
@@ -49,11 +41,8 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline subtitle="AI 時代如何更有效率地學習語言：見解、更新與教學。">
-      DeepAcquire 部落格
-    </Headline>
+    <Headline subtitle="AI 時代如何更有效率地學習語言：見解、更新與教學。"> DeepAcquire 部落格 </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
   </section>
 </Layout>
-

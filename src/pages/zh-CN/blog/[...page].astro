@@ -13,9 +13,8 @@ export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await fetchPosts();
-  // Filter for zh-CN posts: ending with -zh.md or containing chinese content if possible, 
-  // but assuming filename convention `*-zh.md` for now as seen in `deepacquire-vs-competitors-zh.md`
-  const posts = allPosts.filter(post => post.id.endsWith('-zh.md'));
+  // Filter for zh-CN posts: ending with -zh
+  const posts = allPosts.filter(post => post.id.endsWith('-zh'));
 
   return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
