@@ -1,6 +1,6 @@
 ---
 publishDate: 2023-12-29T00:00:00Z
-title: 'DeepAcquire vs 竞品：为什么我要做“语言学习界的 Cursor”'
+title: 'DeepAcquire vs 传统字幕工具：为什么我要做“语言学习界的 Cursor”'
 excerpt: AI 时代学习语言的正确姿势。DeepAcquire 与其他竞品的区别，以及为什么“您个人的语境”至关重要。
 image: ~/assets/images/acquire/hero.png
 category: Product
@@ -74,7 +74,7 @@ DeepAcquire 引入了专为专注阅读和口语练习设计的 **影子跟读�
 
 ## 对比表
 
-| 功能特性       |           DeepAcquire            | 标准字幕工具 (Language Reactor, eJoy) |
+| 功能特性       |           DeepAcquire            | 传统字幕工具(Language Reactor, eJoy) |
 | :------------- | :------------------------------: | :-----------------------------------: |
 | **字幕质量**   | ✅ **AI 优化** (修正标点与断句)  |           YouTube 原生字幕            |
 | **词汇解释**   | ✅ **自适应** (基于语境 & 等级)  |             静态词典定义              |
