@@ -26,8 +26,8 @@ export const headerData = {
     {
       text: 'Docs',
       links: [
-        { text: 'GitHub', href: 'https://github.com/acquire-ai/AcquireLanguage' },
-        { text: 'User Guide', href: 'https://github.com/acquire-ai/AcquireLanguage#readme' },
+        { text: 'GitHub', href: 'https://github.com/deepacquire/DeepAcquire' },
+        { text: 'User Guide', href: 'https://github.com/deepacquire/DeepAcquire#readme' },
       ],
     },
   ],
@@ -47,8 +47,8 @@ export const footerData = {
     {
       title: 'Support',
       links: [
-        { text: 'Docs', href: 'https://github.com/acquire-ai/AcquireLanguage' },
-        { text: 'Issues', href: 'https://github.com/acquire-ai/AcquireLanguage/issues' },
+        { text: 'Docs', href: 'https://github.com/deepacquire/DeepAcquire' },
+        { text: 'Issues', href: 'https://github.com/deepacquire/DeepAcquire/issues' },
       ],
     },
     {
@@ -64,7 +64,7 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/acquire-ai/AcquireLanguage' },
+    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/deepacquire/DeepAcquire' },
   ],
   footNote: `
     © ${new Date().getFullYear()} DeepAcquire. All rights reserved.
