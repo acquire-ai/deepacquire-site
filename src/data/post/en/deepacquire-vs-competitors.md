@@ -75,12 +75,12 @@ DeepAcquire introduces a **Shadowing Mode** designed for focused reading and spe
 ## Comparison Table
 
 | Feature                     |                    DeepAcquire                    | Traditional Subtitle Tools (Language Reactor, eJoy) |
-| :-------------------------- | :-----------------------------------------------: | :----------------------------------------------: |
-| **Subtitle Quality**        | ✅ **AI-Refined** (Corrects punctuation & breaks) |               Raw YouTube Captions               |
-| **Vocabulary Explanations** |  ✅ **Adaptive** (Based on context & your level)  |          Static Dictionary Definitions           |
-| **Interactive Q&A**         |    ✅ Chat with video & ask specific questions    |       ❌ You can't ask follow-up questions       |
-| **Review Method**           | ✅ **Contextual Recall** (Saves the exact scene)  |               Standard Flashcards                |
-| **Shadowing Mode**          |              ✅ **Focused Reading**               |            ❌ No shadowing focus mode            |
+| :-------------------------- | :-----------------------------------------------: | :-------------------------------------------------: |
+| **Subtitle Quality**        | ✅ **AI-Refined** (Corrects punctuation & breaks) |                Raw YouTube Captions                 |
+| **Vocabulary Explanations** |  ✅ **Adaptive** (Based on context & your level)  |            Static Dictionary Definitions            |
+| **Interactive Q&A**         |    ✅ Chat with video & ask specific questions    |        ❌ You can't ask follow-up questions         |
+| **Review Method**           | ✅ **Contextual Recall** (Saves the exact scene)  |                 Standard Flashcards                 |
+| **Shadowing Mode**          |              ✅ **Focused Reading**               |             ❌ No shadowing focus mode              |
 
 ## The Vision: Beyond YouTube
 
