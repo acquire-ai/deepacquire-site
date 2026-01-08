@@ -107,8 +107,8 @@ const getMetadata = (config: Config) => {
     },
     description: '',
     robots: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
     },
     openGraph: {
       type: 'website',
@@ -163,7 +163,7 @@ const getAppBlog = (config: Config) => {
       isEnabled: true,
       pathname: 'tag',
       robots: {
-        index: false,
+        index: true,
         follow: true,
       },
     },
