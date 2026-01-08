@@ -145,7 +145,6 @@ const accountFallbackHref = `/auth/sign-in?returnTo=${encodeURIComponent(Astro.u
     >
       <div class="items-center flex justify-between w-full md:w-auto">
         <div class="flex items-center gap-1.5 rtl:gap-1.5">
-          {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
           <a
             class="text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
             aria-label="GitHub"
@@ -155,6 +154,7 @@ const accountFallbackHref = `/auth/sign-in?returnTo=${encodeURIComponent(Astro.u
           >
             <Icon name="tabler:brand-github" class="w-6 h-6 md:w-5 md:h-5 md:inline-block" />
           </a>
+          {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
           <LanguagePicker />
           {
             showRssFeed && (
