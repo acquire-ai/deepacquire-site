@@ -9,6 +9,8 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
   title: 'Pricing',
+  description:
+    'Choose the perfect DeepAcquire plan for your language learning journey. Free, Pro, and Prime plans available.',
 };
 ---
 
@@ -17,94 +19,71 @@ const metadata = {
 
   <HeroText
     tagline="Pricing"
-    title="Stellar Pricing for Every Journey"
-    subtitle="Choose the perfect plan that aligns with your cosmic goals."
+    title="Simple, Transparent Pricing"
+    subtitle="Start learning languages for free. Upgrade when you need more."
   />
 
   <!-- Pricing Widget ******************* -->
 
   <Prices
-    title="Our prices"
-    subtitle="Only pay for what you need"
+    title="Choose your plan"
+    subtitle="All plans include core features. Upgrade for higher limits and premium capabilities."
     prices={[
       {
-        title: 'basic',
-        subtitle: 'Optimal choice for personal use',
-        price: 29,
-        period: 'per month',
+        title: 'Free',
+        subtitle: 'Get started at no cost',
+        price: '0',
+        period: 'forever',
         items: [
-          {
-            description: 'Etiam in libero, et volutpat',
-          },
-          {
-            description: 'Aenean ac nunc dolor tristique',
-          },
-          {
-            description: 'Cras scelerisque accumsan lib',
-          },
-          {
-            description: 'In hac habitasse',
-          },
+          { description: 'Custom AI Provider' },
+          { description: 'Advanced Word Analysis' },
+          { description: 'Vocabulary Sync' },
+          { description: 'Subtitle Enhance (60h/mo)' },
+          { description: 'AI Translation (900 min/mo)' },
+          { description: 'ASR Transcription (1h one-time)' },
         ],
         callToAction: {
+          text: 'Get Started',
+          href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
           target: '_blank',
-          text: 'Get started',
-          href: '#',
         },
       },
       {
-        title: 'standard',
-        subtitle: 'Optimal choice for small teams',
-        price: 69,
-        period: 'Per Month',
+        title: 'Pro',
+        subtitle: 'For regular learners',
+        price: 3,
+        period: 'per month',
         items: [
-          {
-            description: 'Proin vel laoreet',
-          },
-          {
-            description: 'Ut efficitur habitasse egestas',
-          },
-          {
-            description: 'Volutpat hac curabitur',
-          },
-          {
-            description: 'Pellentesque blandit ut nibh',
-          },
-          {
-            description: 'Donec fringilla sem',
-          },
+          { description: 'Custom AI Provider' },
+          { description: 'Advanced Word Analysis' },
+          { description: 'Vocabulary Sync' },
+          { description: 'Subtitle Enhance (Unlimited)' },
+          { description: 'AI Translation (2,700 min/mo)' },
+          { description: 'ASR Transcription (5h/mo)' },
         ],
         callToAction: {
-          target: '_blank',
-          text: 'Get started',
-          href: '#',
+          text: 'Subscribe',
+          href: '/checkout/pro',
         },
         hasRibbon: true,
         ribbonTitle: 'popular',
       },
       {
-        title: 'premium',
-        subtitle: 'Optimal choice for companies',
-        price: 199,
-        period: 'Per Month',
+        title: 'Prime',
+        subtitle: 'For power users',
+        price: 19.9,
+        period: 'per month',
         items: [
-          {
-            description: 'Curabitur suscipit risus',
-          },
-          {
-            description: 'Aliquam habitasse malesuada',
-          },
-          {
-            description: 'Suspendisse sit amet blandit',
-          },
-          {
-            description: 'Suspendisse auctor blandit dui',
-          },
+          { description: 'Custom AI Provider' },
+          { description: 'Advanced Word Analysis' },
+          { description: 'Vocabulary Sync' },
+          { description: 'Subtitle Enhance (Unlimited)' },
+          { description: 'AI Translation (Unlimited)' },
+          { description: 'ASR Transcription (15h/mo)' },
         ],
         callToAction: {
-          target: '_blank',
-          text: 'Get started',
-          href: '#',
+          text: 'Subscribe',
+          href: '/checkout/prime',
         },
       },
     ]}
@@ -113,39 +92,42 @@ const metadata = {
   <!-- Features3 Widget ************** -->
 
   <Features3
-    title="Price-related features"
-    subtitle="Discover the advantages of choosing our plans"
+    title="Why choose DeepAcquire?"
+    subtitle="Powerful features designed for real language acquisition"
     columns={2}
     items={[
       {
-        title: 'Tiered Pricing Plans',
-        description: 'Choose from a range of pricing plans designed to accommodate different budgets and requirements.',
-        icon: 'tabler:stairs',
+        title: 'AI-Powered Subtitles',
+        description:
+          'Get real-time AI translations and enhanced subtitles while watching YouTube videos in any language.',
+        icon: 'tabler:language',
       },
       {
-        title: 'Transparent Pricing',
-        description: 'Clearly displayed pricing details for each plan, with no hidden costs or unexpected charges.',
-        icon: 'tabler:flip-vertical',
+        title: 'Bring Your Own AI',
+        description:
+          'Use your own AI provider (OpenAI, Gemini, etc.) for free — no vendor lock-in, full control over costs.',
+        icon: 'tabler:plug-connected',
       },
       {
-        title: 'Secure Payment Methods',
-        description: 'Secure payment gateways to protect your financial information during transactions.',
+        title: 'One-Click Vocabulary',
+        description:
+          'Click any word to see definitions, examples, and context. Save words to your personal vocabulary notebook.',
+        icon: 'tabler:vocabulary',
+      },
+      {
+        title: 'Cross-Device Sync',
+        description: 'Your vocabulary and learning progress sync across all your devices seamlessly.',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: 'Secure Payments',
+        description: 'All payments are processed securely through Stripe. Cancel anytime with no hidden fees.',
         icon: 'tabler:shield-lock',
       },
       {
-        title: 'Instant Access',
-        description: `Immediate access to your chosen plan's features and templates upon subscription.`,
-        icon: 'tabler:accessible',
-      },
-      {
-        title: 'Upgrade Value',
-        description: 'Upgrade to higher-tier plans to unlock more features and benefits for an enhanced experience.',
-        icon: 'tabler:chevrons-up',
-      },
-      {
-        title: '24H support',
-        description: 'Questions answered via live chat, email or phone, every calendar day.',
-        icon: 'tabler:headset',
+        title: 'Flexible Plans',
+        description: 'Start free and upgrade when ready. Downgrade or cancel anytime — your data is always yours.',
+        icon: 'tabler:arrows-exchange',
       },
     ]}
     classes={{ container: 'max-w-5xl' }}
@@ -154,76 +136,69 @@ const metadata = {
   <!-- Steps Widget ****************** -->
 
   <Steps
-    title="A guided journey from plans to creativity"
-    tagline="simplified process"
+    title="Get started in minutes"
+    tagline="How it works"
     isReversed={true}
     items={[
       {
-        title: 'Explore plans',
+        title: 'Install the extension',
+        description: 'Add DeepAcquire to Chrome or Edge from the Web Store.',
         icon: 'tabler:number-1',
       },
       {
-        title: 'Select a plan',
+        title: 'Sign up for free',
+        description: 'Create your account to unlock all free-tier features.',
         icon: 'tabler:number-2',
       },
       {
-        title: 'Sign Up / Log In',
+        title: 'Choose a plan',
+        description: 'Pick the plan that fits your learning goals and budget.',
         icon: 'tabler:number-3',
       },
       {
-        title: 'Review order',
+        title: 'Start learning',
+        description: 'Watch YouTube videos with AI-powered subtitles and build your vocabulary.',
         icon: 'tabler:number-4',
       },
-      {
-        title: 'Enter payment details',
-        icon: 'tabler:number-5',
-      },
-      {
-        title: 'Confirmation',
-        icon: 'tabler:number-6',
-      },
-      {
-        title: 'Download and start using the template(s)',
-        icon: 'tabler:number-7',
-      },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1536816579748-4ecb3f03d72a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      alt: 'Steps image',
-    }}
   />
 
   <!-- FAQs Widget ******************* -->
 
   <FAQs
-    title="Pricing FAQs"
-    subtitle="Choosing the right plan is important, and we're here to answer your questions. If you have queries about our pricing options, you're in the right place."
+    title="Frequently Asked Questions"
+    subtitle="Everything you need to know about DeepAcquire plans and billing."
     columns={1}
     items={[
       {
-        title: 'Do the plans come with customer support?',
+        title: 'What can I do with the Free plan?',
         description:
-          'Absolutely, all plans include access to our dedicated customer support to assist you with any queries or concerns.',
+          "The Free plan includes all core features: custom AI provider support, advanced word analysis, vocabulary sync, subtitle enhancement (60h/mo), AI translation (900 min/mo), and a one-time ASR transcription trial (1h). It's enough to experience the full power of DeepAcquire.",
       },
       {
-        title: 'Is there a trial period for the different plans?',
+        title: 'Can I use my own AI provider for free?',
         description:
-          "Unfortunately, we don't offer trial periods for the plans. However, you can check out our demo section to preview the quality of our templates.",
+          'Yes! All plans — including Free — support bringing your own AI provider (OpenAI, Gemini, Groq, etc.). You only pay your provider directly, and DeepAcquire charges nothing extra for this feature.',
+      },
+      {
+        title: 'How does billing work?',
+        description:
+          'Subscriptions are billed monthly through Stripe. You can upgrade, downgrade, or cancel at any time. When you cancel, your plan remains active until the end of the current billing period.',
       },
       {
         title: 'Can I switch between plans?',
         description:
-          'Certainly! You can easily upgrade or downgrade your plan, at any time, to find the one that best suits your evolving requirements.',
+          'Absolutely. You can upgrade or downgrade at any time. Changes take effect immediately, and billing is prorated automatically.',
       },
       {
-        title: 'What payment methods do you accept?',
+        title: 'What payment methods are accepted?',
         description:
-          'We accept major credit cards and online payment methods to ensure a convenient and secure transaction process.',
+          'We accept all major credit and debit cards (Visa, Mastercard, American Express) as well as various local payment methods through Stripe.',
       },
       {
-        title: 'Are there any hidden fees beyond the displayed cost?',
+        title: 'Will my subscription work across devices?',
         description:
-          'No, the subscription cost covers all the features and templates listed under each plan. There are no hidden fees or extra charges.',
+          'Yes. Your subscription is tied to your DeepAcquire account, not a specific device. Sign in on any browser with the extension installed and your plan benefits apply automatically.',
       },
     ]}
   />
@@ -231,13 +206,14 @@ const metadata = {
   <!-- CallToAction Widget *********** -->
 
   <CallToAction
-    title="Ready to boost your projects?"
-    subtitle="Join our community of satisfied customers who have transformed their work with our templates."
+    title="Ready to learn languages effortlessly?"
+    subtitle="Install DeepAcquire and start watching YouTube in any language today."
     actions={[
       {
         variant: 'primary',
-        text: 'Get started now',
-        href: '/',
+        text: 'Install Free Extension',
+        href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+        target: '_blank',
       },
     ]}
   />

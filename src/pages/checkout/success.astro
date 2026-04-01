@@ -1,0 +1,35 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Subscription Activated',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Thank you!"
+    title="Your subscription is active"
+    subtitle="You're all set. Open the DeepAcquire extension and start learning."
+  />
+
+  <CallToAction
+    title="What's next?"
+    subtitle="Open any YouTube video and enjoy AI-powered subtitles, unlimited vocabulary saving, and more."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Go to YouTube',
+        href: 'https://www.youtube.com',
+        target: '_blank',
+      },
+      {
+        variant: 'secondary',
+        text: 'Back to Home',
+        href: '/',
+      },
+    ]}
+  />
+</Layout>

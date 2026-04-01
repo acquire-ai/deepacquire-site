@@ -7,7 +7,6 @@ export const headerData = {
       links: [
         { text: 'Features', href: getPermalink('/#features') },
         { text: 'Install', href: getPermalink('/#install') },
-        // { text: 'Pricing', href: getPermalink('/pricing') },
       ],
     },
     {
@@ -18,6 +17,10 @@ export const headerData = {
         { text: 'Terms', href: getPermalink('/terms') },
         // { text: 'Privacy', href: getPermalink('/privacy') },
       ],
+    },
+    {
+      text: 'Pricing',
+      href: getPermalink('/pricing'),
     },
     {
       text: 'Blog',
@@ -41,7 +44,7 @@ export const footerData = {
       links: [
         { text: 'Features', href: getPermalink('/#features') },
         { text: 'Install', href: getPermalink('/#install') },
-        // { text: 'Pricing', href: getPermalink('/pricing') },
+        { text: 'Pricing', href: getPermalink('/pricing') },
       ],
     },
     {
