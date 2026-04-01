@@ -1,0 +1,34 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Checkout Cancelled',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="No worries"
+    title="Checkout was cancelled"
+    subtitle="You haven't been charged. Feel free to come back anytime."
+  />
+
+  <CallToAction
+    title="Still interested?"
+    subtitle="Compare plans and choose the one that fits your learning goals."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'View Plans',
+        href: '/pricing',
+      },
+      {
+        variant: 'secondary',
+        text: 'Back to Home',
+        href: '/',
+      },
+    ]}
+  />
+</Layout>

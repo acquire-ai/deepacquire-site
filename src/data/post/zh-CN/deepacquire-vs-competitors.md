@@ -98,5 +98,6 @@ DeepAcquire 引入了专为专注阅读和口语练习设计的 **影子跟读�
 
 - **Web:** [https://deepacquire.com/](https://deepacquire.com/)
 - **Chrome 插件:** [DeepAcquire on Chrome Web Store](https://chromewebstore.google.com/detail/deep-acquire-language-bil/pnobdlbfobamledoecdignpneeoohhio?authuser=1)
+- **Edge 插件:** [DeepAcquire on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/acquire-language-youtub/bgkponclmdaicbfcjdglhcklcggkdide)
 
 感谢阅读！
