@@ -41,18 +41,24 @@ export const GET: APIRoute = async (context) => {
   const requestUrl = new URL(context.request.url);
   const origin = requestUrl.origin;
 
-  const res = await fetch(`${gatewayUrl}/api/checkout/session`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      priceId,
-      successUrl: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancelUrl: `${origin}/checkout/cancel`,
-    }),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${gatewayUrl}/api/checkout/session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({
+        priceId,
+        successUrl: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}/checkout/cancel`,
+      }),
+    });
+  } catch (err) {
+    console.error('Checkout fetch error:', err);
+    return new Response('Unable to reach payment service. Please try again later.', { status: 502 });
+  }
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
