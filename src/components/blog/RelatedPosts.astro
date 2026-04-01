@@ -14,8 +14,7 @@ export interface Props {
 const { post } = Astro.props;
 const currentLocale = Astro.currentLocale || defaultLocale;
 
-const title =
-  currentLocale === 'zh-CN' ? '相关文章' : currentLocale === 'zh-TW' ? '相關文章' : 'Related Posts';
+const title = currentLocale === 'zh-CN' ? '相关文章' : currentLocale === 'zh-TW' ? '相關文章' : 'Related Posts';
 const linkText =
   currentLocale === 'zh-CN' ? '查看全部文章' : currentLocale === 'zh-TW' ? '查看所有文章' : 'View All Posts';
 
