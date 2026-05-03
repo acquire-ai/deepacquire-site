@@ -1,0 +1,206 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Prices from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: '價格方案',
+  description: '為你的語言學習之旅挑選合適的 DeepAcquire 方案。提供免費版、Pro 版與 Prime 版。',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Pricing Widget ******************* -->
+
+  <Prices
+    title="選擇你的方案"
+    subtitle="所有方案皆包含核心功能。升級可獲得更高的額度與進階功能。"
+    prices={[
+      {
+        title: '免費版',
+        subtitle: '零成本立即上手',
+        price: '0',
+        period: '永久免費',
+        items: [
+          { description: '自訂 AI 服務商' },
+          { description: '進階單字分析' },
+          { description: '生字本同步' },
+          { description: '字幕強化（60 小時/月）' },
+          { description: 'AI 翻譯（900 分鐘/月）' },
+          { description: '語音辨識轉寫（1 小時一次性體驗）' },
+        ],
+        callToAction: {
+          text: '立即開始',
+          href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'Pro 版',
+        subtitle: '適合常規學習者',
+        price: 3,
+        period: '每月',
+        items: [
+          { description: '自訂 AI 服務商' },
+          { description: '進階單字分析' },
+          { description: '生字本同步' },
+          { description: '字幕強化（無限）' },
+          { description: 'AI 翻譯（2,700 分鐘/月）' },
+          { description: '語音辨識轉寫（5 小時/月）' },
+        ],
+        callToAction: {
+          text: '立即訂閱',
+          href: '/checkout/pro',
+        },
+        hasRibbon: true,
+        ribbonTitle: '熱門',
+      },
+      {
+        title: 'Prime 版',
+        subtitle: '適合進階使用者',
+        price: 19.9,
+        period: '每月',
+        items: [
+          { description: '自訂 AI 服務商' },
+          { description: '進階單字分析' },
+          { description: '生字本同步' },
+          { description: '字幕強化（無限）' },
+          { description: 'AI 翻譯（無限）' },
+          { description: '語音辨識轉寫（15 小時/月）' },
+        ],
+        callToAction: {
+          text: '立即訂閱',
+          href: '/checkout/prime',
+        },
+      },
+    ]}
+  />
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title="為什麼選擇 DeepAcquire？"
+    subtitle="為真正的語言習得而生的強大功能"
+    columns={2}
+    items={[
+      {
+        title: 'AI 強化字幕',
+        description: '在觀看任意語言的 YouTube 影片時，獲得即時 AI 翻譯與強化字幕。',
+        icon: 'tabler:language',
+      },
+      {
+        title: '自帶 AI 服務商',
+        description: '免費使用你自己的 AI 服務商（OpenAI、Gemini 等）——不被廠商綁定，完全掌控成本。',
+        icon: 'tabler:plug-connected',
+      },
+      {
+        title: '一鍵生字本',
+        description: '點擊任意單字即可查看釋義、例句與語境。一鍵保存到你的個人生字本。',
+        icon: 'tabler:vocabulary',
+      },
+      {
+        title: '跨裝置同步',
+        description: '生字本與學習進度在所有裝置間無縫同步。',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: '安全付款',
+        description: '所有款項皆透過 Stripe 安全處理。可隨時取消，沒有任何隱藏費用。',
+        icon: 'tabler:shield-lock',
+      },
+      {
+        title: '彈性方案',
+        description: '從免費版開始，有需要再升級。可隨時降級或取消——你的資料永遠屬於你。',
+        icon: 'tabler:arrows-exchange',
+      },
+    ]}
+    classes={{ container: 'max-w-5xl' }}
+  />
+
+  <!-- Steps Widget ****************** -->
+
+  <Steps
+    title="幾分鐘即可開始"
+    tagline="使用流程"
+    isReversed={true}
+    items={[
+      {
+        title: '安裝擴充功能',
+        description: '從應用商店將 DeepAcquire 加入 Chrome 或 Edge。',
+        icon: 'tabler:number-1',
+      },
+      {
+        title: '免費註冊',
+        description: '建立帳號即可解鎖全部免費版功能。',
+        icon: 'tabler:number-2',
+      },
+      {
+        title: '選擇方案',
+        description: '挑選最符合你學習目標與預算的方案。',
+        icon: 'tabler:number-3',
+      },
+      {
+        title: '開始學習',
+        description: '觀看搭配 AI 字幕的 YouTube 影片，逐步累積你的詞彙。',
+        icon: 'tabler:number-4',
+      },
+    ]}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="常見問題"
+    subtitle="關於 DeepAcquire 方案與計費你需要知道的一切。"
+    columns={1}
+    items={[
+      {
+        title: '免費版能做什麼？',
+        description:
+          '免費版包含全部核心功能：支援自訂 AI 服務商、進階單字分析、生字本同步、字幕強化（60 小時/月）、AI 翻譯（900 分鐘/月），以及一次性的語音辨識轉寫體驗（1 小時）。足以充分體驗 DeepAcquire 的全部能力。',
+      },
+      {
+        title: '可以免費使用我自己的 AI 服務商嗎？',
+        description:
+          '可以！所有方案——包括免費版——都支援自帶 AI 服務商（OpenAI、Gemini、Groq 等）。你只需直接向服務商付款，DeepAcquire 不會就此功能額外收費。',
+      },
+      {
+        title: '訂閱是如何計費的？',
+        description:
+          '訂閱透過 Stripe 按月計費。你可以隨時升級、降級或取消。取消後，方案會持續有效至目前計費週期結束。',
+      },
+      {
+        title: '可以在不同方案之間切換嗎？',
+        description: '當然可以。你可以隨時升級或降級，變更會立即生效，費用會自動按比例結算。',
+      },
+      {
+        title: '支援哪些付款方式？',
+        description:
+          '我們透過 Stripe 接受所有主流信用卡與簽帳卡（Visa、Mastercard、American Express），同時也支援多種在地付款方式。',
+      },
+      {
+        title: '我的訂閱可以跨裝置使用嗎？',
+        description:
+          '可以。訂閱與你的 DeepAcquire 帳號綁定，而非綁定到特定裝置。在任意安裝了擴充功能的瀏覽器登入，方案權益即會自動生效。',
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    title="準備好輕鬆學語言了嗎？"
+    subtitle="立即安裝 DeepAcquire，今天就開始用任意語言看 YouTube。"
+    actions={[
+      {
+        variant: 'primary',
+        text: '安裝免費擴充功能',
+        href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
+        target: '_blank',
+      },
+    ]}
+  />
+</Layout>
