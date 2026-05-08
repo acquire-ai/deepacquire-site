@@ -10,6 +10,7 @@ type Env = {
   LOGTO_APP_ID?: string;
   LOGTO_APP_SECRET?: string;
   LOGTO_SCOPES?: string;
+  GATEWAY_API_URL?: string;
 };
 
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>;

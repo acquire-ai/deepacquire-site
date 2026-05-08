@@ -5,79 +5,38 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import { fetchPlans } from '~/utils/plans';
+import { PLAN_CONTENT } from '~/data/plan-features';
+
+export const prerender = false;
 
 const metadata = {
   title: '价格方案',
-  description: '为你的语言学习之旅选择合适的 DeepAcquire 方案。提供免费版、Pro 版与 Prime 版可选。',
+  description: '为你的语言学习之旅选择合适的 DeepAcquire 方案。提供免费版、Pro 版、Max 版与 Ultra 版可选。',
 };
+
+const lang = 'zh-CN' as const;
+const plans = await fetchPlans(Astro.locals);
+
+const prices = plans.map((p) => {
+  const local = PLAN_CONTENT[lang][p.id];
+  return {
+    title: local.displayName,
+    subtitle: local.subtitle,
+    price: p.priceUsd === 0 ? '0' : p.priceUsd,
+    period: local.period,
+    items: local.items,
+    callToAction: local.cta,
+    hasRibbon: local.hasRibbon,
+    ribbonTitle: local.ribbonTitle,
+  };
+});
 ---
 
 <Layout metadata={metadata}>
   <!-- Pricing Widget ******************* -->
 
-  <Prices
-    title="选择你的方案"
-    subtitle="所有方案均包含核心功能。升级可获得更高的额度与高级能力。"
-    prices={[
-      {
-        title: '免费版',
-        subtitle: '零成本上手体验',
-        price: '0',
-        period: '永久免费',
-        items: [
-          { description: '自定义 AI 服务商' },
-          { description: '高级单词分析' },
-          { description: '生词本同步' },
-          { description: '字幕增强（60 小时/月）' },
-          { description: 'AI 翻译（900 分钟/月）' },
-          { description: '语音识别转写（1 小时一次性体验）' },
-        ],
-        callToAction: {
-          text: '立即开始',
-          href: 'https://chrome.google.com/webstore/detail/pnobdlbfobamledoecdignpneeoohhio',
-          target: '_blank',
-        },
-      },
-      {
-        title: 'Pro 版',
-        subtitle: '适合常规学习者',
-        price: 3,
-        period: '每月',
-        items: [
-          { description: '自定义 AI 服务商' },
-          { description: '高级单词分析' },
-          { description: '生词本同步' },
-          { description: '字幕增强（无限）' },
-          { description: 'AI 翻译（2,700 分钟/月）' },
-          { description: '语音识别转写（5 小时/月）' },
-        ],
-        callToAction: {
-          text: '立即订阅',
-          href: '/checkout/pro',
-        },
-        hasRibbon: true,
-        ribbonTitle: '热门',
-      },
-      {
-        title: 'Prime 版',
-        subtitle: '适合深度用户',
-        price: 19.9,
-        period: '每月',
-        items: [
-          { description: '自定义 AI 服务商' },
-          { description: '高级单词分析' },
-          { description: '生词本同步' },
-          { description: '字幕增强（无限）' },
-          { description: 'AI 翻译（无限）' },
-          { description: '语音识别转写（15 小时/月）' },
-        ],
-        callToAction: {
-          text: '立即订阅',
-          href: '/checkout/prime',
-        },
-      },
-    ]}
-  />
+  <Prices title="选择你的方案" subtitle="所有方案均包含核心功能。升级可获得更高的额度与高级能力。" prices={prices} />
 
   <!-- Features3 Widget ************** -->
 
@@ -169,8 +128,7 @@ const metadata = {
       },
       {
         title: '订阅是如何计费的？',
-        description:
-          '订阅通过 Stripe 按月计费。你可以随时升级、降级或取消。取消后，方案将持续生效至当前计费周期结束。',
+        description: '订阅通过 Stripe 按月计费。你可以随时升级、降级或取消。取消后，方案将持续生效至当前计费周期结束。',
       },
       {
         title: '可以在不同方案之间切换吗？',

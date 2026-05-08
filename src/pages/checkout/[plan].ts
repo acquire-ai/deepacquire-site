@@ -2,13 +2,11 @@ import type { APIRoute } from 'astro';
 
 import { parseCookies } from '~/utils/auth/cookies';
 import { LOGTO_COOKIES } from '~/utils/auth/logto';
+import { fetchPlans, getPriceIdMap } from '~/utils/plans';
 
 export const prerender = false;
 
-const PRICE_IDS: Record<string, string> = {
-  pro: 'price_1TGyhECLGbk1ApqBZFw604u8',
-  prime: 'price_1TGymSCLGbk1ApqBY17xslva',
-};
+const VALID_PAID_PLANS = new Set(['pro', 'max', 'ultra']);
 
 const getEnv = (key: string, locals: App.Locals): string | undefined => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,10 +18,22 @@ const getEnv = (key: string, locals: App.Locals): string | undefined => {
 
 export const GET: APIRoute = async (context) => {
   const plan = context.params.plan;
-  const priceId = plan ? PRICE_IDS[plan] : undefined;
+
+  if (!plan || !VALID_PAID_PLANS.has(plan)) {
+    return new Response('Unknown plan. Valid options: pro, max, ultra.', { status: 404 });
+  }
+
+  const plans = await fetchPlans(context.locals);
+  const priceIdMap = getPriceIdMap(plans);
+  const priceId = priceIdMap[plan];
 
   if (!priceId) {
-    return new Response('Unknown plan. Valid options: pro, prime.', { status: 404 });
+    // Plan exists in catalog but no Stripe price configured yet (e.g. ultra)
+    const planExists = plans.some((p) => p.id === plan);
+    if (planExists) {
+      return new Response(`${plan === 'ultra' ? 'Ultra' : plan} plan is coming soon. Stay tuned!`, { status: 503 });
+    }
+    return new Response('Unknown plan. Valid options: pro, max, ultra.', { status: 404 });
   }
 
   const cookies = parseCookies(context.request.headers.get('cookie'));
