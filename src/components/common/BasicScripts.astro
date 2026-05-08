@@ -69,7 +69,7 @@ import { UI } from 'astrowind:config';
         return;
       }
 
-      Observer.removeAnimationDelay();
+      window.Observer.removeAnimationDelay();
 
       document.documentElement.classList.toggle('dark');
       localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -108,16 +108,19 @@ import { UI } from 'astrowind:config';
       newlink.click();
     });
 
-    const screenSize = window.matchMedia('(max-width: 767px)');
-    screenSize.addEventListener('change', function () {
-      document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
-      document.body.classList.remove('overflow-hidden');
-      document.getElementById('header')?.classList.remove('h-screen');
-      document.getElementById('header')?.classList.remove('expanded');
-      document.getElementById('header')?.classList.remove('bg-page');
-      document.querySelector('#header nav')?.classList.add('hidden');
-      document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
-    });
+    if (!window.scrollListenerAttached) {
+      window.scrollListenerAttached = true;
+      const screenSize = window.matchMedia('(max-width: 767px)');
+      screenSize.addEventListener('change', function () {
+        document.querySelector('[data-aw-toggle-menu]')?.classList.remove('expanded');
+        document.body.classList.remove('overflow-hidden');
+        document.getElementById('header')?.classList.remove('h-screen');
+        document.getElementById('header')?.classList.remove('expanded');
+        document.getElementById('header')?.classList.remove('bg-page');
+        document.querySelector('#header nav')?.classList.add('hidden');
+        document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
+      });
+    }
 
     function applyHeaderStylesOnScroll() {
       const header = document.querySelector('#header[data-aw-sticky-header]');
@@ -131,16 +134,19 @@ import { UI } from 'astrowind:config';
     }
     applyHeaderStylesOnScroll();
 
-    attachEvent([document], 'scroll', function () {
-      lastKnownScrollPosition = window.scrollY;
+    if (!window.scrollHandlerAttached) {
+      window.scrollHandlerAttached = true;
+      attachEvent([document], 'scroll', function () {
+        lastKnownScrollPosition = window.scrollY;
 
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          applyHeaderStylesOnScroll();
-        });
-        ticking = true;
-      }
-    });
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            applyHeaderStylesOnScroll();
+          });
+          ticking = true;
+        }
+      });
+    }
   };
   const onPageShow = function () {
     document.documentElement.classList.add('motion-safe:scroll-smooth');
@@ -166,13 +172,17 @@ import { UI } from 'astrowind:config';
 
 <script is:inline>
   /* Inspired by: https://github.com/heidkaemper/tailwindcss-intersect */
-  const Observer = {
+  window.Observer = {
     observer: null,
     delayBetweenAnimations: 100,
     animationCounter: 0,
     elements: null,
 
     start() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+
       const selectors = [
         '[class*=" intersect:"]',
         '[class*=":intersect:"]',
@@ -266,9 +276,9 @@ import { UI } from 'astrowind:config';
     },
   };
 
-  Observer.start();
+  window.Observer.start();
 
   document.addEventListener('astro:after-swap', () => {
-    Observer.start();
+    window.Observer.start();
   });
 </script>

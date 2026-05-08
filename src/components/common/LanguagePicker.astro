@@ -81,15 +81,17 @@ const langUrls = (Object.entries(languages) as Array<[keyof typeof languages, st
       menu.classList.toggle('hidden', !isHidden);
       button.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
     });
-
-    document.addEventListener('click', (event) => {
-      const picker = document.getElementById('language-picker');
-      if (picker && !picker.contains(event.target as Node)) {
-        menu.classList.add('hidden');
-        button.setAttribute('aria-expanded', 'false');
-      }
-    });
   }
+
+  document.addEventListener('click', (event) => {
+    const picker = document.getElementById('language-picker');
+    const menu = document.getElementById('language-picker-menu');
+    const button = document.getElementById('language-picker-button');
+    if (picker && menu && button && !picker.contains(event.target as Node)) {
+      menu.classList.add('hidden');
+      button.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   setupLanguagePicker();
   document.addEventListener('astro:after-swap', setupLanguagePicker);
