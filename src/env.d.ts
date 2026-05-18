@@ -11,6 +11,13 @@ type Env = {
   LOGTO_APP_SECRET?: string;
   LOGTO_SCOPES?: string;
   GATEWAY_API_URL?: string;
+  // Shared secret presented to gateway-worker when calling /api/auth/redeem-handoff.
+  // Must equal the worker's SITE_REDEEM_SECRET.
+  SITE_REDEEM_SECRET?: string;
+  // HMAC secret used by gateway-worker to sign HS256 site session JWTs.
+  // Used here ONLY to verify cookies locally (no network round-trip per request).
+  // Must equal the worker's GATEWAY_SHARED_SECRET.
+  GATEWAY_SHARED_SECRET?: string;
 };
 
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>;

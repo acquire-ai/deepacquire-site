@@ -1,6 +1,11 @@
-import { createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose';
+import { createRemoteJWKSet, decodeProtectedHeader, jwtVerify, type JWTPayload } from 'jose';
 
 import { base64EncodeString } from './encoding';
+
+// Issuer / audience used when signing site session JWTs in gateway-worker.
+// Keep these in sync with worker/src/auth/site-session.ts.
+export const SITE_SESSION_ISSUER = 'gateway-worker';
+export const SITE_SESSION_AUDIENCE = 'site';
 
 export const LOGTO_COOKIES = {
   // A single transaction cookie (preferred on edge runtimes to avoid multi Set-Cookie issues)
@@ -44,7 +49,7 @@ const getRuntimeEnv = (locals: App.Locals | undefined): RuntimeEnv | undefined =
   return locals?.runtime?.env as RuntimeEnv | undefined;
 };
 
-const getEnvValue = (key: string, locals?: App.Locals): string | undefined => {
+export const getEnvValue = (key: string, locals?: App.Locals): string | undefined => {
   const runtime = getRuntimeEnv(locals);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vite = (import.meta as any).env as Record<string, string | undefined> | undefined;
@@ -208,4 +213,89 @@ export const verifyIdToken = async (params: {
   });
 
   return payload;
+};
+
+// Allow-list of asymmetric algorithms Logto-issued id_tokens may use.
+// `none` and unknown algs MUST be rejected.
+const LOGTO_ASYMMETRIC_ALGS = new Set([
+  'RS256',
+  'RS384',
+  'RS512',
+  'PS256',
+  'PS384',
+  'PS512',
+  'ES256',
+  'ES384',
+  'ES512',
+]);
+
+export type SessionClaims = JWTPayload & {
+  sub: string;
+  email?: string;
+  name?: string;
+  picture?: string;
+};
+
+export type SessionVerifierConfig = {
+  // Logto JWKS path (used for RS256/asymmetric Logto id_tokens).
+  logto: Pick<LogtoConfig, 'issuer' | 'jwksUri' | 'clientId'>;
+  // HMAC secret used by gateway-worker to sign HS256 site session JWTs.
+  // Required to verify cookies that came from the SSO bridge.
+  gatewaySharedSecret?: string;
+};
+
+/**
+ * Verify a website session token. The cookie may hold either:
+ *   1. A Logto-signed RS256 id_token (set by /auth/callback)
+ *   2. A gateway-worker-signed HS256 site session JWT (set by /auth/sso)
+ * Both shapes carry `sub`, optional `email`, `name`, `picture`. The header `alg`
+ * decides which verification path to use; `alg=none` and unknown algs are rejected.
+ */
+export const verifySession = async (token: string, config: SessionVerifierConfig): Promise<SessionClaims> => {
+  const header = decodeProtectedHeader(token);
+  const alg = header.alg;
+
+  if (!alg || alg === 'none') {
+    throw new Error('Unsupported JWT alg');
+  }
+
+  if (alg === 'HS256') {
+    if (!config.gatewaySharedSecret) {
+      throw new Error('Missing GATEWAY_SHARED_SECRET; cannot verify HS256 site session');
+    }
+    const secretKey = new TextEncoder().encode(config.gatewaySharedSecret);
+    const { payload } = await jwtVerify(token, secretKey, {
+      algorithms: ['HS256'],
+      issuer: SITE_SESSION_ISSUER,
+      audience: SITE_SESSION_AUDIENCE,
+    });
+    return payload as SessionClaims;
+  }
+
+  if (LOGTO_ASYMMETRIC_ALGS.has(alg)) {
+    const payload = await verifyIdToken({
+      idToken: token,
+      issuer: config.logto.issuer,
+      audience: config.logto.clientId,
+      jwksUri: config.logto.jwksUri,
+    });
+    return payload as SessionClaims;
+  }
+
+  throw new Error(`Unsupported JWT alg: ${alg}`);
+};
+
+/**
+ * Convenience helper: build a `SessionVerifierConfig` from `Astro.locals`.
+ * Throws (via `getLogtoConfig`) if Logto env vars are missing.
+ * `GATEWAY_SHARED_SECRET` is optional here so that pages relying on Logto-only
+ * sessions still work; callers should pass through to `verifySession`, which
+ * will reject HS256 tokens when the secret is absent.
+ */
+export const getSessionVerifierConfig = (locals?: App.Locals): SessionVerifierConfig => {
+  const logto = getLogtoConfig(locals);
+  return {
+    logto: { issuer: logto.issuer, jwksUri: logto.jwksUri, clientId: logto.clientId },
+    gatewaySharedSecret: getEnvValue('GATEWAY_SHARED_SECRET', locals),
+  };
 };

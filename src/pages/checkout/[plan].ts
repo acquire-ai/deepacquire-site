@@ -37,9 +37,12 @@ export const GET: APIRoute = async (context) => {
   }
 
   const cookies = parseCookies(context.request.headers.get('cookie'));
-  const idToken = cookies[LOGTO_COOKIES.idToken];
+  // Cookie name kept as LOGTO_COOKIES.idToken (`da_id_token`) for backward compatibility,
+  // but the value may now be either a Logto id_token or a gateway-signed HS256 site
+  // session JWT (set by /auth/sso). Gateway accepts both.
+  const sessionToken = cookies[LOGTO_COOKIES.idToken];
 
-  if (!idToken) {
+  if (!sessionToken) {
     return context.redirect(`/auth/sign-in?returnTo=${encodeURIComponent('/pricing')}`);
   }
 
@@ -57,7 +60,7 @@ export const GET: APIRoute = async (context) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${idToken}`,
+        Authorization: `Bearer ${sessionToken}`,
       },
       body: JSON.stringify({
         priceId,

@@ -3,31 +3,24 @@ export const prerender = false;
 
 import Layout from '~/layouts/PageLayout.astro';
 import { parseCookies } from '~/utils/auth/cookies';
-import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
 
 const metadata = {
   title: 'Account',
 };
 
 const cookies = parseCookies(Astro.request.headers.get('cookie'));
-const idToken = cookies[LOGTO_COOKIES.idToken];
+const sessionToken = cookies[LOGTO_COOKIES.idToken];
 
-if (!idToken) {
+if (!sessionToken) {
   return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
 }
 
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 
-const config = getLogtoConfig(Astro.locals);
-
-let claims: Awaited<ReturnType<typeof verifyIdToken>>;
+let claims: Awaited<ReturnType<typeof verifySession>>;
 try {
-  claims = await verifyIdToken({
-    idToken,
-    issuer: config.issuer,
-    audience: config.clientId,
-    jwksUri: config.jwksUri,
-  });
+  claims = await verifySession(sessionToken, getSessionVerifierConfig(Astro.locals));
 } catch {
   return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
 }
