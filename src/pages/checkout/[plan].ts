@@ -76,9 +76,23 @@ export const GET: APIRoute = async (context) => {
     const text = await res.text().catch(() => '');
     console.error(`Checkout session creation failed (${res.status}): ${text}`);
 
+    // Already-subscribed users must change plans through the Stripe customer
+    // portal so we never end up with two stacked subscriptions. Send them to
+    // /account, where a confirm dialog (triggered by ?subscription_change=
+    // has_active) offers to open the portal in one click.
+    if (res.status === 409) {
+      try {
+        const parsed = JSON.parse(text) as { code?: string };
+        if (parsed.code === 'has_active_subscription') {
+          return context.redirect('/account?subscription_change=has_active');
+        }
+      } catch {
+        // fall through to generic handling below
+      }
+    }
+
     // Surface validation-style errors (400) back to the user so they see
-    // actionable copy like "You are already on this plan." Anything else is
-    // treated as an upstream/payment-service failure.
+    // actionable copy. Anything else is treated as an upstream/payment-service failure.
     if (res.status === 400) {
       let message = 'Invalid request. Please refresh and try again.';
       try {
