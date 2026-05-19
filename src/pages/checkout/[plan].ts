@@ -75,6 +75,23 @@ export const GET: APIRoute = async (context) => {
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     console.error(`Checkout session creation failed (${res.status}): ${text}`);
+
+    // Surface validation-style errors (400) back to the user so they see
+    // actionable copy like "You are already on this plan." Anything else is
+    // treated as an upstream/payment-service failure.
+    if (res.status === 400) {
+      let message = 'Invalid request. Please refresh and try again.';
+      try {
+        const parsed = JSON.parse(text) as { error?: unknown };
+        if (typeof parsed.error === 'string' && parsed.error.trim()) {
+          message = parsed.error;
+        }
+      } catch {
+        // body wasn't JSON — keep the generic message
+      }
+      return new Response(message, { status: 400 });
+    }
+
     return new Response('Failed to create checkout session. Please try again.', { status: 502 });
   }
 
