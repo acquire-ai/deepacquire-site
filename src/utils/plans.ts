@@ -8,7 +8,7 @@
  * sync whenever pricing / credits change there.
  */
 
-export type PlanId = 'free' | 'pro' | 'max' | 'ultra';
+export type PlanId = 'free' | 'plus' | 'pro' | 'max';
 
 export interface PlanFromApi {
   id: PlanId;
@@ -40,8 +40,8 @@ const FALLBACK_PLANS: PlanFromApi[] = [
     stripePriceIdYearly: null,
   },
   {
-    id: 'pro',
-    displayName: 'Pro',
+    id: 'plus',
+    displayName: 'Plus',
     tagline: 'For everyday learners',
     tier: 1,
     sharedCredits: 1800,
@@ -50,23 +50,23 @@ const FALLBACK_PLANS: PlanFromApi[] = [
     stripePriceIdYearly: null,
   },
   {
-    id: 'max',
-    displayName: 'Max',
-    tagline: 'For power users',
+    id: 'pro',
+    displayName: 'Pro',
+    tagline: 'For regular immersion',
     tier: 2,
-    sharedCredits: 6000,
-    priceUsd: 9.98,
-    stripePriceId: 'price_1TGymSCLGbk1ApqBY17xslva',
+    sharedCredits: 3000,
+    priceUsd: 4.98,
+    stripePriceId: 'price_1TYjZlCLGbk1ApqB1gC7TwVB',
     stripePriceIdYearly: null,
   },
   {
-    id: 'ultra',
-    displayName: 'Ultra',
-    tagline: 'Maximum throughput',
+    id: 'max',
+    displayName: 'Max',
+    tagline: 'For power users',
     tier: 3,
-    sharedCredits: 15000,
-    priceUsd: 25,
-    stripePriceId: null,
+    sharedCredits: 6000,
+    priceUsd: 9.98,
+    stripePriceId: 'price_1TYjaVCLGbk1ApqBHipMJRqF',
     stripePriceIdYearly: null,
   },
 ];
@@ -139,7 +139,7 @@ export async function fetchPlans(locals?: App.Locals): Promise<PlanFromApi[]> {
 
 /**
  * Build a `{ planId: stripePriceId }` map, skipping plans without a
- * configured Stripe price (e.g. free tier or upcoming tiers).
+ * configured Stripe price (e.g. free tier).
  */
 export function getPriceIdMap(plans: PlanFromApi[]): Record<string, string> {
   const map: Record<string, string> = {};

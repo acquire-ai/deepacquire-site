@@ -46,7 +46,7 @@ type SubscriptionStatus = {
   cancelAtPeriodEnd: boolean;
 };
 
-const KNOWN_PLAN_IDS: ReadonlySet<PlanId> = new Set<PlanId>(['free', 'pro', 'max', 'ultra']);
+const KNOWN_PLAN_IDS: ReadonlySet<PlanId> = new Set<PlanId>(['free', 'plus', 'pro', 'max']);
 const SUB_FETCH_TIMEOUT_MS = 5000;
 
 let subscription: SubscriptionStatus | null = null;
