@@ -3,7 +3,9 @@ export const prerender = false;
 
 import Layout from '~/layouts/PageLayout.astro';
 import { parseCookies } from '~/utils/auth/cookies';
-import { getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { getEnvValue, getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { PLAN_CONTENT } from '~/data/plan-features';
+import type { PlanId } from '~/utils/plans';
 
 const metadata = {
   title: 'Account',
@@ -35,6 +37,72 @@ const displayName = name ?? email ?? (claims.sub as string);
 const avatarUrl = (claims.picture as string | undefined) ?? undefined;
 
 const avatarInitial = displayName?.trim()?.[0]?.toUpperCase() ?? '?';
+
+// --- Subscription status (best-effort, degrade to "Free" on any failure) ---
+type SubscriptionStatus = {
+  plan: string;
+  status: string;
+  currentPeriodEnd: number | null;
+  cancelAtPeriodEnd: boolean;
+};
+
+const KNOWN_PLAN_IDS: ReadonlySet<PlanId> = new Set<PlanId>(['free', 'pro', 'max', 'ultra']);
+const SUB_FETCH_TIMEOUT_MS = 5000;
+
+let subscription: SubscriptionStatus | null = null;
+const gatewayUrl = getEnvValue('GATEWAY_API_URL', Astro.locals);
+if (gatewayUrl) {
+  try {
+    const res = await fetch(`${gatewayUrl.replace(/\/+$/g, '')}/api/subscription/status`, {
+      headers: { Authorization: `Bearer ${sessionToken}` },
+      signal: AbortSignal.timeout(SUB_FETCH_TIMEOUT_MS),
+    });
+    if (res.ok) {
+      const body = (await res.json()) as Partial<SubscriptionStatus>;
+      if (typeof body.plan === 'string' && typeof body.status === 'string') {
+        subscription = {
+          plan: body.plan,
+          status: body.status,
+          currentPeriodEnd: typeof body.currentPeriodEnd === 'number' ? body.currentPeriodEnd : null,
+          cancelAtPeriodEnd: Boolean(body.cancelAtPeriodEnd),
+        };
+      }
+    } else {
+      console.warn(`[account] /api/subscription/status returned ${res.status}`);
+    }
+  } catch (err) {
+    console.warn('[account] failed to fetch subscription status:', err);
+  }
+}
+
+const planId: PlanId =
+  subscription && KNOWN_PLAN_IDS.has(subscription.plan as PlanId) ? (subscription.plan as PlanId) : 'free';
+const planDisplayName = PLAN_CONTENT.en[planId].displayName;
+const isPaid = planId !== 'free';
+const subStatus = subscription?.status ?? 'active';
+const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd ?? false;
+const periodEndDate =
+  subscription?.currentPeriodEnd && Number.isFinite(subscription.currentPeriodEnd)
+    ? new Date(subscription.currentPeriodEnd * 1000)
+    : null;
+const periodEndLabel = periodEndDate
+  ? periodEndDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  : null;
+
+const statusBadge: { label: string; classes: string } = (() => {
+  if (cancelAtPeriodEnd)
+    return { label: 'Canceling', classes: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200' };
+  if (subStatus === 'active' || subStatus === 'trialing') {
+    return { label: 'Active', classes: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200' };
+  }
+  if (subStatus === 'past_due' || subStatus === 'unpaid') {
+    return { label: 'Payment issue', classes: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200' };
+  }
+  if (subStatus === 'canceled') {
+    return { label: 'Canceled', classes: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' };
+  }
+  return { label: subStatus, classes: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' };
+})();
 ---
 
 <Layout metadata={metadata}>
@@ -86,6 +154,62 @@ const avatarInitial = displayName?.trim()?.[0]?.toUpperCase() ?? '?';
       <div class="mt-8 flex gap-3">
         <a class="btn-secondary" href="/auth/sign-out" data-astro-reload data-astro-prefetch="false">Sign out</a>
       </div>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <div class="text-sm text-muted">Subscription</div>
+          <div class="mt-1 flex items-center gap-2">
+            <span class="text-lg font-semibold text-default">{planDisplayName}</span>
+            {
+              isPaid && (
+                <span
+                  class={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${statusBadge.classes}`}
+                >
+                  {statusBadge.label}
+                </span>
+              )
+            }
+          </div>
+          {
+            isPaid && periodEndLabel && (
+              <div class="mt-1 text-sm text-muted">
+                {cancelAtPeriodEnd ? `Ends on ${periodEndLabel}` : `Renews on ${periodEndLabel}`}
+              </div>
+            )
+          }
+          {!isPaid && <div class="mt-1 text-sm text-muted">You're on the Free plan.</div>}
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        {
+          isPaid ? (
+            <>
+              <a class="btn-primary" href="/account/billing-portal" data-astro-prefetch="false">
+                Manage subscription
+              </a>
+              <a class="btn-secondary" href="/pricing" data-astro-prefetch="false">
+                Compare plans
+              </a>
+            </>
+          ) : (
+            <a class="btn-primary" href="/pricing" data-astro-prefetch="false">
+              Upgrade plan
+            </a>
+          )
+        }
+      </div>
+
+      {
+        isPaid && (
+          <p class="mt-4 text-xs text-muted">
+            Cancel, switch plan, or update your payment details through the Stripe customer portal. Changes sync back
+            automatically.
+          </p>
+        )
+      }
     </div>
   </div>
 </Layout>
