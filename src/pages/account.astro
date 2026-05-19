@@ -21,7 +21,12 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 let claims: Awaited<ReturnType<typeof verifySession>>;
 try {
   claims = await verifySession(sessionToken, getSessionVerifierConfig(Astro.locals));
-} catch {
+} catch (err) {
+  // TODO(login-sync): remove once cross-secret rotation is confirmed working in prod.
+  console.error(
+    'account.astro verifySession failed:',
+    err instanceof Error ? `${err.name}: ${err.message}` : String(err)
+  );
   return Astro.redirect(`/auth/sign-in?returnTo=${encodeURIComponent(Astro.url.pathname)}`);
 }
 
