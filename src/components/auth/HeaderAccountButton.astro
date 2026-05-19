@@ -1,6 +1,6 @@
 ---
 import { parseCookies } from '~/utils/auth/cookies';
-import { getLogtoConfig, verifyIdToken, LOGTO_COOKIES } from '~/utils/auth/logto';
+import { getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
 
 export interface Props {
   locale?: string;
@@ -9,20 +9,16 @@ export interface Props {
 const { locale } = Astro.props;
 
 const cookies = parseCookies(Astro.request.headers.get('cookie'));
-const idToken = cookies[LOGTO_COOKIES.idToken];
+const sessionToken = cookies[LOGTO_COOKIES.idToken];
 
 let displayName: string | undefined;
 let email: string | undefined;
 
-if (idToken) {
+if (sessionToken) {
   try {
-    const config = getLogtoConfig(Astro.locals);
-    const claims = await verifyIdToken({
-      idToken,
-      issuer: config.issuer,
-      audience: config.clientId,
-      jwksUri: config.jwksUri,
-    });
+    // verifySession accepts BOTH Logto-signed id_tokens (direct sign-in flow)
+    // AND gateway-worker-signed HS256 site session JWTs (SSO bridge from extension).
+    const claims = await verifySession(sessionToken, getSessionVerifierConfig(Astro.locals));
 
     email = (claims.email as string | undefined) ?? undefined;
     const name =
