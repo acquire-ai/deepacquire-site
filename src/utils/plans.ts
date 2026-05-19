@@ -42,7 +42,7 @@ const FALLBACK_PLANS: PlanFromApi[] = [
   {
     id: 'plus',
     displayName: 'Plus',
-    tagline: 'For everyday learners',
+    tagline: 'For light daily use',
     tier: 1,
     sharedCredits: 1800,
     priceUsd: 3,

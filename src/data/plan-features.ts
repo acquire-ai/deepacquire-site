@@ -47,7 +47,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
     },
     plus: {
       displayName: 'Plus',
-      subtitle: 'For everyday learners',
+      subtitle: 'For light daily use',
       period: 'per month',
       items: [
         { description: 'Custom AI Provider' },
@@ -124,7 +124,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
     },
     plus: {
       displayName: 'Plus 版',
-      subtitle: '适合日常学习者',
+      subtitle: '适合轻度日常使用',
       period: '每月',
       items: [
         { description: '自定义 AI 服务商' },
@@ -201,7 +201,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
     },
     plus: {
       displayName: 'Plus 版',
-      subtitle: '適合日常學習者',
+      subtitle: '適合輕度日常使用',
       period: '每月',
       items: [
         { description: '自訂 AI 服務商' },
