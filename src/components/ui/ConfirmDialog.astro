@@ -41,18 +41,22 @@ const {
         tabindex="-1"
         aria-hidden="true"
       />
-      <div class="relative w-full max-w-md rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-xl p-6">
-        <h2 id={`${id}-title`} class="text-lg font-semibold text-default">
+      <div class="relative w-full max-w-lg rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-xl px-8 py-8 sm:px-10 sm:py-9">
+        <h2 id={`${id}-title`} class="text-xl font-semibold leading-snug text-default">
           {title}
         </h2>
-        {description && <p class="mt-3 text-sm text-muted leading-relaxed">{description}</p>}
-        <div class="mt-6 flex flex-wrap gap-3 justify-end">
-          <button type="button" class="btn-secondary" data-confirm-dialog-dismiss>
+        {description && <p class="mt-4 text-base text-muted leading-relaxed">{description}</p>}
+        <div class="mt-8 flex flex-row flex-nowrap items-center justify-end gap-4 border-t border-gray-200 pt-6 dark:border-gray-700">
+          <button
+            type="button"
+            class="btn-secondary shrink-0 whitespace-nowrap !px-5 !py-2.5 text-sm focus:ring-offset-0"
+            data-confirm-dialog-dismiss
+          >
             {cancelLabel}
           </button>
           <button
             type="button"
-            class="btn-primary"
+            class="btn-primary shrink-0 whitespace-nowrap !px-5 !py-2.5 text-sm focus:ring-offset-0"
             data-confirm-dialog-confirm
             {...(confirmHref ? { 'data-confirm-href': confirmHref } : {})}
           >
