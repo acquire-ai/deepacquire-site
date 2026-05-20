@@ -1,0 +1,120 @@
+---
+export interface Props {
+  id: string;
+  title: string;
+  description?: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  confirmHref?: string;
+  /** URL to replaceState to when the dialog is dismissed (e.g. strip query params). */
+  dismissUrl?: string;
+  open?: boolean;
+}
+
+const {
+  id,
+  title,
+  description,
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel',
+  confirmHref,
+  dismissUrl,
+  open = false,
+} = Astro.props;
+---
+
+{
+  open && (
+    <div
+      id={id}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`${id}-title`}
+      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      data-confirm-dialog
+      data-open="true"
+      {...(dismissUrl ? { 'data-dismiss-url': dismissUrl } : {})}
+    >
+      <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        data-confirm-dialog-dismiss
+        tabindex="-1"
+        aria-hidden="true"
+      />
+      <div class="relative w-full max-w-md rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-xl p-6">
+        <h2 id={`${id}-title`} class="text-lg font-semibold text-default">
+          {title}
+        </h2>
+        {description && <p class="mt-3 text-sm text-muted leading-relaxed">{description}</p>}
+        <div class="mt-6 flex flex-wrap gap-3 justify-end">
+          <button type="button" class="btn-secondary" data-confirm-dialog-dismiss>
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            data-confirm-dialog-confirm
+            {...(confirmHref ? { 'data-confirm-href': confirmHref } : {})}
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script is:inline>
+  (function () {
+    function initDialog(root) {
+      if (root.dataset.initialized === 'true') return;
+      root.dataset.initialized = 'true';
+
+      const confirmBtn = root.querySelector('[data-confirm-dialog-confirm]');
+      const confirmHref = confirmBtn?.dataset.confirmHref;
+      const dismissUrl = root.dataset.dismissUrl;
+
+      function closeDialog() {
+        root.remove();
+        document.body.classList.remove('overflow-hidden');
+      }
+
+      function dismiss() {
+        closeDialog();
+        if (dismissUrl) {
+          window.history.replaceState(null, '', dismissUrl);
+        }
+      }
+
+      function confirm() {
+        closeDialog();
+        if (confirmHref) {
+          window.location.replace(confirmHref);
+        }
+      }
+
+      root.querySelectorAll('[data-confirm-dialog-dismiss]').forEach(function (el) {
+        el.addEventListener('click', dismiss);
+      });
+      confirmBtn?.addEventListener('click', confirm);
+
+      function onKeyDown(e) {
+        if (e.key === 'Escape' && document.contains(root)) {
+          e.preventDefault();
+          dismiss();
+        }
+      }
+      document.addEventListener('keydown', onKeyDown);
+
+      document.body.classList.add('overflow-hidden');
+      confirmBtn?.focus();
+    }
+
+    function initAll() {
+      document.querySelectorAll('[data-confirm-dialog][data-open="true"]').forEach(initDialog);
+    }
+
+    initAll();
+    document.addEventListener('astro:after-swap', initAll);
+  })();
+</script>

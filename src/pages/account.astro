@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import ConfirmDialog from '~/components/ui/ConfirmDialog.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import { parseCookies } from '~/utils/auth/cookies';
 import { getEnvValue, getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
@@ -105,9 +106,8 @@ const statusBadge: { label: string; classes: string } = (() => {
 })();
 
 // `?subscription_change=has_active` is set when the /checkout/[plan] route
-// detected a stacked-subscription attempt (409 from the gateway). We render
-// an inline script that confirms with the user and one-clicks them into the
-// Stripe customer portal.
+// detected a stacked-subscription attempt (409 from the gateway). We show a
+// confirm dialog so they explicitly opt-in to leaving for Stripe's portal.
 const showSubChangeDialog = Astro.url.searchParams.get('subscription_change') === 'has_active';
 ---
 
@@ -221,29 +221,16 @@ const showSubChangeDialog = Astro.url.searchParams.get('subscription_change') ==
 
   {
     showSubChangeDialog && (
-      <script is:inline>
-        // Triggered when the user tried to buy a plan while already subscribed.
-        // We surface a native confirm so they explicitly opt-in to leaving for
-        // Stripe's portal; canceling leaves them on /account with the existing
-        // "Manage subscription" button still available.
-        (function () {
-          const msg =
-            "You already have an active subscription.\n\n" +
-            "To switch plans, cancel, or update your payment details, " +
-            "you'll be taken to the Stripe customer portal.\n\n" +
-            "Continue to the customer portal?";
-          // setTimeout so the page paints before the modal freezes it —
-          // avoids a blank-flash + dialog combo on slower devices.
-          setTimeout(function () {
-            if (window.confirm(msg)) {
-              window.location.replace('/account/billing-portal');
-            } else {
-              // Strip the query so a refresh doesn't re-prompt.
-              window.history.replaceState(null, '', '/account');
-            }
-          }, 0);
-        })();
-      </script>
+      <ConfirmDialog
+        id="subscription-change-dialog"
+        title="You already have an active subscription"
+        description="To switch plans, cancel, or update your payment details, you'll be taken to the Stripe portal."
+        confirmLabel="Manage subscription"
+        cancelLabel="Stay on account"
+        confirmHref="/account/billing-portal"
+        dismissUrl="/account"
+        open
+      />
     )
   }
 </Layout>
