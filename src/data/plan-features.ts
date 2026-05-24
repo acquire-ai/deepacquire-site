@@ -12,6 +12,13 @@ import type { PlanId } from '~/utils/plans';
 
 export type Lang = 'en' | 'zh-CN' | 'zh-TW';
 
+/** Site-wide trial messaging shown on pricing pages. */
+export const PRICING_TRIAL_NOTE: Record<Lang, string> = {
+  en: 'All paid plans include a 7-day free trial',
+  'zh-CN': '所有付费方案均含 7 天免费试用',
+  'zh-TW': '所有付費方案均含 7 天免費試用',
+};
+
 export interface LocalPlanContent {
   displayName: string;
   subtitle: string;
@@ -50,6 +57,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       subtitle: 'For light daily use',
       period: 'per month',
       items: [
+        { description: '7-day free trial' },
         { description: '1,800 credits / month, 9x usage of Free plan' },
         { description: 'All Free plan features' },
       ],
@@ -63,6 +71,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       subtitle: 'For regular immersion',
       period: 'per month',
       items: [
+        { description: '7-day free trial' },
         { description: '3,000 credits / month, 1.67x usage of Plus plan' },
         { description: 'All Plus plan features' },
       ],
@@ -77,7 +86,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Max',
       subtitle: 'For power users',
       period: 'per month',
-      items: [{ description: '6,000 credits / month, 2x usage of Pro plan' }, { description: 'All Pro plan features' }],
+      items: [
+        { description: '7-day free trial' },
+        { description: '6,000 credits / month, 2x usage of Pro plan' },
+        { description: 'All Pro plan features' },
+      ],
       cta: {
         text: 'Subscribe',
         href: '/checkout/max',
@@ -108,7 +121,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Plus 版',
       subtitle: '适合轻度日常使用',
       period: '每月',
-      items: [{ description: '1,800 积分 / 月，9 倍免费版用量' }, { description: '包含免费版全部功能' }],
+      items: [
+        { description: '7 天免费试用' },
+        { description: '1,800 积分 / 月，9 倍免费版用量' },
+        { description: '包含免费版全部功能' },
+      ],
       cta: {
         text: '立即订阅',
         href: '/checkout/plus',
@@ -118,7 +135,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Pro 版',
       subtitle: '适合常规沉浸学习',
       period: '每月',
-      items: [{ description: '3,000 积分 / 月，约 1.67 倍 Plus 版用量' }, { description: '包含 Plus 版全部功能' }],
+      items: [
+        { description: '7 天免费试用' },
+        { description: '3,000 积分 / 月，约 1.67 倍 Plus 版用量' },
+        { description: '包含 Plus 版全部功能' },
+      ],
       cta: {
         text: '立即订阅',
         href: '/checkout/pro',
@@ -130,7 +151,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Max 版',
       subtitle: '适合深度用户',
       period: '每月',
-      items: [{ description: '6,000 积分 / 月，2 倍 Pro 版用量' }, { description: '包含 Pro 版全部功能' }],
+      items: [
+        { description: '7 天免费试用' },
+        { description: '6,000 积分 / 月，2 倍 Pro 版用量' },
+        { description: '包含 Pro 版全部功能' },
+      ],
       cta: {
         text: '立即订阅',
         href: '/checkout/max',
@@ -161,7 +186,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Plus 版',
       subtitle: '適合輕度日常使用',
       period: '每月',
-      items: [{ description: '1,800 點數 / 月，9 倍免費版用量' }, { description: '包含免費版全部功能' }],
+      items: [
+        { description: '7 天免費試用' },
+        { description: '1,800 點數 / 月，9 倍免費版用量' },
+        { description: '包含免費版全部功能' },
+      ],
       cta: {
         text: '立即訂閱',
         href: '/checkout/plus',
@@ -171,7 +200,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Pro 版',
       subtitle: '適合常規沉浸學習',
       period: '每月',
-      items: [{ description: '3,000 點數 / 月，約 1.67 倍 Plus 版用量' }, { description: '包含 Plus 版全部功能' }],
+      items: [
+        { description: '7 天免費試用' },
+        { description: '3,000 點數 / 月，約 1.67 倍 Plus 版用量' },
+        { description: '包含 Plus 版全部功能' },
+      ],
       cta: {
         text: '立即訂閱',
         href: '/checkout/pro',
@@ -183,7 +216,11 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       displayName: 'Max 版',
       subtitle: '適合進階使用者',
       period: '每月',
-      items: [{ description: '6,000 點數 / 月，2 倍 Pro 版用量' }, { description: '包含 Pro 版全部功能' }],
+      items: [
+        { description: '7 天免費試用' },
+        { description: '6,000 點數 / 月，2 倍 Pro 版用量' },
+        { description: '包含 Pro 版全部功能' },
+      ],
       cta: {
         text: '立即訂閱',
         href: '/checkout/max',

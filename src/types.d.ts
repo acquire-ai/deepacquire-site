@@ -229,6 +229,8 @@ export interface Stats extends Omit<Headline, 'classes'>, Widget {
 
 export interface Pricing extends Omit<Headline, 'classes'>, Widget {
   prices?: Array<Price>;
+  /** Optional callout shown below the subtitle (e.g. free-trial banner). */
+  note?: string;
 }
 
 export interface Testimonials extends Omit<Headline, 'classes'>, Widget {

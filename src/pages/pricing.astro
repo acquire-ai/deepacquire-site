@@ -6,14 +6,14 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { fetchPlans } from '~/utils/plans';
-import { PLAN_CONTENT } from '~/data/plan-features';
+import { PLAN_CONTENT, PRICING_TRIAL_NOTE } from '~/data/plan-features';
 
 export const prerender = false;
 
 const metadata = {
   title: 'Pricing',
   description:
-    'Choose the perfect DeepAcquire plan for your language learning journey. Free, Plus, Pro, and Max plans available.',
+    'Choose the perfect DeepAcquire plan for your language learning journey. All paid plans include a 7-day free trial.',
 };
 
 const lang = 'en' as const;
@@ -40,6 +40,7 @@ const prices = plans.map((p) => {
   <Prices
     title="Choose your plan"
     subtitle="All plans include core features. Upgrade for higher limits and premium capabilities."
+    note={PRICING_TRIAL_NOTE[lang]}
     prices={prices}
   />
 
@@ -124,6 +125,11 @@ const prices = plans.map((p) => {
     subtitle="Everything you need to know about DeepAcquire plans and billing."
     columns={1}
     items={[
+      {
+        title: 'Is there a free trial?',
+        description:
+          'Yes. All paid plans (Plus, Pro, and Max) include a 7-day free trial. You get full plan benefits during the trial and will not be charged until it ends. Cancel anytime during the trial at no cost.',
+      },
       {
         title: 'What can I do with the Free plan?',
         description:
