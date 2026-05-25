@@ -2,7 +2,7 @@
 
 我们已经上线了订阅功能。 详见 @src/pages/pricing.astro 页面。
 
-但是在管理页面@src/pages/account.astro  看不到取消订阅和Adjust plan
+但是在管理页面@src/pages/account.astro 看不到取消订阅和Adjust plan
 或者 Update your payment details
 
 ## 技术背景
@@ -17,11 +17,13 @@
 ### 1. 现状梳理
 
 **前端 `deepacquire-site`**
+
 - `src/pages/account.astro`：只展示头像 / 显示名 / 邮箱 / sub，以及一个 Sign out 按钮，没有任何订阅相关 UI。
 - `src/pages/pricing.astro` + `src/pages/checkout/[plan].ts`：负责"购买/升级"流程，已经能跳转到 Stripe Checkout。
 - `src/pages/checkout/success.astro` / `cancel.astro`：Checkout 完成 / 取消跳回页。
 
 **后端 `gateway-worker`**（已实现，无需改动）
+
 - `GET /api/subscription/status` → `{ plan, status, currentPeriodEnd, cancelAtPeriodEnd }`（见 `src/routes/subscription.ts`）。
 - `POST /api/billing/portal` → 调用 `stripe.billingPortal.sessions.create`，返回 `{ url }`，是 **Stripe 官方托管的 Customer Portal**，自带：
   - 取消订阅（Cancel subscription）
@@ -74,7 +76,9 @@ if (gatewayUrl) {
       signal: AbortSignal.timeout(5000),
     });
     if (res.ok) sub = await res.json();
-  } catch { /* 静默降级为 free */ }
+  } catch {
+    /* 静默降级为 free */
+  }
 }
 const planId = sub?.plan ?? 'free';
 const isPaid = planId !== 'free';
@@ -93,6 +97,7 @@ UI（参考 pricing 页样式，沿用 PLAN_CONTENT 的 displayName 当标题）
 > 注意：`Manage subscription` 用 `<a>` 直接跳到代理路由就行，不需要 JS。保留 `Cache-Control: private, no-store` 防止 CDN 缓存订阅状态。
 
 #### 3.3 文案与 i18n
+
 - 第一版只动英文 `src/pages/account.astro`；如果存在 `zh-CN` / `zh-TW` 对应的 account 页（待 grep 确认），同步加上。后续 PLAN_CONTENT 风格已有 i18n 框架，可以接入。
 
 ### 4. 后端 / Stripe 侧配置（一次性）
@@ -139,6 +144,7 @@ UI（参考 pricing 页样式，沿用 PLAN_CONTENT 的 displayName 当标题）
 ---
 
 请 review 以上方案。如果 OK，我会按下面顺序开工：
+
 1. 新增 `src/pages/account/billing-portal.ts`。
 2. 改造 `src/pages/account.astro` 增加订阅卡片。
 3. 写一份 PR 描述，包含第 4 节的 Stripe Dashboard checklist。

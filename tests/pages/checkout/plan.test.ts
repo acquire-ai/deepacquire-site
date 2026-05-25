@@ -29,8 +29,7 @@ const buildContext = (
     params: { plan },
     request: new Request(`https://site.test/checkout/${plan}`, { headers }),
     locals: { runtime: { env } },
-    redirect: (location: string) =>
-      new Response(null, { status: 302, headers: { Location: location } }),
+    redirect: (location: string) => new Response(null, { status: 302, headers: { Location: location } }),
   };
 };
 
@@ -70,7 +69,7 @@ const buildPlansResponse = () =>
         },
       ],
     }),
-    { status: 200, headers: { 'content-type': 'application/json' } },
+    { status: 200, headers: { 'content-type': 'application/json' } }
   );
 
 let fetchMock: FetchMock;
@@ -93,7 +92,7 @@ describe('GET /checkout/[plan]', () => {
       new Response(JSON.stringify({ code: 'has_active_subscription', error: 'already' }), {
         status: 409,
         headers: { 'content-type': 'application/json' },
-      }),
+      })
     );
 
     const res = await callGet(buildContext('pro', { cookieValue: SESSION_JWT }));
@@ -114,7 +113,7 @@ describe('GET /checkout/[plan]', () => {
       new Response(JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_test' }), {
         status: 200,
         headers: { 'content-type': 'application/json' },
-      }),
+      })
     );
 
     const res = await callGet(buildContext('plus', { cookieValue: SESSION_JWT }));
@@ -128,7 +127,7 @@ describe('GET /checkout/[plan]', () => {
       new Response(JSON.stringify({ error: 'some other conflict' }), {
         status: 409,
         headers: { 'content-type': 'application/json' },
-      }),
+      })
     );
 
     const res = await callGet(buildContext('pro', { cookieValue: SESSION_JWT }));

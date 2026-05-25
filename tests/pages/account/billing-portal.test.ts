@@ -30,8 +30,7 @@ const buildContext = (
     locals: { runtime: { env } },
     // Astro's `context.redirect` returns a 302 Response. The route uses it for
     // sign-in and "no subscription" branches, so we stub it here.
-    redirect: (location: string) =>
-      new Response(null, { status: 302, headers: { Location: location } }),
+    redirect: (location: string) => new Response(null, { status: 302, headers: { Location: location } }),
   };
 };
 
@@ -57,9 +56,7 @@ describe('GET /account/billing-portal', () => {
   it('redirects to sign-in when session cookie is missing', async () => {
     const res = await callGet(buildContext('https://site.test/account/billing-portal'));
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toBe(
-      `/auth/sign-in?returnTo=${encodeURIComponent('/account')}`
-    );
+    expect(res.headers.get('Location')).toBe(`/auth/sign-in?returnTo=${encodeURIComponent('/account')}`);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -83,9 +80,7 @@ describe('GET /account/billing-portal', () => {
       })
     );
 
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
 
     expect(res.status).toBe(302);
     expect(res.headers.get('Location')).toBe(portalUrl);
@@ -122,37 +117,27 @@ describe('GET /account/billing-portal', () => {
     fetchMock.mockResolvedValueOnce(
       new Response(JSON.stringify({ error: 'No active subscription found' }), { status: 404 })
     );
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
     expect(res.status).toBe(302);
     expect(res.headers.get('Location')).toBe('/pricing');
   });
 
   it('redirects to sign-in when gateway returns 401 (session token rejected)', async () => {
     fetchMock.mockResolvedValueOnce(new Response('unauthorized', { status: 401 }));
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toBe(
-      `/auth/sign-in?returnTo=${encodeURIComponent('/account')}`
-    );
+    expect(res.headers.get('Location')).toBe(`/auth/sign-in?returnTo=${encodeURIComponent('/account')}`);
   });
 
   it('returns 502 when gateway returns 500', async () => {
     fetchMock.mockResolvedValueOnce(new Response('boom', { status: 500 }));
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
     expect(res.status).toBe(502);
   });
 
   it('returns 502 when fetch throws (network error)', async () => {
     fetchMock.mockRejectedValueOnce(new Error('ECONNREFUSED'));
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
     expect(res.status).toBe(502);
   });
 
@@ -163,9 +148,7 @@ describe('GET /account/billing-portal', () => {
         headers: { 'content-type': 'application/json' },
       })
     );
-    const res = await callGet(
-      buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT })
-    );
+    const res = await callGet(buildContext('https://site.test/account/billing-portal', { cookieValue: SESSION_JWT }));
     expect(res.status).toBe(502);
   });
 });
