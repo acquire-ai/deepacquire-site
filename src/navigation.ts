@@ -14,6 +14,7 @@ export const headerData = {
       links: [
         { text: 'About', href: getPermalink('/about') },
         { text: 'Contact', href: getPermalink('/contact') },
+        { text: 'Downloads', href: getPermalink('/downloads') },
         { text: 'Terms', href: getPermalink('/terms') },
         // { text: 'Privacy', href: getPermalink('/privacy') },
       ],
@@ -44,6 +45,7 @@ export const footerData = {
       links: [
         { text: 'Features', href: getPermalink('/#features') },
         { text: 'Install', href: getPermalink('/#install') },
+        { text: 'Downloads', href: getPermalink('/downloads') },
         { text: 'Pricing', href: getPermalink('/pricing') },
       ],
     },

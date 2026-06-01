@@ -1,0 +1,122 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Headline from '~/components/ui/Headline.astro';
+
+export const prerender = false;
+
+const metadata = {
+  title: 'Downloads',
+};
+
+// Default values for local dev if not present
+let files: { name: string; url: string; size: number; date: Date }[] = [];
+let errorMessage = '';
+
+try {
+  const runtime = (Astro.locals as any).runtime;
+  const env = runtime?.env;
+  if (!env) {
+    throw new Error('Cloudflare runtime environment not found. Please ensure this is running on Cloudflare Pages.');
+  }
+
+  const bucket = env.DOWNLOAD_BUCKET;
+  const publicUrl = env.R2_PUBLIC_URL || process.env.R2_PUBLIC_URL || import.meta.env.R2_PUBLIC_URL;
+
+  if (!bucket) {
+    throw new Error('DOWNLOAD_BUCKET binding is missing in the environment.');
+  }
+
+  if (typeof bucket === 'string') {
+    throw new Error(
+      `DOWNLOAD_BUCKET is currently a string ("${bucket}"). ` +
+      'In local development, if you put DOWNLOAD_BUCKET in your .env file, it will be loaded as a string, not an R2 Bucket Binding. ' +
+      'To test locally, remove DOWNLOAD_BUCKET from .env and configure it in wrangler.toml or astro.config.ts instead.'
+    );
+  }
+
+  if (typeof bucket.list !== 'function') {
+    throw new Error('DOWNLOAD_BUCKET exists but does not have a .list() method. Ensure it is properly configured as an R2 Bucket Binding.');
+  }
+
+  if (!publicUrl) {
+    throw new Error('R2_PUBLIC_URL environment variable is missing in the environment.');
+  }
+
+  const listed = await bucket.list();
+  
+  // Normalize publicUrl so it doesn't end with a trailing slash
+  const baseUrl = publicUrl.replace(/\/$/, '');
+
+  files = listed.objects
+    .filter((obj: any) => obj.key.endsWith('.zip'))
+    .map((obj: any) => ({
+      name: obj.key,
+      url: `${baseUrl}/${encodeURIComponent(obj.key)}`,
+      size: obj.size,
+      date: new Date(obj.uploaded),
+    }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime()); // Sort by newest first
+
+} catch (error: any) {
+  console.error('Error fetching downloads:', error);
+  errorMessage = error.message || 'An error occurred while fetching the download list.';
+}
+
+// Helper to format bytes
+function formatBytes(bytes: number, decimals = 2) {
+  if (!+bytes) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
+    <Headline
+      title="Downloads"
+      subtitle="Download the latest zip packages of DeepAcquire."
+    />
+
+    {errorMessage && (
+      <div class="bg-red-100 text-red-800 p-4 rounded-lg mb-8 text-center">
+        {errorMessage}
+      </div>
+    )}
+
+    {!errorMessage && files.length === 0 && (
+      <div class="text-center text-gray-500 dark:text-gray-400 py-12">
+        No packages available at the moment.
+      </div>
+    )}
+
+    {!errorMessage && files.length > 0 && (
+      <div class="bg-white dark:bg-slate-900 shadow-md rounded-lg overflow-hidden">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+          {files.map((file) => (
+            <li class="p-4 sm:px-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+              <div class="flex flex-col">
+                <span class="text-lg font-medium text-gray-900 dark:text-white truncate max-w-[200px] sm:max-w-md">
+                  {file.name}
+                </span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {file.date.toLocaleDateString()} • {formatBytes(file.size)}
+                </span>
+              </div>
+              <a
+                href={file.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ml-4 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Download
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+</Layout>
