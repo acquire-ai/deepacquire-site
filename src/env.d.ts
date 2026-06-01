@@ -5,6 +5,8 @@
 /// <reference types="../vendor/integration/types.d.ts" />
 
 type Env = {
+  DOWNLOAD_BUCKET?: import('@cloudflare/workers-types').R2Bucket;
+  R2_PUBLIC_URL?: string;
   LOGTO_ISSUER?: string;
   LOGTO_JWKS_URI?: string;
   LOGTO_APP_ID?: string;

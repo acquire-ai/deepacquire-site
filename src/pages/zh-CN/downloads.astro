@@ -6,7 +6,7 @@ import { fetchDownloadFiles } from '~/utils/downloads';
 export const prerender = false;
 
 const metadata = {
-  title: 'Downloads',
+  title: '下载',
 };
 
 const { files, errorMessage } = await fetchDownloadFiles(Astro.locals);
@@ -14,11 +14,11 @@ const { files, errorMessage } = await fetchDownloadFiles(Astro.locals);
 
 <Layout metadata={metadata}>
   <DownloadsSection
-    title="Downloads"
-    subtitle="Download the latest zip packages of DeepAcquire (for users who cannot access app stores)."
-    emptyMessage="No packages available at the moment."
-    downloadLabel="Download"
-    dateLocale="en"
+    title="下载"
+    subtitle="下载 DeepAcquire 最新 zip 安装包（适用于无法访问应用商店的用户）。"
+    emptyMessage="暂无可用安装包。"
+    downloadLabel="下载"
+    dateLocale="zh-CN"
     files={files}
     errorMessage={errorMessage}
   />
