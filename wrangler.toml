@@ -1,6 +1,9 @@
 name = "deepacquire-site"
 compatibility_date = "2024-04-05"
 
+[vars]
+R2_PUBLIC_URL = "https://pub-cd1b45ff1eb943d19c41f6cc646583d9.r2.dev"
+
 [[r2_buckets]]
 binding = "DOWNLOAD_BUCKET"
 bucket_name = "deepacquire-download"
