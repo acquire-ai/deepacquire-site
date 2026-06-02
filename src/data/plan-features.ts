@@ -65,6 +65,8 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: 'Subscribe',
         href: '/checkout/plus',
       },
+      hasRibbon: true,
+      ribbonTitle: 'popular',
     },
     pro: {
       displayName: 'Pro',
@@ -79,8 +81,6 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: 'Subscribe',
         href: '/checkout/pro',
       },
-      hasRibbon: true,
-      ribbonTitle: 'popular',
     },
     max: {
       displayName: 'Max',
@@ -130,6 +130,8 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: '立即订阅',
         href: '/checkout/plus',
       },
+      hasRibbon: true,
+      ribbonTitle: '热门',
     },
     pro: {
       displayName: 'Pro 版',
@@ -144,8 +146,6 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: '立即订阅',
         href: '/checkout/pro',
       },
-      hasRibbon: true,
-      ribbonTitle: '热门',
     },
     max: {
       displayName: 'Max 版',
@@ -195,6 +195,8 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: '立即訂閱',
         href: '/checkout/plus',
       },
+      hasRibbon: true,
+      ribbonTitle: '熱門',
     },
     pro: {
       displayName: 'Pro 版',
@@ -209,8 +211,6 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
         text: '立即訂閱',
         href: '/checkout/pro',
       },
-      hasRibbon: true,
-      ribbonTitle: '熱門',
     },
     max: {
       displayName: 'Max 版',
