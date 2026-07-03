@@ -34,7 +34,7 @@ const FALLBACK_PLANS: PlanFromApi[] = [
     displayName: 'Free',
     tagline: 'Get started',
     tier: 0,
-    sharedCredits: 200,
+    sharedCredits: 100,
     priceUsd: 0,
     stripePriceId: null,
     stripePriceIdYearly: null,

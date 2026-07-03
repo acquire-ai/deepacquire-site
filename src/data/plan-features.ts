@@ -38,11 +38,12 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       subtitle: 'Get started at no cost',
       period: 'forever',
       items: [
-        { description: '200 credits / month' },
+        { description: '100 credits / week' },
+        { description: 'Resets every 7 days' },
         { description: 'Custom AI Provider' },
         { description: 'Advanced Word Analysis' },
         { description: 'Vocabulary Sync' },
-        { description: 'AI Translation (based on credits, 200 credits ≈ 60 mins)' },
+        { description: 'AI Translation (based on credits, 100 credits ≈ 30 mins)' },
         { description: 'Subtitle Enhance (free during preview)' },
         { description: 'ASR Transcription (free during preview)' },
       ],
@@ -58,7 +59,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: 'per month',
       items: [
         { description: '7-day free trial' },
-        { description: '1,800 credits / month, 9x usage of Free plan' },
+        { description: '1,800 credits / month' },
         { description: 'All Free plan features' },
       ],
       cta: {
@@ -103,11 +104,12 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       subtitle: '零成本上手体验',
       period: '永久免费',
       items: [
-        { description: '200 积分 / 月' },
+        { description: '100 积分 / 周' },
+        { description: '每 7 天重置一次' },
         { description: '自定义 AI 服务商' },
         { description: '高级单词分析' },
         { description: '生词本同步' },
-        { description: 'AI 翻译（按积分计算，200 积分约 60 分钟）' },
+        { description: 'AI 翻译（按积分计算，100 积分约 30 分钟）' },
         { description: '字幕增强（预览期间免费）' },
         { description: '语音识别转写（预览期间免费）' },
       ],
@@ -123,7 +125,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免费试用' },
-        { description: '1,800 积分 / 月，9 倍免费版用量' },
+        { description: '1,800 积分 / 月' },
         { description: '包含免费版全部功能' },
       ],
       cta: {
@@ -168,11 +170,12 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       subtitle: '零成本立即上手',
       period: '永久免費',
       items: [
-        { description: '200 點數 / 月' },
+        { description: '100 點數 / 週' },
+        { description: '每 7 天重置一次' },
         { description: '自訂 AI 服務商' },
         { description: '進階單字分析' },
         { description: '生字本同步' },
-        { description: 'AI 翻譯（按點數計算，200 點數約 60 分鐘）' },
+        { description: 'AI 翻譯（按點數計算，100 點數約 30 分鐘）' },
         { description: '字幕強化（預覽期間免費）' },
         { description: '語音辨識轉寫（預覽期間免費）' },
       ],
@@ -188,7 +191,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免費試用' },
-        { description: '1,800 點數 / 月，9 倍免費版用量' },
+        { description: '1,800 點數 / 月' },
         { description: '包含免費版全部功能' },
       ],
       cta: {
