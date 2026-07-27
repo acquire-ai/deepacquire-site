@@ -59,7 +59,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: 'per month',
       items: [
         { description: '7-day free trial' },
-        { description: '1,800 credits / month' },
+        { description: '2,000 credits / month' },
         { description: 'All Free plan features' },
       ],
       cta: {
@@ -75,7 +75,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: 'per month',
       items: [
         { description: '7-day free trial' },
-        { description: '3,000 credits / month, 1.67x usage of Plus plan' },
+        { description: '3,500 credits / month, 1.75x usage of Plus plan' },
         { description: 'All Plus plan features' },
       ],
       cta: {
@@ -89,7 +89,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: 'per month',
       items: [
         { description: '7-day free trial' },
-        { description: '6,000 credits / month, 2x usage of Pro plan' },
+        { description: '7,000 credits / month, 2x usage of Pro plan' },
         { description: 'All Pro plan features' },
       ],
       cta: {
@@ -125,7 +125,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免费试用' },
-        { description: '1,800 积分 / 月' },
+        { description: '2,000 积分 / 月' },
         { description: '包含免费版全部功能' },
       ],
       cta: {
@@ -141,7 +141,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免费试用' },
-        { description: '3,000 积分 / 月，约 1.67 倍 Plus 版用量' },
+        { description: '3,500 积分 / 月，约 1.75 倍 Plus 版用量' },
         { description: '包含 Plus 版全部功能' },
       ],
       cta: {
@@ -155,7 +155,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免费试用' },
-        { description: '6,000 积分 / 月，2 倍 Pro 版用量' },
+        { description: '7,000 积分 / 月，2 倍 Pro 版用量' },
         { description: '包含 Pro 版全部功能' },
       ],
       cta: {
@@ -191,7 +191,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免費試用' },
-        { description: '1,800 點數 / 月' },
+        { description: '2,000 點數 / 月' },
         { description: '包含免費版全部功能' },
       ],
       cta: {
@@ -207,7 +207,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免費試用' },
-        { description: '3,000 點數 / 月，約 1.67 倍 Plus 版用量' },
+        { description: '3,500 點數 / 月，約 1.75 倍 Plus 版用量' },
         { description: '包含 Plus 版全部功能' },
       ],
       cta: {
@@ -221,7 +221,7 @@ export const PLAN_CONTENT: Record<Lang, Record<PlanId, LocalPlanContent>> = {
       period: '每月',
       items: [
         { description: '7 天免費試用' },
-        { description: '6,000 點數 / 月，2 倍 Pro 版用量' },
+        { description: '7,000 點數 / 月，2 倍 Pro 版用量' },
         { description: '包含 Pro 版全部功能' },
       ],
       cta: {
