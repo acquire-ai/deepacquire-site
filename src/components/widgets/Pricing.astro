@@ -75,9 +75,12 @@ const {
                     <div class={`flex justify-center`}>
                       {typeof callToAction === 'string' ? (
                         <Fragment set:html={callToAction} />
+                      ) : callToAction.href ? (
+                        <Button {...(hasRibbon ? { variant: 'primary' } : {})} {...callToAction} />
                       ) : (
-                        callToAction &&
-                        callToAction.href && <Button {...(hasRibbon ? { variant: 'primary' } : {})} {...callToAction} />
+                        /* No destination means the action is not safe to offer yet (e.g. live
+                           pricing failed to load). Keep the card's shape but render it inert. */
+                        <Button {...callToAction} class="pointer-events-none opacity-50" aria-disabled="true" />
                       )}
                     </div>
                   )}

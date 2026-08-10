@@ -23,9 +23,16 @@ export const GET: APIRoute = async (context) => {
     return new Response('Unknown plan. Valid options: plus, pro, max.', { status: 404 });
   }
 
-  const plans = await fetchPlans(context.locals);
-  const priceIdMap = getPriceIdMap(plans);
-  const priceId = priceIdMap[plan];
+  // No local price-id fallback exists on purpose: charging against a stale
+  // Stripe price is unrecoverable, so an unavailable /api/plans blocks checkout
+  // outright. fetchPlans already emitted the PLAN_METADATA_UNAVAILABLE alert.
+  const plansResult = await fetchPlans(context.locals);
+  if (!plansResult.ok) {
+    return new Response('Checkout is temporarily unavailable. Please try again in a few minutes.', { status: 503 });
+  }
+
+  const plans = plansResult.data.plans;
+  const priceId = getPriceIdMap(plans)[plan];
 
   if (!priceId) {
     const planExists = plans.some((p) => p.id === plan);

@@ -1,14 +1,28 @@
 /**
- * Plans helper: fetch live plan metadata from gateway worker (`/api/plans`)
- * with a hard 5s timeout and a static fallback so the site continues to
- * render even when the API is unreachable.
+ * Plans helper.
  *
- * Single source of truth lives in `gateway-worker/src/config/plans.json`.
- * The FALLBACK_PLANS constant below mirrors that file and must be kept in
- * sync whenever pricing / credits change there.
+ * `gateway-worker/src/config/plans.json`, served as `GET /api/plans`, is the
+ * single source of truth for prices, credit limits, reset cadence and Stripe
+ * price ids. This module deliberately keeps **no local mirror** of that data:
+ * a mirror has to be edited in lockstep with the gateway and, when someone
+ * forgets, the site quietly advertises numbers we no longer honour.
+ *
+ * So every failure path here is fatal by design. Callers get `{ ok: false }`,
+ * must render a placeholder instead of prices, and must not let the visitor
+ * continue into checkout. Each failure also emits one alert-grade log line
+ * containing `PLAN_METADATA_UNAVAILABLE`, which is the token to alert on.
  */
 
-export type PlanId = 'free' | 'plus' | 'pro' | 'max';
+/**
+ * Plan ids the site holds localized copy for, in display order. Doubles as the
+ * skeleton order when live plan data is unavailable.
+ */
+export const PLAN_IDS = ['free', 'plus', 'pro', 'max'] as const;
+
+export type PlanId = (typeof PLAN_IDS)[number];
+
+/** Cadence at which a plan's credit bucket resets. Mirrors the gateway enum. */
+export type CreditPeriod = 'week' | 'month';
 
 export interface PlanFromApi {
   id: PlanId;
@@ -16,60 +30,40 @@ export interface PlanFromApi {
   tagline?: string;
   tier: number;
   sharedCredits: number;
+  creditPeriod: CreditPeriod;
   priceUsd: number;
   stripePriceId: string | null;
   stripePriceIdYearly?: string | null;
 }
 
-interface PlansApiResponse {
-  version?: number;
+export interface PlansData {
+  version: number;
+  /** Free trial length in days applied to every paid plan. 0 = disabled. */
+  trialDays: number;
+  /** Plans sorted ascending by `tier`. */
   plans: PlanFromApi[];
 }
 
-const FETCH_TIMEOUT_MS = 5000;
+export type PlansFailureReason =
+  | 'missing_gateway_url'
+  | 'http_error'
+  | 'network_error'
+  | 'malformed_body'
+  | 'invalid_plan'
+  | 'unknown_plan_id'
+  | 'free_plan_missing';
 
-const FALLBACK_PLANS: PlanFromApi[] = [
-  {
-    id: 'free',
-    displayName: 'Free',
-    tagline: 'Get started',
-    tier: 0,
-    sharedCredits: 100,
-    priceUsd: 0,
-    stripePriceId: null,
-    stripePriceIdYearly: null,
-  },
-  {
-    id: 'plus',
-    displayName: 'Plus',
-    tagline: 'For light daily use',
-    tier: 1,
-    sharedCredits: 2000,
-    priceUsd: 3,
-    stripePriceId: 'price_1TGyhECLGbk1ApqBZFw604u8',
-    stripePriceIdYearly: null,
-  },
-  {
-    id: 'pro',
-    displayName: 'Pro',
-    tagline: 'For regular immersion',
-    tier: 2,
-    sharedCredits: 3500,
-    priceUsd: 4.98,
-    stripePriceId: 'price_1TYjZlCLGbk1ApqB1gC7TwVB',
-    stripePriceIdYearly: null,
-  },
-  {
-    id: 'max',
-    displayName: 'Max',
-    tagline: 'For power users',
-    tier: 3,
-    sharedCredits: 7000,
-    priceUsd: 9.98,
-    stripePriceId: 'price_1TYjaVCLGbk1ApqBHipMJRqF',
-    stripePriceIdYearly: null,
-  },
-];
+export type PlansResult = { ok: true; data: PlansData } | { ok: false; reason: PlansFailureReason; detail: string };
+
+const FETCH_TIMEOUT_MS = 5000;
+const CREDIT_PERIODS: ReadonlySet<string> = new Set<CreditPeriod>(['week', 'month']);
+const KNOWN_PLAN_IDS: ReadonlySet<string> = new Set<string>(PLAN_IDS);
+
+interface PlansApiResponse {
+  version?: unknown;
+  trialDays?: unknown;
+  plans?: unknown;
+}
 
 const getEnv = (key: string, locals?: App.Locals): string | undefined => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,62 +73,120 @@ const getEnv = (key: string, locals?: App.Locals): string | undefined => {
   return runtime?.[key] ?? vite?.[key];
 };
 
-const sortByTier = (plans: PlanFromApi[]): PlanFromApi[] => [...plans].sort((a, b) => (a.tier ?? 0) - (b.tier ?? 0));
-
-const isValidPlan = (plan: unknown): plan is PlanFromApi => {
-  if (!plan || typeof plan !== 'object') return false;
-  const p = plan as Record<string, unknown>;
-  return (
-    typeof p.id === 'string' &&
-    typeof p.displayName === 'string' &&
-    typeof p.tier === 'number' &&
-    typeof p.sharedCredits === 'number' &&
-    typeof p.priceUsd === 'number'
+/**
+ * Emit the one log line that monitoring alerts on. Kept as a single
+ * `console.error` with a stable, greppable token so a Cloudflare Logpush /
+ * `wrangler tail` filter on `PLAN_METADATA_UNAVAILABLE` catches every cause.
+ */
+const alertPlansUnavailable = (reason: PlansFailureReason, detail: string): void => {
+  console.error(
+    `[ALERT] PLAN_METADATA_UNAVAILABLE ${JSON.stringify({
+      source: 'GET /api/plans',
+      reason,
+      detail,
+      impact: 'pricing pages render a placeholder and checkout is blocked',
+    })}`
   );
 };
 
+const fail = (reason: PlansFailureReason, detail: string): PlansResult => {
+  alertPlansUnavailable(reason, detail);
+  return { ok: false, reason, detail };
+};
+
 /**
- * Fetch plans from the gateway worker. Falls back to a built-in snapshot
- * on any error (network failure, timeout, non-2xx, malformed body).
- *
- * Result is sorted ascending by `tier` so callers can render in order
- * without an extra pass.
+ * Validate one plan entry. Anything missing means we cannot render that plan
+ * truthfully, so it is reported rather than defaulted — including
+ * `creditPeriod`, which older gateway deployments do not send yet. Deploy the
+ * gateway before the site.
  */
-export async function fetchPlans(locals?: App.Locals): Promise<PlanFromApi[]> {
+const describeInvalidPlan = (plan: unknown): string | null => {
+  if (!plan || typeof plan !== 'object') return 'entry is not an object';
+  const p = plan as Record<string, unknown>;
+  if (typeof p.id !== 'string' || !p.id) return 'missing id';
+  if (typeof p.displayName !== 'string' || !p.displayName) return `plan ${p.id}: missing displayName`;
+  if (typeof p.tier !== 'number' || !Number.isFinite(p.tier)) return `plan ${p.id}: missing tier`;
+  if (typeof p.sharedCredits !== 'number' || !Number.isFinite(p.sharedCredits)) {
+    return `plan ${p.id}: missing sharedCredits`;
+  }
+  if (typeof p.creditPeriod !== 'string' || !CREDIT_PERIODS.has(p.creditPeriod)) {
+    return `plan ${p.id}: creditPeriod must be "week" or "month", got ${JSON.stringify(p.creditPeriod)}`;
+  }
+  if (typeof p.priceUsd !== 'number' || !Number.isFinite(p.priceUsd)) return `plan ${p.id}: missing priceUsd`;
+  return null;
+};
+
+/**
+ * Fetch plan metadata from the gateway. Never falls back to bundled data —
+ * see the module docstring.
+ */
+export async function fetchPlans(locals?: App.Locals): Promise<PlansResult> {
   const gatewayUrl = getEnv('GATEWAY_API_URL', locals);
   if (!gatewayUrl) {
-    return sortByTier(FALLBACK_PLANS);
+    return fail('missing_gateway_url', 'GATEWAY_API_URL is not configured for this deployment');
   }
 
+  const endpoint = `${gatewayUrl.replace(/\/+$/, '')}/api/plans`;
+
+  let res: Response;
   try {
-    const res = await fetch(`${gatewayUrl.replace(/\/$/, '')}/api/plans`, {
+    res = await fetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
-
-    if (!res.ok) {
-      console.warn(`[plans] /api/plans returned ${res.status}, using fallback`);
-      return sortByTier(FALLBACK_PLANS);
-    }
-
-    const body = (await res.json()) as Partial<PlansApiResponse>;
-    if (!body || !Array.isArray(body.plans) || body.plans.length === 0) {
-      console.warn('[plans] /api/plans returned empty/invalid body, using fallback');
-      return sortByTier(FALLBACK_PLANS);
-    }
-
-    const valid = body.plans.filter(isValidPlan);
-    if (valid.length === 0) {
-      console.warn('[plans] /api/plans returned no valid plans, using fallback');
-      return sortByTier(FALLBACK_PLANS);
-    }
-
-    return sortByTier(valid);
   } catch (err) {
-    console.warn('[plans] failed to fetch /api/plans, using fallback:', err);
-    return sortByTier(FALLBACK_PLANS);
+    return fail('network_error', `${endpoint} unreachable: ${err instanceof Error ? err.message : String(err)}`);
   }
+
+  if (!res.ok) {
+    return fail('http_error', `${endpoint} returned HTTP ${res.status}`);
+  }
+
+  let body: PlansApiResponse;
+  try {
+    body = (await res.json()) as PlansApiResponse;
+  } catch (err) {
+    return fail(
+      'malformed_body',
+      `${endpoint} returned invalid JSON: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
+
+  if (!body || !Array.isArray(body.plans) || body.plans.length === 0) {
+    return fail('malformed_body', `${endpoint} returned no plans array`);
+  }
+  if (typeof body.version !== 'number' || typeof body.trialDays !== 'number') {
+    return fail('malformed_body', `${endpoint} returned no version / trialDays`);
+  }
+
+  for (const plan of body.plans) {
+    const problem = describeInvalidPlan(plan);
+    if (problem) return fail('invalid_plan', problem);
+  }
+
+  const plans = body.plans as PlanFromApi[];
+
+  // A plan we have no localized copy for cannot be rendered, and silently
+  // dropping it would hide a whole tier from the pricing page. Fail loudly so
+  // the missing copy gets noticed and shipped.
+  const unknown = plans.find((p) => !KNOWN_PLAN_IDS.has(p.id));
+  if (unknown) {
+    return fail('unknown_plan_id', `plan "${unknown.id}" has no localized copy in src/data/plan-features.ts`);
+  }
+
+  if (!plans.some((p) => p.id === 'free')) {
+    return fail('free_plan_missing', 'payload has no free plan');
+  }
+
+  return {
+    ok: true,
+    data: {
+      version: body.version,
+      trialDays: body.trialDays,
+      plans: [...plans].sort((a, b) => a.tier - b.tier),
+    },
+  };
 }
 
 /**
@@ -150,5 +202,3 @@ export function getPriceIdMap(plans: PlanFromApi[]): Record<string, string> {
   }
   return map;
 }
-
-export { FALLBACK_PLANS };

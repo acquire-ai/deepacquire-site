@@ -5,7 +5,7 @@ import ConfirmDialog from '~/components/ui/ConfirmDialog.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import { parseCookies } from '~/utils/auth/cookies';
 import { getEnvValue, getSessionVerifierConfig, verifySession, LOGTO_COOKIES } from '~/utils/auth/logto';
-import { PLAN_CONTENT } from '~/data/plan-features';
+import { getPlanDisplayName } from '~/data/plan-features';
 import type { PlanId } from '~/utils/plans';
 
 const metadata = {
@@ -78,7 +78,7 @@ if (gatewayUrl) {
 
 const planId: PlanId =
   subscription && KNOWN_PLAN_IDS.has(subscription.plan as PlanId) ? (subscription.plan as PlanId) : 'free';
-const planDisplayName = PLAN_CONTENT.en[planId].displayName;
+const planDisplayName = getPlanDisplayName('en', planId);
 const isPaid = planId !== 'free';
 const subStatus = subscription?.status ?? 'active';
 const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd ?? false;

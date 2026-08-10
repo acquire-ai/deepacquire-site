@@ -6,32 +6,23 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { fetchPlans } from '~/utils/plans';
-import { PLAN_CONTENT, PRICING_TRIAL_NOTE } from '~/data/plan-features';
+import { buildPricingCards, pricingTrialNote, pricingUnavailableNote, trialClause } from '~/data/plan-features';
 
 export const prerender = false;
 
 const metadata = {
   title: 'Pricing',
   description:
-    'Choose the perfect DeepAcquire plan for your language learning journey. All paid plans include a 7-day free trial.',
+    'Choose the perfect DeepAcquire plan for your language learning journey. All paid plans include a free trial.',
 };
 
 const lang = 'en' as const;
-const plans = await fetchPlans(Astro.locals);
-
-const prices = plans.map((p) => {
-  const local = PLAN_CONTENT[lang][p.id];
-  return {
-    title: local.displayName,
-    subtitle: local.subtitle,
-    price: p.priceUsd === 0 ? '0' : p.priceUsd,
-    period: local.period,
-    items: local.items,
-    callToAction: local.cta,
-    hasRibbon: local.hasRibbon,
-    ribbonTitle: local.ribbonTitle,
-  };
-});
+// Plan numbers come exclusively from the gateway. When it is unreachable the
+// cards still render, with an em dash in place of every figure and checkout
+// disabled, rather than falling back to numbers we may no longer honour.
+const plansResult = await fetchPlans(Astro.locals);
+const plans = plansResult.ok ? plansResult.data : null;
+const trialDays = plans?.trialDays;
 ---
 
 <Layout metadata={metadata}>
@@ -40,8 +31,8 @@ const prices = plans.map((p) => {
   <Prices
     title="Choose your plan"
     subtitle="All plans include core features. Upgrade for higher limits and premium capabilities."
-    note={PRICING_TRIAL_NOTE[lang]}
-    prices={prices}
+    note={plans ? pricingTrialNote(lang, trialDays) : pricingUnavailableNote(lang)}
+    prices={buildPricingCards(lang, plans)}
   />
 
   <!-- Features3 Widget ************** -->
@@ -127,8 +118,7 @@ const prices = plans.map((p) => {
     items={[
       {
         title: 'Is there a free trial?',
-        description:
-          'Yes. All paid plans (Plus, Pro, and Max) include a 7-day free trial. You get full plan benefits during the trial and will not be charged until it ends. Cancel anytime during the trial at no cost.',
+        description: `Yes. All paid plans (Plus, Pro, and Max) ${trialClause(lang, trialDays)}. You get full plan benefits during the trial and will not be charged until it ends. Cancel anytime during the trial at no cost.`,
       },
       {
         title: 'Can I use my own AI provider for free?',

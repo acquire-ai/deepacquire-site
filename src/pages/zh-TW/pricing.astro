@@ -6,31 +6,21 @@ import Steps from '~/components/widgets/Steps.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { fetchPlans } from '~/utils/plans';
-import { PLAN_CONTENT, PRICING_TRIAL_NOTE } from '~/data/plan-features';
+import { buildPricingCards, pricingTrialNote, pricingUnavailableNote, trialClause } from '~/data/plan-features';
 
 export const prerender = false;
 
 const metadata = {
   title: '價格方案',
-  description: '為你的語言學習之旅挑選合適的 DeepAcquire 方案。所有付費方案均含 7 天免費試用。',
+  description: '為你的語言學習之旅挑選合適的 DeepAcquire 方案。所有付費方案均含免費試用。',
 };
 
 const lang = 'zh-TW' as const;
-const plans = await fetchPlans(Astro.locals);
-
-const prices = plans.map((p) => {
-  const local = PLAN_CONTENT[lang][p.id];
-  return {
-    title: local.displayName,
-    subtitle: local.subtitle,
-    price: p.priceUsd === 0 ? '0' : p.priceUsd,
-    period: local.period,
-    items: local.items,
-    callToAction: local.cta,
-    hasRibbon: local.hasRibbon,
-    ribbonTitle: local.ribbonTitle,
-  };
-});
+// 方案數字只來自閘道。取不到時卡片照常渲染，但所有數字位置顯示佔位破折號、
+// 訂閱按鈕置灰，絕不回退到可能已經作廢的數字。
+const plansResult = await fetchPlans(Astro.locals);
+const plans = plansResult.ok ? plansResult.data : null;
+const trialDays = plans?.trialDays;
 ---
 
 <Layout metadata={metadata}>
@@ -39,8 +29,8 @@ const prices = plans.map((p) => {
   <Prices
     title="選擇你的方案"
     subtitle="所有方案皆包含核心功能。升級可獲得更高的額度與進階功能。"
-    note={PRICING_TRIAL_NOTE[lang]}
-    prices={prices}
+    note={plans ? pricingTrialNote(lang, trialDays) : pricingUnavailableNote(lang)}
+    prices={buildPricingCards(lang, plans)}
   />
 
   <!-- Features3 Widget ************** -->
@@ -123,8 +113,7 @@ const prices = plans.map((p) => {
     items={[
       {
         title: '有免費試用嗎？',
-        description:
-          '有。所有付費方案（Plus、Pro、Max）均含 7 天免費試用。試用期間可享完整方案權益，試用結束前不會扣款。試用期內可隨時取消，不會產生任何費用。',
+        description: `有。所有付費方案（Plus、Pro、Max）均${trialClause(lang, trialDays)}。試用期間可享完整方案權益，試用結束前不會扣款。試用期內可隨時取消，不會產生任何費用。`,
       },
       {
         title: '可以免費使用我自己的 AI 服務商嗎？',

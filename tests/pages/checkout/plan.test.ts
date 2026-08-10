@@ -41,13 +41,15 @@ const callGet = async (ctx: ReturnType<typeof buildContext>) => {
 const buildPlansResponse = () =>
   new Response(
     JSON.stringify({
-      version: 2,
+      version: 5,
+      trialDays: 7,
       plans: [
         {
           id: 'free',
           displayName: 'Free',
           tier: 0,
-          sharedCredits: 200,
+          sharedCredits: 50,
+          creditPeriod: 'week',
           priceUsd: 0,
           stripePriceId: null,
         },
@@ -56,6 +58,7 @@ const buildPlansResponse = () =>
           displayName: 'Plus',
           tier: 1,
           sharedCredits: 1800,
+          creditPeriod: 'month',
           priceUsd: 3,
           stripePriceId: 'price_plus',
         },
@@ -64,6 +67,7 @@ const buildPlansResponse = () =>
           displayName: 'Pro',
           tier: 2,
           sharedCredits: 3000,
+          creditPeriod: 'month',
           priceUsd: 4.98,
           stripePriceId: 'price_pro',
         },
@@ -120,6 +124,42 @@ describe('GET /checkout/[plan]', () => {
 
     expect(res.status).toBe(302);
     expect(res.headers.get('Location')).toBe('https://checkout.stripe.com/c/pay/cs_test');
+  });
+
+  it('blocks checkout with 503 and an alert log when /api/plans is unavailable', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetchMock.mockResolvedValueOnce(new Response('boom', { status: 500 }));
+
+    const res = await callGet(buildContext('pro', { cookieValue: SESSION_JWT }));
+
+    expect(res.status).toBe(503);
+    // Never reaches the gateway checkout call — no stale price id to fall back on.
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(errorSpy.mock.calls.flat().join(' ')).toContain('PLAN_METADATA_UNAVAILABLE');
+
+    errorSpy.mockRestore();
+  });
+
+  it('blocks checkout with 503 when a plan omits creditPeriod', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetchMock.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          version: 5,
+          trialDays: 7,
+          plans: [{ id: 'plus', displayName: 'Plus', tier: 1, sharedCredits: 2000, priceUsd: 3, stripePriceId: 'p' }],
+        }),
+        { status: 200, headers: { 'content-type': 'application/json' } }
+      )
+    );
+
+    const res = await callGet(buildContext('plus', { cookieValue: SESSION_JWT }));
+
+    expect(res.status).toBe(503);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(errorSpy.mock.calls.flat().join(' ')).toContain('creditPeriod');
+
+    errorSpy.mockRestore();
   });
 
   it('falls through to generic 502 when 409 body is not a has_active_subscription code', async () => {
