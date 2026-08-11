@@ -87,7 +87,7 @@ const PLAN_COPY: Record<Lang, Record<PlanId, PlanCopy>> = {
       displayName: 'Plus',
       subtitle: 'For light daily use',
       period: 'per month',
-      items: (c) => [c.trial, c.credits, 'All Free plan features'],
+      items: (c) => [c.trial, `${c.credits}${c.comparison}`, 'All Free plan features'],
       cta: {
         text: 'Subscribe',
         href: '/checkout/plus',
@@ -141,7 +141,7 @@ const PLAN_COPY: Record<Lang, Record<PlanId, PlanCopy>> = {
       displayName: 'Plus 版',
       subtitle: '适合轻度日常使用',
       period: '每月',
-      items: (c) => [c.trial, c.credits, '包含免费版全部功能'],
+      items: (c) => [c.trial, `${c.credits}${c.comparison}`, '包含免费版全部功能'],
       cta: {
         text: '立即订阅',
         href: '/checkout/plus',
@@ -195,7 +195,7 @@ const PLAN_COPY: Record<Lang, Record<PlanId, PlanCopy>> = {
       displayName: 'Plus 版',
       subtitle: '適合輕度日常使用',
       period: '每月',
-      items: (c) => [c.trial, c.credits, '包含免費版全部功能'],
+      items: (c) => [c.trial, `${c.credits}${c.comparison}`, '包含免費版全部功能'],
       cta: {
         text: '立即訂閱',
         href: '/checkout/plus',
