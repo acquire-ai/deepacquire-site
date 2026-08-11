@@ -13,7 +13,7 @@
  * on: a stale mirror advertises prices we no longer honour.
  */
 
-import { PLAN_IDS, type PlanFromApi, type PlanId, type PlansData } from '~/utils/plans';
+import { PLAN_IDS, type CreditPeriod, type PlanFromApi, type PlanId, type PlansData } from '~/utils/plans';
 import type { Price } from '~/types';
 
 export type Lang = 'en' | 'zh-CN' | 'zh-TW';
@@ -23,14 +23,15 @@ export type Lang = 'en' | 'zh-CN' | 'zh-TW';
  * fixed credit budget buys. This is a rate, independent of any plan's
  * allowance, which is why it lives here rather than in plans.json.
  */
-const TRANSLATION_SAMPLE_CREDITS = 100;
+const TRANSLATION_SAMPLE_CREDITS = 10;
 const TRANSLATION_SAMPLE_MINUTES = 30;
 
 /**
- * Weeks per month used to compare a weekly allowance against a monthly one
- * (e.g. "10x Free"). Matches the ratios quoted in plans.json's own copy.
+ * How many of each cadence's buckets a month holds, used to compare tiers that
+ * reset on different clocks (e.g. "1.75x Plus"). Matches the ratios quoted in
+ * plans.json's own copy.
  */
-const WEEKS_PER_MONTH = 4;
+const PERIODS_PER_MONTH: Record<CreditPeriod, number> = { day: 30, week: 4, month: 1 };
 
 /** Stand-in for any figure we could not load. */
 const MISSING = '—';
@@ -226,12 +227,12 @@ const PLAN_COPY: Record<Lang, Record<PlanId, PlanCopy>> = {
 };
 
 const CREDIT_UNIT: Record<Lang, string> = { en: 'credits', 'zh-CN': '积分', 'zh-TW': '點數' };
-const PERIOD_NOUN: Record<Lang, Record<PlanFromApi['creditPeriod'], string>> = {
-  en: { week: 'week', month: 'month' },
-  'zh-CN': { week: '周', month: '月' },
-  'zh-TW': { week: '週', month: '月' },
+const PERIOD_NOUN: Record<Lang, Record<CreditPeriod, string>> = {
+  en: { day: 'day', week: 'week', month: 'month' },
+  'zh-CN': { day: '天', week: '周', month: '月' },
+  'zh-TW': { day: '天', week: '週', month: '月' },
 };
-const PERIOD_DAYS: Record<PlanFromApi['creditPeriod'], number> = { week: 7, month: 30 };
+const PERIOD_DAYS: Record<CreditPeriod, number> = { day: 1, week: 7, month: 30 };
 
 /** Localized display name for a plan, used outside the pricing table. */
 export const getPlanDisplayName = (lang: Lang, planId: PlanId): string => PLAN_COPY[lang][planId].displayName;
@@ -301,6 +302,15 @@ const trialBullet = (lang: Lang, trialDays?: number): string => {
 const resetNote = (lang: Lang, plan?: PlanFromApi): string => {
   if (!plan) return '';
   const days = PERIOD_DAYS[plan.creditPeriod];
+  if (days === 1) {
+    switch (lang) {
+      case 'zh-CN':
+      case 'zh-TW':
+        return '每天重置';
+      default:
+        return 'Resets every day';
+    }
+  }
   switch (lang) {
     case 'zh-CN':
       return `每 ${days} 天重置一次`;
@@ -312,8 +322,7 @@ const resetNote = (lang: Lang, plan?: PlanFromApi): string => {
 };
 
 /** Normalize an allowance to credits-per-month so tiers on different cadences compare. */
-const monthlyCredits = (plan: PlanFromApi): number =>
-  plan.creditPeriod === 'week' ? plan.sharedCredits * WEEKS_PER_MONTH : plan.sharedCredits;
+const monthlyCredits = (plan: PlanFromApi): number => plan.sharedCredits * PERIODS_PER_MONTH[plan.creditPeriod];
 
 const comparisonPhrase = (lang: Lang, plan?: PlanFromApi, lower?: PlanFromApi): string => {
   if (!plan || !lower) return '';

@@ -22,7 +22,7 @@ export const PLAN_IDS = ['free', 'plus', 'pro', 'max'] as const;
 export type PlanId = (typeof PLAN_IDS)[number];
 
 /** Cadence at which a plan's credit bucket resets. Mirrors the gateway enum. */
-export type CreditPeriod = 'week' | 'month';
+export type CreditPeriod = 'day' | 'week' | 'month';
 
 export interface PlanFromApi {
   id: PlanId;
@@ -56,7 +56,7 @@ export type PlansFailureReason =
 export type PlansResult = { ok: true; data: PlansData } | { ok: false; reason: PlansFailureReason; detail: string };
 
 const FETCH_TIMEOUT_MS = 5000;
-const CREDIT_PERIODS: ReadonlySet<string> = new Set<CreditPeriod>(['week', 'month']);
+const CREDIT_PERIODS: ReadonlySet<string> = new Set<CreditPeriod>(['day', 'week', 'month']);
 const KNOWN_PLAN_IDS: ReadonlySet<string> = new Set<string>(PLAN_IDS);
 
 interface PlansApiResponse {
@@ -110,7 +110,9 @@ const describeInvalidPlan = (plan: unknown): string | null => {
     return `plan ${p.id}: missing sharedCredits`;
   }
   if (typeof p.creditPeriod !== 'string' || !CREDIT_PERIODS.has(p.creditPeriod)) {
-    return `plan ${p.id}: creditPeriod must be "week" or "month", got ${JSON.stringify(p.creditPeriod)}`;
+    return `plan ${p.id}: creditPeriod must be one of ${[...CREDIT_PERIODS].join(' / ')}, got ${JSON.stringify(
+      p.creditPeriod
+    )}`;
   }
   if (typeof p.priceUsd !== 'number' || !Number.isFinite(p.priceUsd)) return `plan ${p.id}: missing priceUsd`;
   return null;

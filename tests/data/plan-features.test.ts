@@ -1,19 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { buildPricingCards, pricingTrialNote, trialClause } from '~/data/plan-features';
-import type { PlansData } from '~/utils/plans';
+import { fetchPlans, type CreditPeriod, type PlansData } from '~/utils/plans';
 
 /** Mirrors the live gateway payload so the derived copy is checked end to end. */
 const PLANS: PlansData = {
-  version: 5,
+  version: 6,
   trialDays: 7,
   plans: [
     {
       id: 'free',
       displayName: 'Free',
       tier: 0,
-      sharedCredits: 50,
-      creditPeriod: 'week',
+      sharedCredits: 20,
+      creditPeriod: 'day',
       priceUsd: 0,
       stripePriceId: null,
     },
@@ -52,14 +52,14 @@ const bulletsOf = (lang: Parameters<typeof buildPricingCards>[0], planIndex: num
 
 describe('buildPricingCards', () => {
   it('derives the credit allowance and cadence from the payload', () => {
-    expect(bulletsOf('en', 0)).toContain('50 credits / week');
-    expect(bulletsOf('en', 0)).toContain('Resets every 7 days');
-    expect(bulletsOf('zh-CN', 0)).toContain('50 积分 / 周');
-    expect(bulletsOf('zh-TW', 0)).toContain('50 點數 / 週');
+    expect(bulletsOf('en', 0)).toContain('20 credits / day');
+    expect(bulletsOf('en', 0)).toContain('Resets every day');
+    expect(bulletsOf('zh-CN', 0)).toContain('20 积分 / 天');
+    expect(bulletsOf('zh-TW', 0)).toContain('20 點數 / 天');
     expect(bulletsOf('en', 1)).toContain('2,000 credits / month');
   });
 
-  it('computes cross-tier multipliers, normalizing weekly allowances to a month', () => {
+  it('computes cross-tier multipliers, normalizing shorter cadences to a month', () => {
     expect(bulletsOf('en', 2)).toContain('3,500 credits / month, 1.75x usage of Plus plan');
     expect(bulletsOf('en', 3)).toContain('7,000 credits / month, 2x usage of Pro plan');
     expect(bulletsOf('zh-CN', 2)).toContain('3,500 积分 / 月，约 1.75 倍 Plus 版用量');
@@ -88,8 +88,58 @@ describe('buildPricingCards', () => {
       plans: PLANS.plans.map((p) => ({ ...p, sharedCredits: p.sharedCredits * 2 })),
     };
 
-    expect(bulletsOf('en', 0)).toContain('50 credits / week');
-    expect((buildPricingCards('en', doubled)[0].items ?? []).map((i) => i.description)).toContain('100 credits / week');
+    expect(bulletsOf('en', 0)).toContain('20 credits / day');
+    expect((buildPricingCards('en', doubled)[0].items ?? []).map((i) => i.description)).toContain('40 credits / day');
+  });
+});
+
+/**
+ * Every cadence the gateway may send has to survive the whole pipeline, so
+ * these cases start from a gateway response rather than from a `PlansData`
+ * literal. `fetchPlans` guards `creditPeriod` against a hand-maintained
+ * whitelist that `Set<CreditPeriod>` does not force to list every member of
+ * the union, and an omission there rejects the *entire* payload: the pricing
+ * page then blanks every price and disables checkout, rather than losing just
+ * the one bullet that cadence feeds.
+ */
+describe('cadence support, from gateway response to rendered bullet', () => {
+  const GATEWAY = 'https://gateway.example.test';
+  const LOCALS = { runtime: { env: { GATEWAY_API_URL: GATEWAY } } } as unknown as App.Locals;
+
+  const originalFetch = globalThis.fetch;
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  /** Serve `PLANS` with the free tier switched to `creditPeriod`, then render it. */
+  const renderFreeTier = async (creditPeriod: CreditPeriod): Promise<string[]> => {
+    const payload: PlansData = {
+      ...PLANS,
+      plans: PLANS.plans.map((p) => (p.id === 'free' ? { ...p, creditPeriod } : p)),
+    };
+    globalThis.fetch = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify(payload), { status: 200, headers: { 'content-type': 'application/json' } })
+      ) as unknown as typeof globalThis.fetch;
+
+    const result = await fetchPlans(LOCALS);
+    if (!result.ok) throw new Error(`fetchPlans rejected creditPeriod "${creditPeriod}": ${result.detail}`);
+
+    return (buildPricingCards('en', result.data)[0].items ?? []).map((item) => item.description ?? '');
+  };
+
+  const cases: ReadonlyArray<[CreditPeriod, string, string]> = [
+    ['day', '20 credits / day', 'Resets every day'],
+    ['week', '20 credits / week', 'Resets every 7 days'],
+    ['month', '20 credits / month', 'Resets every 30 days'],
+  ];
+
+  it.each(cases)('accepts a %s cadence and states when it resets', async (creditPeriod, allowance, resetNote) => {
+    const bullets = await renderFreeTier(creditPeriod);
+
+    expect(bullets).toContain(allowance);
+    expect(bullets).toContain(resetNote);
   });
 });
 
