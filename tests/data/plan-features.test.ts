@@ -56,10 +56,14 @@ describe('buildPricingCards', () => {
     expect(bulletsOf('en', 0)).toContain('Resets every day');
     expect(bulletsOf('zh-CN', 0)).toContain('20 积分 / 天');
     expect(bulletsOf('zh-TW', 0)).toContain('20 點數 / 天');
-    expect(bulletsOf('en', 1)).toContain('2,000 credits / month');
+    expect(bulletsOf('en', 1).some((b) => b.startsWith('2,000 credits / month'))).toBe(true);
   });
 
   it('computes cross-tier multipliers, normalizing shorter cadences to a month', () => {
+    // Plus is compared against a tier that resets daily, so its ratio only
+    // holds once the free allowance is scaled up to a month.
+    expect(bulletsOf('en', 1)).toContain('2,000 credits / month, 3.33x usage of Free plan');
+    expect(bulletsOf('zh-CN', 1)).toContain('2,000 积分 / 月，约 3.33 倍 免费版用量');
     expect(bulletsOf('en', 2)).toContain('3,500 credits / month, 1.75x usage of Plus plan');
     expect(bulletsOf('en', 3)).toContain('7,000 credits / month, 2x usage of Pro plan');
     expect(bulletsOf('zh-CN', 2)).toContain('3,500 积分 / 月，约 1.75 倍 Plus 版用量');
